@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">FlameMathNew</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="algebra">Algebra</string>
+    <string name="discrete_mathematics">Discrete Mathematics</string>
+    <string name="about">About</string>
+    <string name="flamemath">FlameMath</string>
+    <string name="for_students_by_students">For students by students</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="flame_math_description">FlameMath поможет студентус решением любой задачи высшей математики! Особенностью приложения являет то, что оно предоставит вам полный ход решения, необходимый для понимая задачи</string>
+</resources>
