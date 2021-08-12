@@ -9,5 +9,9 @@ class LexemeViewModelImpl : ViewModel() {
 
     val editTextLexeme : MutableLiveData<String> = MutableLiveData<String>()
     val editTextArgs : MutableLiveData<String> = MutableLiveData<String>()
+    val editTextValues : MutableLiveData<Int> = MutableLiveData<Int>()
+    val editTextVals : MutableLiveData<Int> = MutableLiveData<Int>()
+    val editTextKeys : MutableLiveData<Int> = MutableLiveData<Int>()
+    val computeEnabled : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
 
 }

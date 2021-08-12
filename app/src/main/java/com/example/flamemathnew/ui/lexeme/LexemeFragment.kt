@@ -2,13 +2,9 @@ package com.example.flamemathnew.ui.lexeme
 
 
 import Lexemes.ErrorHandler
-import Lexemes.Log
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.util.Log.d
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.flamemathnew.databinding.FragmentLexemeBinding
 import com.example.flamemathnew.ui.support.Support.Companion.computeLexemes
-
-import java.util.ArrayList
+import java.util.*
 
 class LexemeFragment : Fragment() {
 
@@ -27,11 +22,10 @@ class LexemeFragment : Fragment() {
 
     private var _binding: FragmentLexemeBinding? = null
     private val binding get() = _binding!!
-    private var N = 1
     private val keys = ArrayList<String?>()
     private val values = ArrayList<String?>()
     private val editTextsKey = ArrayList<EditText>()
-    private val editTextsValue = ArrayList<EditText>()
+    private val editTextsValues = ArrayList<EditText>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +35,20 @@ class LexemeFragment : Fragment() {
         _binding = FragmentLexemeBinding.inflate(inflater, container, false)
 
         lexemeViewModelImpl.editTextLexeme.value = binding.editText.text.toString()
+        lexemeViewModelImpl.editTextVals.value = 0
+        lexemeViewModelImpl.editTextKeys.value = 0
+        lexemeViewModelImpl.editTextValues.value = 0
 
         lexemeViewModelImpl.editTextArgs.observe(viewLifecycleOwner, {
-            val temp: Int? = binding.editTextVar.getText().toString().toIntOrNull()
-            if (temp == null) N = 0
-            else N = temp
+            val temp: Int? = binding.editTextVar.text.toString().toIntOrNull()
+            if (temp == null) lexemeViewModelImpl.editTextValues.value = 0
+            else lexemeViewModelImpl.editTextValues.value = temp
+
+            editTextsKey.clear()
+            editTextsValues.clear()
             binding.keys.removeAllViews()
             binding.values.removeAllViews()
-            for (i in 0 until N) {
+            for (i in 0 until lexemeViewModelImpl.editTextValues.value!!) {
                 val editText = EditText(context)
                 editText.setTextColor(Color.BLACK)
                 editText.hint = "x" + (i + 1)
@@ -60,61 +60,102 @@ class LexemeFragment : Fragment() {
                 editTextValue.setTextColor(Color.BLACK)
                 editTextValue.hint = "0.5"
                 editTextValue.setHintTextColor(Color.GRAY)
-                editTextValue.doOnTextChanged { text, start, before, count ->
-                    Log.d("CHANGED_AAA_A", "Change : $i")
-                }
-
 
                 binding.values.addView(editTextValue)
-                editTextsValue.add(editTextValue)
+                editTextsValues.add(editTextValue)
             }
-            if (N > 0) binding.btnCompute.isEnabled = true
+
+            lexemeViewModelImpl.editTextValues.value = editTextsValues.size
+
+            for (i in editTextsValues.indices) {
+                editTextsValues[i].doOnTextChanged { _, _, _, _ ->
+
+                    if (editTextsValues[i].text.toString().isNotEmpty()) {
+                        lexemeViewModelImpl.editTextVals.value =
+                            lexemeViewModelImpl.editTextVals.value!! + 1
+                    } else {
+                        lexemeViewModelImpl.editTextVals.value =
+                            lexemeViewModelImpl.editTextVals.value!! - 1
+                    }
+
+                    lexemeViewModelImpl.computeEnabled.value = (lexemeViewModelImpl.editTextKeys.value == editTextsKey.size
+                            && lexemeViewModelImpl.editTextVals.value == editTextsValues.size
+                            && lexemeViewModelImpl.editTextLexeme.value!!!="")
+                }
+
+                editTextsKey[i].doOnTextChanged { _, _, _, _ ->
+                     if (editTextsKey[i].text.toString().isNotEmpty()) {
+                        lexemeViewModelImpl.editTextKeys.value =
+                            lexemeViewModelImpl.editTextKeys.value!! + 1
+                    } else {
+                        lexemeViewModelImpl.editTextKeys.value =
+                            lexemeViewModelImpl.editTextKeys.value!! - 1
+                    }
+
+                    lexemeViewModelImpl.computeEnabled.value = (lexemeViewModelImpl.editTextKeys.value == editTextsKey.size
+                            && lexemeViewModelImpl.editTextVals.value == editTextsValues.size
+                            && lexemeViewModelImpl.editTextLexeme.value!!!="")
+                }
+            }
+
+
+            lexemeViewModelImpl.editTextVals.observe(viewLifecycleOwner, {
+                Log.d("CHANGE_N", "Change :::::::::::! ${lexemeViewModelImpl.editTextVals.value}")
+
+            })
+
+            lexemeViewModelImpl.editTextKeys.observe(viewLifecycleOwner, {
+                Log.d("CHANGE_N", "Change :::::::::::! ${lexemeViewModelImpl.editTextKeys.value}")
+            })
+
+            lexemeViewModelImpl.computeEnabled.observe(viewLifecycleOwner, {
+                binding.btnCompute.isEnabled = lexemeViewModelImpl.computeEnabled.value!!
+            })
         })
 
-        //        info.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (aboutImage.getVisibility() == View.GONE)
-//                    aboutImage.setVisibility(View.VISIBLE);
-//                else aboutImage.setVisibility(View.GONE);
-//            }
-//        });
+        binding.editText.doOnTextChanged { _, _, _, _ ->
+            lexemeViewModelImpl.editTextLexeme.value = binding.editText.text.toString()
 
-        binding.editText.doOnTextChanged { text, start, before, count ->
-            lexemeViewModelImpl.editTextLexeme.value = binding.editText.toString()
+            lexemeViewModelImpl.computeEnabled.value = (lexemeViewModelImpl.editTextKeys.value == editTextsKey.size
+                    && lexemeViewModelImpl.editTextVals.value == editTextsValues.size
+                    && lexemeViewModelImpl.editTextLexeme.value!!!="")
         }
 
-        binding.editTextVar.doOnTextChanged { text, start, before, count ->
-            lexemeViewModelImpl.editTextArgs.value = binding.editTextVar.toString()
+        binding.editTextVar.doOnTextChanged { _, _, _, _ ->
+            lexemeViewModelImpl.editTextArgs.value = binding.editTextVar.text.toString()
+            if(binding.editTextVar.text.toString() == "") binding.btnCompute.isEnabled = false
+            lexemeViewModelImpl.editTextKeys.value = 0
+            lexemeViewModelImpl.editTextVals.value = 0
+            lexemeViewModelImpl.computeEnabled.value = false
         }
 
-        binding.btnCompute.setEnabled(false)
 
-
-        binding.btnCompute.setOnClickListener { v: View? ->
-            for (i in 0 until N) {
-                keys.add(editTextsKey[i].text.toString())
-                values.add(editTextsValue[i].text.toString())
+        binding.btnCompute.setOnClickListener {
+            if (binding.btnCompute.isEnabled) {
+                for (i in 0 until lexemeViewModelImpl.editTextValues.value!!) {
+                    keys.add(editTextsKey[i].text.toString())
+                    values.add(editTextsValues[i].text.toString())
+                }
+                val temp = computeLexemes(binding.editText, keys, values)
+                binding.result.text = temp
+                binding.floatingRestart.visibility = View.VISIBLE
             }
-            val temp = computeLexemes(binding.editText, keys, values)
-            binding.result.text = temp
-            binding.floatingRestart.visibility = View.VISIBLE
         }
 
-        binding.floatingRestart.setOnClickListener(View.OnClickListener { // step++;
-            binding.result.setText("")
+        binding.floatingRestart.setOnClickListener { // step++;
+            binding.result.text = ""
             binding.editText.setText("")
             binding.editTextVar.setText("")
             binding.keys.removeAllViews()
             binding.values.removeAllViews()
             editTextsKey.clear()
-            editTextsValue.clear()
+            editTextsValues.clear()
             keys.clear()
             values.clear()
             ErrorHandler.set_default()
-            binding.floatingRestart.setVisibility(View.GONE)
+            binding.floatingRestart.visibility = View.GONE
             binding.btnCompute.isEnabled = false
-         })
+        }
 
 
         return binding.root
@@ -125,40 +166,5 @@ class LexemeFragment : Fragment() {
         _binding = null
     }
 
-    fun redText(error_begin: Int, error_end: Int) {
-        val full = binding.editText.text.toString()
-        binding.editText.setText("")
-        val word0: Spannable
-        println("Error begin : $error_begin error end : $error_end")
-        if (error_begin != 0) {
-            word0 = SpannableString(full.substring(0, error_begin))
-            word0.setSpan(
-                ForegroundColorSpan(Color.BLACK),
-                0,
-                word0.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        } else word0 = SpannableString("")
-        println("Word 0 : $word0")
-        binding.editText.setText(word0)
-        val word: Spannable = SpannableString(full.substring(error_begin, error_end + 1))
-        word.setSpan(
-            ForegroundColorSpan(Color.RED),
-            0,
-            word.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        println("Word1: $word")
-        binding.editText.append(word)
-        val wordTwo: Spannable = SpannableString(full.substring(error_end + 1, full.length))
-        println("Error end: " + error_end + " len " + full.length)
-        println("Word2 : $wordTwo")
-        wordTwo.setSpan(
-            ForegroundColorSpan(Color.BLACK),
-            0,
-            wordTwo.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        binding.editText.append(wordTwo)
-    }
+
 }

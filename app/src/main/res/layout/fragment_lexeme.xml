@@ -114,6 +114,7 @@
                 android:layout_marginBottom="444dp"
                 android:elevation="10sp"
                 android:text="COMPUTE"
+                android:enabled="false"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
