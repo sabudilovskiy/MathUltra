@@ -26,7 +26,7 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_nav_home_to_lexemeFragment"
-            app:destination="@id/lexemeFragment"
+            app:destination="@id/nav_lexeme"
             app:enterAnim="@anim/slide_enter_anim"
             app:exitAnim="@anim/slide_exit_anim"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -58,7 +58,7 @@
         android:label="@string/about"
         tools:layout="@layout/fragment_about" />
     <fragment
-        android:id="@+id/lexemeFragment"
+        android:id="@+id/nav_lexeme"
         android:name="com.example.flamemathnew.ui.lexeme.LexemeFragment"
         android:label="fragment_lexeme"
         tools:layout="@layout/fragment_lexeme" />
