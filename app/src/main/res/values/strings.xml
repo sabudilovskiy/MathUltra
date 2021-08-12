@@ -24,4 +24,6 @@
     <string name="disrc_math_description">Скнф, сднф, полином жегалкина</string>
     <string name="history">История запросов</string>
     <string name="history_description">Повтори прорешанное</string>
+    <string name="lexeme">Значение функции в точках</string>
+    <string name="lexeme_description">Посчитать значение в одной или нескольких точках</string>
 </resources>
