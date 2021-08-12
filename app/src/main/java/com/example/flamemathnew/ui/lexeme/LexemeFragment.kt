@@ -4,7 +4,6 @@ package com.example.flamemathnew.ui.lexeme
 import Lexemes.ErrorHandler
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,16 +97,6 @@ class LexemeFragment : Fragment() {
                 }
             }
 
-
-            lexemeViewModelImpl.editTextVals.observe(viewLifecycleOwner, {
-                Log.d("CHANGE_N", "Change :::::::::::! ${lexemeViewModelImpl.editTextVals.value}")
-
-            })
-
-            lexemeViewModelImpl.editTextKeys.observe(viewLifecycleOwner, {
-                Log.d("CHANGE_N", "Change :::::::::::! ${lexemeViewModelImpl.editTextKeys.value}")
-            })
-
             lexemeViewModelImpl.computeEnabled.observe(viewLifecycleOwner, {
                 binding.btnCompute.isEnabled = lexemeViewModelImpl.computeEnabled.value!!
             })
@@ -142,7 +131,7 @@ class LexemeFragment : Fragment() {
             }
         }
 
-        binding.floatingRestart.setOnClickListener { // step++;
+        binding.floatingRestart.setOnClickListener {
             binding.result.text = ""
             binding.editText.setText("")
             binding.editTextVar.setText("")
