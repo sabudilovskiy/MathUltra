@@ -69,10 +69,10 @@ class LexemeFragment : Fragment() {
             for (i in editTextsValues.indices) {
                 editTextsValues[i].doOnTextChanged { _, _, _, _ ->
 
-                    if (editTextsValues[i].text.toString().isNotEmpty()) {
+                    if (editTextsValues[i].text.toString().isNotEmpty() && lexemeViewModelImpl.editTextVals.value != editTextsValues.size) {
                         lexemeViewModelImpl.editTextVals.value =
                             lexemeViewModelImpl.editTextVals.value!! + 1
-                    } else {
+                    } else if(editTextsKey[i].text.toString().isEmpty()) {
                         lexemeViewModelImpl.editTextVals.value =
                             lexemeViewModelImpl.editTextVals.value!! - 1
                     }
@@ -83,10 +83,10 @@ class LexemeFragment : Fragment() {
                 }
 
                 editTextsKey[i].doOnTextChanged { _, _, _, _ ->
-                     if (editTextsKey[i].text.toString().isNotEmpty()) {
+                     if (editTextsKey[i].text.toString().isNotEmpty() && lexemeViewModelImpl.editTextKeys.value != editTextsKey.size) {
                         lexemeViewModelImpl.editTextKeys.value =
                             lexemeViewModelImpl.editTextKeys.value!! + 1
-                    } else {
+                    } else if(editTextsKey[i].text.toString().isEmpty()){
                         lexemeViewModelImpl.editTextKeys.value =
                             lexemeViewModelImpl.editTextKeys.value!! - 1
                     }
@@ -104,19 +104,20 @@ class LexemeFragment : Fragment() {
 
         binding.editText.doOnTextChanged { _, _, _, _ ->
             lexemeViewModelImpl.editTextLexeme.value = binding.editText.text.toString()
-
-            lexemeViewModelImpl.computeEnabled.value = (lexemeViewModelImpl.editTextKeys.value == editTextsKey.size
+            lexemeViewModelImpl.computeEnabled.value = (lexemeViewModelImpl.editTextKeys.value!=0 && lexemeViewModelImpl.editTextKeys.value == editTextsKey.size
                     && lexemeViewModelImpl.editTextVals.value == editTextsValues.size
                     && lexemeViewModelImpl.editTextLexeme.value!!!="")
         }
 
         binding.editTextVar.doOnTextChanged { _, _, _, _ ->
             lexemeViewModelImpl.editTextArgs.value = binding.editTextVar.text.toString()
-            if(binding.editTextVar.text.toString() == "") binding.btnCompute.isEnabled = false
-            lexemeViewModelImpl.editTextKeys.value = 0
-            lexemeViewModelImpl.editTextVals.value = 0
-            lexemeViewModelImpl.computeEnabled.value = false
-        }
+            if(binding.editTextVar.text.toString() == "") {
+                lexemeViewModelImpl.computeEnabled.value = false
+            }
+
+//            lexemeViewModelImpl.editTextKeys.value = 0
+//            lexemeViewModelImpl.editTextVals.value = 0
+         }
 
 
         binding.btnCompute.setOnClickListener {
@@ -144,6 +145,11 @@ class LexemeFragment : Fragment() {
             ErrorHandler.set_default()
             binding.floatingRestart.visibility = View.GONE
             binding.btnCompute.isEnabled = false
+            lexemeViewModelImpl.editTextLexeme.value = ""
+            lexemeViewModelImpl.editTextVals.value = 0
+            lexemeViewModelImpl.editTextKeys.value = 0
+            lexemeViewModelImpl.editTextValues.value = 0
+            lexemeViewModelImpl.computeEnabled.value = false
         }
 
 
