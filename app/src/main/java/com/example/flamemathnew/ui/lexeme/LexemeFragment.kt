@@ -69,7 +69,7 @@ class LexemeFragment : Fragment() {
             for (i in editTextsValues.indices) {
                 editTextsValues[i].doOnTextChanged { _, _, _, _ ->
 
-                    if (editTextsValues[i].text.toString().isNotEmpty() && lexemeViewModelImpl.editTextVals.value != editTextsValues.size) {
+                    if (editTextsValues[i].text.toString().length == 1 && lexemeViewModelImpl.editTextVals.value != editTextsValues.size) {
                         lexemeViewModelImpl.editTextVals.value =
                             lexemeViewModelImpl.editTextVals.value!! + 1
                     } else if(editTextsKey[i].text.toString().isEmpty()) {
@@ -83,7 +83,8 @@ class LexemeFragment : Fragment() {
                 }
 
                 editTextsKey[i].doOnTextChanged { _, _, _, _ ->
-                     if (editTextsKey[i].text.toString().isNotEmpty() && lexemeViewModelImpl.editTextKeys.value != editTextsKey.size) {
+                     if (editTextsKey[i].text.toString().length == 1 &&
+                         lexemeViewModelImpl.editTextKeys.value != editTextsKey.size) {
                         lexemeViewModelImpl.editTextKeys.value =
                             lexemeViewModelImpl.editTextKeys.value!! + 1
                     } else if(editTextsKey[i].text.toString().isEmpty()){
