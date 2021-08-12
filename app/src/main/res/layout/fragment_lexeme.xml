@@ -68,17 +68,15 @@
 
             <EditText
                 android:id="@+id/editTextVar"
-                android:layout_width="310dp"
-                android:layout_height="45dp"
+                android:layout_width="377dp"
+                android:layout_height="50dp"
                 android:hint="Введите число аргументов"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_compute"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayoutCompat3"
-                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.529"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText"
-                app:layout_constraintVertical_bias="0.08" />
+                app:layout_constraintTop_toBottomOf="@+id/editText" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/linearLayout"
@@ -113,8 +111,8 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="444dp"
                 android:elevation="10sp"
-                android:text="COMPUTE"
                 android:enabled="false"
+                android:text="COMPUTE"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
@@ -144,7 +142,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText">
+                app:layout_constraintStart_toEndOf="@+id/btn_compute"
+                app:layout_constraintTop_toBottomOf="@+id/editTextVar">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/floatingRestart"
