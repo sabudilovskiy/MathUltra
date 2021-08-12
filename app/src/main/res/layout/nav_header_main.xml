@@ -3,22 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
-    android:background="#FFE399"
+    android:background="#FFFFFF"
     android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="8dp"
-    android:paddingTop="8dp"
     android:paddingRight="8dp"
-    android:paddingBottom="8dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
         android:contentDescription="@string/nav_header_desc"
-        app:srcCompat="@drawable/icon_flame" />
+        app:srcCompat="@drawable/mathultra" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +25,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="center"
-        android:text="@string/flamemath"
+        android:text="@string/mathultra"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView

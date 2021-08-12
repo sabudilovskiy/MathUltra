@@ -7,20 +7,20 @@
 
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/icon_flame"
+            android:icon="@drawable/mathultra"
             android:title="@string/menu_home" />
 
         <item
             android:id="@+id/nav_algebra"
-            android:icon="@drawable/icon_flame"
+            android:icon="@drawable/mathultra"
             android:title="@string/algebra" />
         <item
             android:id="@+id/nav_discrete"
-            android:icon="@drawable/icon_flame"
+            android:icon="@drawable/mathultra"
             android:title="@string/discrete_mathematics" />
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/icon_flame"
+            android:icon="@drawable/mathultra"
             android:title="@string/about" />
     </group>
 </menu>

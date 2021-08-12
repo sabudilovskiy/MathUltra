@@ -13,9 +13,15 @@
     <string name="algebra">Algebra</string>
     <string name="discrete_mathematics">Discrete Mathematics</string>
     <string name="about">About</string>
-    <string name="flamemath">FlameMath</string>
+    <string name="mathultra">MathUltra</string>
     <string name="for_students_by_students">For students by students</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="flame_math_description">FlameMath поможет студентус решением любой задачи высшей математики! Особенностью приложения являет то, что оно предоставит вам полный ход решения, необходимый для понимая задачи</string>
+    <string name="flame_math_description">MathUltra поможет студенту с решением любой задачи высшей математики! Особенностью приложения являет то, что оно предоставит вам полный ход решения, необходимый для понимая задачи</string>
+    <string name="linal">Линейная Алгебра</string>
+    <string name="linal_description">Матрицы, определители, слау, жордановы формы</string>
+    <string name="discr_math">Дискретная Математика</string>
+    <string name="disrc_math_description">Скнф, сднф, полином жегалкина</string>
+    <string name="history">История запросов</string>
+    <string name="history_description">Повтори прорешанное</string>
 </resources>
