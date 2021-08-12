@@ -13,7 +13,7 @@ class Support {
 
     companion object {
         private val RED_TEXT_TAG = "RED_TEXT_TAG"
-    }
+
 
     fun computeLexemes(
         editText: EditText,
@@ -109,5 +109,6 @@ class Support {
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         editText.append(wordTwo)
+    }
     }
 }

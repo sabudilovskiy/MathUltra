@@ -42,8 +42,8 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="120dp"
                 android:gravity="center"
-                android:textColor="@android:color/black"
                 android:text="Введите выражение:"
+                android:textColor="@android:color/black"
                 android:textSize="25sp"
                 app:layout_collapseMode="parallax"
                 app:layout_constraintBottom_toTopOf="@+id/btn_compute"
@@ -142,24 +142,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_compute"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.512"
-                app:layout_constraintStart_toEndOf="@+id/btn_compute"
-                app:layout_constraintTop_toBottomOf="@+id/editText"
-                app:layout_constraintVertical_bias="1.0">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/buttonEnter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="1dp"
-                    android:elevation="10sp"
-                    android:src="@android:drawable/ic_menu_send"
-                    app:layout_constraintBottom_toBottomOf="@+id/editTextVar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/editTextVar"
-                    app:layout_constraintTop_toBottomOf="@+id/editText" />
+                app:layout_constraintTop_toBottomOf="@+id/editText">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/floatingRestart"
