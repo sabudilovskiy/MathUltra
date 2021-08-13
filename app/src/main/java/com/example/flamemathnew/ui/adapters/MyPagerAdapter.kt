@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.flamemathnew.ui.algebra.PracticeAlgebraFragment
+import com.example.flamemathnew.ui.algebra.TheoryAlgebraFragment
 
 class MyPagerAdapter(private val context: Context, manager: FragmentManager?, val key : String)
     : FragmentPagerAdapter(manager!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -25,10 +26,8 @@ class MyPagerAdapter(private val context: Context, manager: FragmentManager?, va
         }
 
         when(key){
-            "Linal"->{
-                if(type == "Практика"){
-                    return PracticeAlgebraFragment()
-                }
+            "linal"->{
+                return if(type == "Практика") return PracticeAlgebraFragment() else return TheoryAlgebraFragment()
             }
         }
         return ActionFragment.newInstance(type)
