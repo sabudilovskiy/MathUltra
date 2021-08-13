@@ -14,6 +14,9 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.navigation.fragment.findNavController
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentPracticeAlgebraBinding
+import com.example.flamemathnew.ui.support.Support.Companion.computeDeterminant
+import com.example.flamemathnew.ui.support.Support.Companion.computeInversion
+import com.example.flamemathnew.ui.support.Support.Companion.computeRank
 
 
 fun getOnItemSelectListener(action: (item: String) -> Unit): AdapterView.OnItemSelectedListener {
@@ -222,92 +225,16 @@ class PracticeAlgebraFragment : Fragment() {
         binding.compute.setOnClickListener {
             when(TYPE){
                 "Определитель" -> {
-                    val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-                    var m = 0
-                    for (i in 0 until N) {
-                        val row: ArrayList<String?> = ArrayList<String?>(M)
-                        for (j in 0 until M) {
-                            row.add(listMatr[m].text.toString())
-                            m++
-                        }
-                        list.add(row)
-                    }
-                    var answer: String
-                    var log = ""
-                    try {
-                        answer =
-                            "Ответ: " + MRV.count_determinant(list, TYPE_COMPUTE, numbersType) + "\n"
-                        log = MRV.get_log_as_str()
-                    } catch (matrix_fail: MRV.MATRIX_FAIL) {
-                        answer = "Матрица пуста"
-                    } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
-                        answer =
-                            "Матрица не является квадратной. Вычислить определитель невозможно."
-                    } catch (field_error: MRV.FIELD_ERROR) {
-                        answer =
-                            "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-                    }
-                    //TODO("Вывод необходимо переделать")
-                    binding.log.text = answer + log
+                    binding.log.text = computeDeterminant(listMatr, TYPE_COMPUTE, numbersType, N, M)
                 }
                 "Обратная" -> {
-                    val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-                    var m = 0
-                    for (i in 0..N - 1) {
-                        val row: ArrayList<String?> = ArrayList(M)
-                        for (j in 0..M - 1) {
-                            row.add(listMatr[m].text.toString())
-                            m++
-                        }
-                        list.add(row)
-                    }
-                    var answer: String
-                    var log = ""
-                    try {
-                        answer = "Ответ: " + MRV.find_inverse_matrix(list, TYPE_COMPUTE, numbersType) + "\n"
-                        log = MRV.get_log_as_str()
-                    } catch (matrix_fail: MRV.MATRIX_FAIL) {
-                        answer = "Матрица пуста"
-                    } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
-                        answer = "Матрица не является квадратной. Вычислить обратную невозможно."
-                    } catch (field_error: MRV.FIELD_ERROR) {
-                        answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-                    } catch (degenerate_matrix: MRV.DEGENERATE_MATRIX) {
-                        answer = "Матрица является вырожденной. Нахождение обратной невозможно."
-                    }
-                    //TODO("Вывод необходимо переделать")
-                    binding.log.text = answer + log
+                    binding.log.text = computeInversion(listMatr, TYPE_COMPUTE, numbersType, N, M)
                 }
                 "Ранг" -> {
-                    val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-                    var m = 0
-                    for (i in 0 until N) {
-                        val row: ArrayList<String?> = ArrayList<String?>(M)
-                        for (j in 0 until M) {
-                            row.add(listMatr[m].text.toString())
-                            m++
-                        }
-                        list.add(row)
-                    }
-                    var answer: String
-                    var log = ""
-                    try {
-                        answer = "Ответ: " + MRV.count_rank(list, TYPE_COMPUTE, numbersType) + "\n"
-                        log = MRV.get_log_as_str()
-                    } catch (matrix_fail: MRV.MATRIX_FAIL) {
-                        answer = "Матрица пуста"
-                    } catch (field_error: MRV.FIELD_ERROR) {
-                        answer =
-                            "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-                    }
-                    //TODO("Вывод необходимо переделать")
-                    binding.log.text = answer + log
+                    binding.log.text = computeRank(listMatr, TYPE_COMPUTE, numbersType, N, M)
                 }
             }
         }
-
-
-
 
 
 //        val navController = findNavController()
