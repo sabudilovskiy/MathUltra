@@ -14,9 +14,9 @@ import MathObject.MathObject.MathObject
 import Number.createNumber
 import Parameters.SLE
 import Point.Point
-import com.example.flamemathnew.mid.Settings.matrix.SLE.getSettings
 import Support.createRectangleArrayList
 import Support.createSingleArrayList
+import com.example.flamemathnew.mid.Settings
 
 class AugmentedMatrix : Matrix {
     protected var augmented_n = 0
@@ -162,7 +162,7 @@ class AugmentedMatrix : Matrix {
     fun solve_system():MathObject {
         return if (augmented_n == 1) {
             val copy : AugmentedMatrix = AugmentedMatrix(arr, augmented_arr)
-            if (m == n && getSettings() === SLE.KRAMER_RULE) {
+            if (m == n && Settings.matrix.SLE.method === SLE.KRAMER_RULE) {
                 TODO("")
             } else {
                 add("", "Решим систему методом Гаусса")

@@ -47,25 +47,19 @@ object Settings {
             }
         }
         object Rank {
-            private var method = Parameters.Rank.ELEMENTAL_ROW
+            internal var method = Parameters.Rank.ELEMENTAL_ROW
             fun setmethod(key: String) {
                 method = createRankMethod(key)
             }
-            fun getSettings(): Parameters.Rank {
-                return method
-            }
         }
         object Inverse{
-            private var method = Parameters.Inverse.GAUSS
-            fun getSettings() : Parameters.Inverse{
-                return method
-            }
+            internal var method = Parameters.Inverse.GAUSS
             fun setmethod(key: String){
                 method = createInverseMethod(key)
             }
         }
         object SLE {
-            private var method = Parameters.SLE.GAUSS
+            internal var method = Parameters.SLE.GAUSS
             fun setmethod(key: String) {
                 method = createSLEMethod(key)
             }
