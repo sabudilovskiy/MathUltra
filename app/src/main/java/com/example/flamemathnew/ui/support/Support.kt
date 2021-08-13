@@ -1,6 +1,7 @@
 package com.example.flamemathnew.ui.support
 
-import MRV.MRV
+
+import MRV.Computer
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -24,48 +25,48 @@ class Support {
             var temp = ""
             try {
                 temp = """Result """.trimIndent() + java.lang.String.valueOf(
-                    MRV.count_lexemes(
+                    Computer.count_lexemes(
                         editText.text.toString(), keys, values
                     )
                 )
-            } catch (error: MRV.ARGUMENT_LIST_MISMATCH) {
+            } catch (error: Computer.ARGUMENT_LIST_MISMATCH) {
                 temp = "Списки аргументов не соответствуют."
-            } catch (error: MRV.UNKNOWN_FUNCTION) {
+            } catch (error: Computer.UNKNOWN_FUNCTION) {
                 temp = "Неизвестная функция "
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.ERROR_SIGNS) {
+            } catch (error: Computer.ERROR_SIGNS) {
                 temp =
                     "Какое-то из чисел записано с ошибкой: слишком много точек." + "Место ошибки: " + Integer.toString(
                         error.error_begin
                     )
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.IMPOSSIBLE_COUNT) {
+            } catch (error: Computer.IMPOSSIBLE_COUNT) {
                 temp = "Функцию в заданной точке невозможно вычислить."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.MISS_ARGUMENT_BINARY_OPERATOR) {
+            } catch (error: Computer.MISS_ARGUMENT_BINARY_OPERATOR) {
                 temp = "У какого-то из бинарных операторов отсутствует аргумент."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.MISS_ARGUMENT_PRE_OPERATOR) {
+            } catch (error: Computer.MISS_ARGUMENT_PRE_OPERATOR) {
                 temp = "У какого-то из преоператоров отсутствует аргумент."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.MISS_ARGUMENT_POST_OPERATOR) {
+            } catch (error: Computer.MISS_ARGUMENT_POST_OPERATOR) {
                 temp =
                     "У какого-то из постоператоров отсутствует аргумент." + "Ошибка от: " + error.error_begin + " до: " + error.error_end
-            } catch (error: MRV.HAVE_OPEN_BRACKETS) {
+            } catch (error: Computer.HAVE_OPEN_BRACKETS) {
                 temp = "Есть незакрытая скобка."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.MORE_RIGHT_BRACKETS) {
+            } catch (error: Computer.MORE_RIGHT_BRACKETS) {
                 temp = "Закрыто больше скобок, чем открыто."
-            } catch (error: MRV.BAD_ARGUMENTS) {
+            } catch (error: Computer.BAD_ARGUMENTS) {
                 temp = "У какого-то операторов недостаточно или слишком много аргументов."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: MRV.UNKNOWN_ERROR) {
+            } catch (error: Computer.UNKNOWN_ERROR) {
                 temp = "Неизвестная ошибка."
-            } catch (error: MRV.Input_Input_Lexemes_Exception) {
+            } catch (error: Computer.Input_Input_Lexemes_Exception) {
                 temp = "Функция не введена"
-            } catch (error: MRV.Input_Keys_Lexemes_Exception) {
+            } catch (error: Computer.Input_Keys_Lexemes_Exception) {
                 temp = "Ключ переменной №" + (error.number_key + 1) + " не введён"
-            } catch (error: MRV.Input_Values_Lexemes_Exception) {
+            } catch (error: Computer.Input_Values_Lexemes_Exception) {
                 temp =
                     "В вводе значения переменной №" + (error.number_value + 1) + " допущена ошибка"
             }
@@ -98,19 +99,19 @@ class Support {
             var answer: String
             var log = ""
             try {
-                answer = "Ответ: " + MRV.find_inverse_matrix(
+                answer = "Ответ: " + Computer.find_inverse_matrix(
                     list,
                     TYPE_COMPUTE,
                     numbersType
                 ) + "\n"
-                log = MRV.get_log_as_str()
-            } catch (matrix_fail: MRV.MATRIX_FAIL) {
+                log = Computer.get_log_as_str()
+            } catch (matrix_fail: Computer.MATRIX_FAIL) {
                 answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
+            } catch (non_quadratic_matrix: Computer.NON_QUADRATIC_MATRIX) {
                 answer = "Матрица не является квадратной. Вычислить обратную невозможно."
-            } catch (field_error: MRV.FIELD_ERROR) {
+            } catch (field_error: Computer.FIELD_ERROR) {
                 answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-            } catch (degenerate_matrix: MRV.DEGENERATE_MATRIX) {
+            } catch (degenerate_matrix: Computer.DEGENERATE_MATRIX) {
                 answer = "Матрица является вырожденной. Нахождение обратной невозможно."
             }
             //TODO("Вывод необходимо переделать")
@@ -130,18 +131,18 @@ class Support {
             var log = ""
             try {
                 answer =
-                    "Ответ: " + MRV.count_determinant(
+                    "Ответ: " + Computer.count_determinant(
                         list,
                         TYPE_COMPUTE,
                         numbersType
                     ) + "\n"
-                log = MRV.get_log_as_str()
-            } catch (matrix_fail: MRV.MATRIX_FAIL) {
+                log = Computer.get_log_as_str()
+            } catch (matrix_fail: Computer.MATRIX_FAIL) {
                 answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
+            } catch (non_quadratic_matrix: Computer.NON_QUADRATIC_MATRIX) {
                 answer =
                     "Матрица не является квадратной. Вычислить определитель невозможно."
-            } catch (field_error: MRV.FIELD_ERROR) {
+            } catch (field_error: Computer.FIELD_ERROR) {
                 answer =
                     "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
             }
@@ -160,15 +161,15 @@ class Support {
             var answer: String
             var log = ""
             try {
-                answer = "Ответ: " + MRV.count_rank(list,
+                answer = "Ответ: " + Computer.count_rank(list,
                     TYPE_COMPUTE,
                     numbersType
                 ) + "\n"
 
-                log = MRV.get_log_as_str()
-            } catch (matrix_fail: MRV.MATRIX_FAIL) {
+                log = Computer.get_log_as_str()
+            } catch (matrix_fail: Computer.MATRIX_FAIL) {
                 answer = "Матрица пуста"
-            } catch (field_error: MRV.FIELD_ERROR) {
+            } catch (field_error: Computer.FIELD_ERROR) {
                 answer =
                     "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
             }
