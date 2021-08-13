@@ -16,9 +16,9 @@ import Parameters.Inverse.*
 import Parameters.Rank
 import com.example.flamemathnew.mid.Settings.matrix
 import com.example.flamemathnew.mid.Settings.matrix.Inverse
-import com.example.flamemathnew.mid.Settings.matrix.Rank.getSettings
 import Support.createRectangleArrayList
 import Support.createSingleArrayList
+import com.example.flamemathnew.mid.Settings
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -59,7 +59,6 @@ open class Matrix : Ring {
         for (i in 0 until n) for (j in 0 until n) if (i == j) arr[i][j] = one
     }
 
-    @Throws(Computer.MATRIX_DIMENSION_MISSMATCH::class)
 
     //прибавляем к a b
     protected open fun summ_strings(a: Int, b: Int, k: Ring) {
@@ -69,15 +68,12 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected open fun is_null_string(a: Int): Boolean {
         if (0 <= a && a < m) {
             for (i in 0 until n) if (!arr[a][i].equals(0.0)) return false
             return true
         } else throw Computer.INVALID_NUMBER_STRING()
     }
-
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun swap_strings(a: Int, b: Int) {
         if (0 <= a && a < m && 0 <= b && b < m) {
             cof_det = cof_det * createNumber(-1.0)
@@ -101,7 +97,6 @@ open class Matrix : Ring {
         }
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun delete_column(a: Int) {
         if (0 <= a && a < n) {
             val zero = createNumber(0.0)
@@ -113,7 +108,6 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun move_string_to_end(a: Int) {
         if (0 <= a && a < m) {
             for (i in a until m - 1) {
@@ -122,7 +116,6 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun find_non_zero_in_column(column: Int, start: Int): Int {
         return if (0 <= column && column < n) {
             for (i in start until m) {
@@ -132,7 +125,6 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected open fun mult_string(a: Int, k: Ring) {
         if (0 <= a && a < m) {
             for (i in 0 until n) arr[a][i] = arr[a][i] * k
@@ -141,7 +133,6 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected open fun div_string(a: Int, k: Ring) {
         if (0 <= a && a < m) {
             for (i in 0 until n) arr[a][i] = arr[a][i] / k
@@ -150,9 +141,7 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     fun gauss_transformation() {
-        val local_m = m
         log_this("Для того, чтобы преобразовать матрицу методом Гаусса необходимо сначала сделать матрицу верхнетреугольной.")
         triangular_transformation()
         log_this("Мы добились того, что под главной диагональю одни нули. Осталось добиться того же над главной диагональю, где это возможно")
@@ -183,7 +172,6 @@ open class Matrix : Ring {
         return true
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     fun triangular_transformation() {
         var local_m = m
         var local_n = n
@@ -217,8 +205,6 @@ open class Matrix : Ring {
             i++
         }
     }
-
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun complement_minor(str: Int, col: Int): Matrix {
         return if (0 <= str && str < m && 0 <= col && col < n) {
             val copy = Matrix(arr)
@@ -228,7 +214,6 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.MATRIX_DIMENSION_MISSMATCH::class)
     protected fun complement_minor(str: IntArray, col: IntArray): Matrix {
         return if (m == n && str.size == col.size) {
             var k = 0
@@ -258,12 +243,9 @@ open class Matrix : Ring {
         } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
     }
 
-    @Throws(Computer.MATRIX_DIMENSION_MISSMATCH::class)
     protected fun minor(str: Array<Int?>, col: Array<Int?>): Matrix {
         return if (str.size == col.size) {
             var k = 0
-            val a = 0
-            val b = 0
             val m_new = str.size
             val zero = createNumber(0.0)
             val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList(zero, m_new, m_new)
@@ -283,7 +265,6 @@ open class Matrix : Ring {
         } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun reduce_null_strings() {
         for (i in m - 1 downTo 0) if (is_null_string(i)) {
             delete_string(i)
@@ -291,7 +272,6 @@ open class Matrix : Ring {
         }
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun count_null_in_string(a: Int): Int {
         return if (0 <= a && a < m) {
             var count = 0
@@ -301,7 +281,6 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun count_null_in_column(a: Int): Int {
         return if (0 <= a && a < m) {
             var count = 0
@@ -312,7 +291,6 @@ open class Matrix : Ring {
     }
 
     //возвращает номер строки, в которой наибольшее количество нулей и их количество
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected fun find_most_null_string(): IntArray {
         val max = IntArray(2)
         for (i in 0 until m) if (count_null_in_string(i) > max[1]) {
@@ -323,7 +301,6 @@ open class Matrix : Ring {
     }
 
     //возвращает номер столбца, в котором наибольшее количество нулей и их количество
-    @Throws(Computer.INVALID_NUMBER_STRING::class)
     protected open fun find_most_null_column(): IntArray {
         val max = IntArray(2)
         for (i in 0 until n) if (count_null_in_column(i) > max[1]) {
@@ -333,7 +310,6 @@ open class Matrix : Ring {
         return max
     }
 
-    @Throws(Computer.INVALID_NUMBER_STRING::class, Computer.NON_QUADRATIC_MATRIX::class)
     protected fun algebraic_complement(a: Int, b: Int): Ring {
         if (0 <= a && a < m && 0 <= b && b < n) {
             add(
@@ -356,11 +332,10 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    @Throws(Computer.NON_QUADRATIC_MATRIX::class, Computer.INVALID_NUMBER_STRING::class)
     public fun determinant(): Ring {
         if (m == n) {
             try {
-                val cur_method: Det = matrix.Det.get_det_method(m);
+                val cur_method: Det = matrix.Det.get_cur_method(m);
                 return when (cur_method) {
                     Det.BASIC -> det_with_basic_rules();
                     Det.LAPLASS -> det_with_laplass();
@@ -373,9 +348,8 @@ open class Matrix : Ring {
         } else throw Computer.NON_QUADRATIC_MATRIX();
     }
 
-    @Throws(NON_QUADRATIC_MATRIX::class, MATRIX_DIMENSION_MISSMATCH::class)
     fun det_with_basic_rules(): Ring {
-        var det = createNumber(0.0)
+        val det: Ring
         return if (m == n) {
             if (m == 1) {
                 log_this("Определитель матрицы из одного элемента равен этому элеменету.")
@@ -393,10 +367,9 @@ open class Matrix : Ring {
         } else throw NON_QUADRATIC_MATRIX()
     }
 
-    @Throws(MATRIX_DIMENSION_MISSMATCH::class)
     fun det_with_saruss_rule(): Ring {
         return if (m == n && m == 3) {
-            var det =
+            var det: Ring =
                 arr[0][0] * arr[1][1] * arr[2][2] + arr[0][1] * arr[1][2] * arr[2][0] + arr[0][2] * arr[1][0] * arr[2][1]
             det =
                 det - arr[2][0] * arr[1][1] * arr[0][2] - arr[1][0] * arr[0][1] * arr[2][2] - arr[0][0] * arr[2][1] * arr[1][2]
@@ -414,7 +387,6 @@ open class Matrix : Ring {
         } else throw MATRIX_DIMENSION_MISSMATCH()
     }
 
-    @Throws(INVALID_NUMBER_STRING::class)
     fun det_with_triangle(): Ring {
         val copy = Matrix(arr)
         copy.triangular_transformation()
@@ -437,7 +409,6 @@ open class Matrix : Ring {
         return det
     }
 
-    @Throws(INVALID_NUMBER_STRING::class, NON_QUADRATIC_MATRIX::class)
     fun det_with_laplass(): Ring {
         if (m>1){
             val str = find_most_null_string()
@@ -532,7 +503,6 @@ open class Matrix : Ring {
         }
     }
 
-    @Throws(INVALID_NUMBER_STRING::class)
     fun rank_with_triangle(): Int {
         val copy = Matrix(arr)
         copy.triangular_transformation()
@@ -544,7 +514,6 @@ open class Matrix : Ring {
         return count
     }
 
-    @Throws(MATRIX_DIMENSION_MISSMATCH::class)
     fun rank_with_minors(): Int {
         log_this("Для нахождения ранга методом окламляющих миноров необходимо найти ненулевой элемент.")
         var a = 0
@@ -613,7 +582,7 @@ open class Matrix : Ring {
             return cur_minor.m
         }
         else{
-            Log.add("", "Так как в матрице нет ненулевых элементов, то ранк равен 0.")
+            add("", "Так как в матрице нет ненулевых элементов, то ранк равен 0.")
             return 0
         }
     }
@@ -628,21 +597,14 @@ open class Matrix : Ring {
         m = temp
     }
 
-    @Throws(INVALID_NUMBER_STRING::class)
     open fun rank(): Int {
-        return if (getSettings() === Rank.ELEMENTAL_ROW) {
+        return if (Settings.matrix.Rank.method === Rank.ELEMENTAL_ROW) {
             rank_with_triangle()
         } else 0
     }
 
-    @Throws(
-        MATRIX_DIMENSION_MISSMATCH::class,
-        INVALID_NUMBER_STRING::class,
-        DEGENERATE_MATRIX::class,
-        NON_QUADRATIC_MATRIX::class
-    )
     fun getInverse() : Matrix {
-        if (Inverse.getSettings() == GAUSS ){
+        if (Settings.matrix.Inverse.method == GAUSS ){
             return get_inverse_gauss()
         }
         else{
@@ -740,7 +702,7 @@ open class Matrix : Ring {
         else if (right is Matrix){
             val left: Matrix = this
             if (left.n == right.m && right.m == right.n) {
-                Log.add("", " чтобы разделить матрицу на матрицу, надо умножить левую матрицу на противоположную правой")
+                add("", " чтобы разделить матрицу на матрицу, надо умножить левую матрицу на противоположную правой")
                 val real_right = right.getInverse()
                 return left*real_right
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()

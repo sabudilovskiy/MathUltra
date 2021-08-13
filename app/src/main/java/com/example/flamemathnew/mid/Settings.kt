@@ -1,6 +1,10 @@
 package com.example.flamemathnew.mid
 
 import MRV.Computer
+import Parameters.createDetMethod
+import Parameters.createInverseMethod
+import Parameters.createRankMethod
+import Parameters.createSLEMethod
 
 object Settings {
     object matrix {
@@ -14,17 +18,16 @@ object Settings {
                 thirst = Parameters.Det.SARUSS
                 fourth = Parameters.Det.LAPLASS
             }
-            fun setSettings(_second: Parameters.Det, _thirst: Parameters.Det, _fourth: Parameters.Det, _border: Int) {
-                second = _second
-                thirst = _thirst
-                fourth = _fourth
+            fun setSettings(_second: String, _thirst: String, _fourth: String, _border: Int) {
+                second = createDetMethod(_second)
+                thirst = createDetMethod(_thirst)
+                fourth = createDetMethod(_fourth)
                 border = _border
             }
             fun setBorder(_border: Int) {
                 border = _border
             }
-            @Throws(Computer.MATRIX_DIMENSION_MISSMATCH::class)
-            fun get_det_method(n: Int): Parameters.Det {
+            fun get_cur_method(n: Int): Parameters.Det {
                 if (n > 0) {
                     if (n >= border) return Parameters.Det.TRIANGLE
                     else {
@@ -44,31 +47,21 @@ object Settings {
             }
         }
         object Rank {
-            private var Settings = Parameters.Rank.ELEMENTAL_ROW
-            fun setSettings(_settings: Parameters.Rank) {
-                Settings = _settings
-            }
-            fun getSettings(): Parameters.Rank {
-                return Settings
+            internal var method = Parameters.Rank.ELEMENTAL_ROW
+            fun setmethod(key: String) {
+                method = createRankMethod(key)
             }
         }
         object Inverse{
-            private var Settings = Parameters.Inverse.GAUSS
-            fun getSettings() : Parameters.Inverse{
-                return Settings
-            }
-            fun setSettings(_settings: Parameters.Inverse){
-                Settings = _settings
+            internal var method = Parameters.Inverse.GAUSS
+            fun setmethod(key: String){
+                method = createInverseMethod(key)
             }
         }
         object SLE {
-            private var Settings = Parameters.SLE.GAUSS
-            fun getSettings(): Parameters.SLE {
-                return Settings
-            }
-
-            fun setSettings(settings: Parameters.SLE) {
-                Settings = settings
+            internal var method = Parameters.SLE.GAUSS
+            fun setmethod(key: String) {
+                method = createSLEMethod(key)
             }
         }
     }
