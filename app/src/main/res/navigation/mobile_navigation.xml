@@ -40,7 +40,7 @@
             app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
-    <fragment
+    <activity
         android:id="@+id/nav_algebra"
         android:name="com.example.flamemathnew.ui.algebra.AlgebraFragment"
         android:label="@string/algebra"
@@ -49,7 +49,7 @@
             android:name="key"
             app:argType="string"
             android:defaultValue='"linal"' />
-    </fragment>
+    </activity>
 
     <fragment
         android:id="@+id/nav_discrete"

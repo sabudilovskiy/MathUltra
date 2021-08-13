@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navArgs
@@ -15,7 +17,7 @@ import com.example.flamemathnew.databinding.FragmentAlgebraBinding
 import com.example.flamemathnew.ui.adapters.MyPagerAdapter
 import com.google.android.material.tabs.TabLayout
 
-class AlgebraFragment : Fragment() {
+class AlgebraFragment : AppCompatActivity() {
     private lateinit var myPagerAdapter: MyPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
@@ -27,27 +29,15 @@ class AlgebraFragment : Fragment() {
     var key : String = "linal"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        myPagerAdapter =
+            MyPagerAdapter(applicationContext, supportFragmentManager, key)
         super.onCreate(savedInstanceState)
-
         args.let {
             key = it.key
         }
 
         Log.d("NE_PONIMAYU" , "1321ewrw124edq2rer21r3f342t43tt24t24t $key")
-
-        myPagerAdapter =
-            MyPagerAdapter(requireContext(), requireActivity().supportFragmentManager, key)
-
-        Log.d("NE_PONIMAYU" , "!!!!!!!!!!!!!!!! $myPagerAdapter")
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAlgebraBinding.inflate(inflater, container, false)
+        _binding = FragmentAlgebraBinding.inflate(layoutInflater)
 
         tabLayout = binding.tabs
 
@@ -56,12 +46,6 @@ class AlgebraFragment : Fragment() {
         viewPager.setAdapter(myPagerAdapter)
 
         tabLayout.setupWithViewPager(viewPager)
-
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        setContentView(binding.root)
     }
 }
