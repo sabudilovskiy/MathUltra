@@ -360,7 +360,7 @@ open class Matrix : Ring {
     public fun determinant(): Ring {
         if (m == n) {
             try {
-                val cur_method: Det = matrix.Det.get_det_method(m);
+                val cur_method: Det = matrix.Det.get_cur_method(m);
                 return when (cur_method) {
                     Det.BASIC -> det_with_basic_rules();
                     Det.LAPLASS -> det_with_laplass();
