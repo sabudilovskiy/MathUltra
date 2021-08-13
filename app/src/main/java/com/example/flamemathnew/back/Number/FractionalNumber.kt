@@ -82,18 +82,15 @@ class FractionalNumber : Ring {
         if (right is FractionalNumber) return this/right
         else throw Computer.NON_COMPLIANCE_TYPES()
     }
-
     override fun equals(other: Any?): Boolean {
         if (other === null) return false
         else if (other is FractionalNumber) return denominator == other.denominator && numerator == other.numerator
         else if (other is Double) return this == FractionalNumber(other)
         else return false
     }
-
     override fun unaryMinus() : Ring {
         return FractionalNumber(-numerator, denominator)
     }
-
     operator fun div(b : FractionalNumber) : FractionalNumber {
         val left : FractionalNumber = this
         val right : FractionalNumber = b
@@ -126,5 +123,8 @@ class FractionalNumber : Ring {
             if (denominator != 1L) return "  $numerator/$denominator"
             else return " " + numerator + " "
         }
+    }
+    fun toDouble() : Double{
+        return numerator.toDouble()/denominator.toDouble()
     }
 }

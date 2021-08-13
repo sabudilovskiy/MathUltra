@@ -114,14 +114,6 @@ object Computer {
     }
     fun count_determinant(temp_matrix : ArrayList<ArrayList<String?>>, method : String?, number : String?) : String{
         Log.clear()
-        val m : Int = temp_matrix.size
-        if (m<1) throw MATRIX_FAIL()
-        for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
-        val arr = createRectangleArrayList(createNumber(0.0), m, m)
-        for (i in 0 until m)
-            for (j in 0 until m)
-                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
-                else throw FIELD_ERROR(i, j)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
             Settings.numbers.type = Number.DEC
@@ -130,6 +122,14 @@ object Computer {
             Settings.numbers.type = Number.PROPER
         }
         else throw UNKNOWN_NUMBER()
+        val m : Int = temp_matrix.size
+        if (m<1) throw MATRIX_FAIL()
+        for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
+        val arr = createRectangleArrayList(createNumber(0.0), m, m)
+        for (i in 0 until m)
+            for (j in 0 until m)
+                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
+                else throw FIELD_ERROR(i, j)
         val current : Matrix = Matrix(arr)
         val answer : Ring
         if (method == null) throw KEY_METHOD_EMPTY()
@@ -150,14 +150,6 @@ object Computer {
     }
     fun find_inverse_matrix(temp_matrix : ArrayList<ArrayList<String?>>, method : String?, number : String?) : String{
         Log.clear()
-        val m : Int = temp_matrix.size
-        if (m<1) throw MATRIX_FAIL()
-        for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
-        val arr = createRectangleArrayList(createNumber(0.0), m, m)
-        for (i in 0 until m)
-            for (j in 0 until m)
-                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
-                else throw FIELD_ERROR(i, j)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
             Settings.numbers.type = Number.DEC
@@ -166,6 +158,14 @@ object Computer {
             Settings.numbers.type = Number.PROPER
         }
         else throw UNKNOWN_NUMBER()
+        val m : Int = temp_matrix.size
+        if (m<1) throw MATRIX_FAIL()
+        for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
+        val arr = createRectangleArrayList(createNumber(0.0), m, m)
+        for (i in 0 until m)
+            for (j in 0 until m)
+                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
+                else throw FIELD_ERROR(i, j)
         val current : Matrix = Matrix(arr)
         val answer : Ring
         if (method == null) throw KEY_METHOD_EMPTY()
@@ -191,6 +191,14 @@ object Computer {
     }
     fun count_rank(temp_matrix : ArrayList<ArrayList<String?>>, method : String?, number : String?) : Int{
         Log.clear()
+        if (number == null) throw KEY_NUMBER_EMPTY()
+        else if (number == "DEC"){
+            Settings.numbers.type = Number.DEC
+        }
+        else if (number == "PROPER"){
+            Settings.numbers.type = Number.PROPER
+        }
+        else throw UNKNOWN_NUMBER()
         val m : Int = temp_matrix.size
         if (m<1) throw MATRIX_FAIL()
         val n : Int = temp_matrix[0].size
@@ -200,14 +208,6 @@ object Computer {
             for (j in 0 until n)
                 if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
                 else throw FIELD_ERROR(i, j)
-        if (number == null) throw KEY_NUMBER_EMPTY()
-        else if (number == "DEC"){
-            Settings.numbers.type = Number.DEC
-        }
-        else if (number == "PROPER"){
-            Settings.numbers.type = Number.PROPER
-        }
-        else throw UNKNOWN_NUMBER()
         val current : Matrix = Matrix(arr)
         val answer : Int
         if (method == null) throw KEY_METHOD_EMPTY()
@@ -222,6 +222,14 @@ object Computer {
     }
     fun SLE(temp_matrix : ArrayList<ArrayList<String?>>, untrivial : Boolean, method : String?, number : String?) : String{
         Log.clear()
+        if (number == null) throw KEY_NUMBER_EMPTY()
+        else if (number == "DEC"){
+            Settings.numbers.type = Number.DEC
+        }
+        else if (number == "PROPER"){
+            Settings.numbers.type = Number.PROPER
+        }
+        else throw UNKNOWN_NUMBER()
         val m : Int = temp_matrix.size
         if (m<1) throw MATRIX_FAIL()
         val n : Int = temp_matrix[0].size
