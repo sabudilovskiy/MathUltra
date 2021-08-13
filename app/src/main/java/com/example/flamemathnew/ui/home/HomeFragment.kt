@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.algebrMath.setOnClickListener {
-            val action = HomeFragmentDirections.actionNavHomeToNavAlgebra()
+            val action = HomeFragmentDirections.actionNavHomeToNavAlgebra("linal")
             navController.navigate(action)
         }
 

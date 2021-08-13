@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentAlgebraBinding
@@ -20,8 +22,20 @@ class AlgebraFragment : Fragment() {
     private var _binding: FragmentAlgebraBinding? = null
     private val binding get() = _binding!!
 
+    val args: AlgebraFragmentArgs by navArgs()
+    var key : String = "linal"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        args.let {
+            key = it.key
+        }
+
+        myPagerAdapter =
+            MyPagerAdapter(requireContext(), requireActivity().supportFragmentManager, key)
+
 
     }
 
@@ -32,7 +46,6 @@ class AlgebraFragment : Fragment() {
     ): View {
         _binding = FragmentAlgebraBinding.inflate(inflater, container, false)
 
-        myPagerAdapter = MyPagerAdapter(requireContext(), requireActivity().supportFragmentManager, "linal")
         tabLayout = binding.tabs
 
         viewPager = binding.viewPagerAlgebra
