@@ -16,6 +16,7 @@ import Matrix.Matrix
 import Number.createNumber
 import Parameters.Number
 import Support.createRectangleArrayList
+import com.example.flamemathnew.mid.Settings
 
 fun find_null_string_in_array(arr : ArrayList<String?>): Int{
     var i : Int = 0;
@@ -123,10 +124,10 @@ object Computer {
                 else throw FIELD_ERROR(i, j)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
-            Settings.numbers.use_number = Number.DEC
+            Settings.numbers.type = Number.DEC
         }
         else if (number == "PROPER"){
-            Settings.numbers.use_number = Number.PROPER
+            Settings.numbers.type = Number.PROPER
         }
         else throw UNKNOWN_NUMBER()
         val current : Matrix = Matrix(arr)
@@ -159,10 +160,10 @@ object Computer {
                 else throw FIELD_ERROR(i, j)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
-            Settings.numbers.use_number = Number.DEC
+            Settings.numbers.type = Number.DEC
         }
         else if (number == "PROPER"){
-            Settings.numbers.use_number = Number.PROPER
+            Settings.numbers.type = Number.PROPER
         }
         else throw UNKNOWN_NUMBER()
         val current : Matrix = Matrix(arr)
@@ -201,10 +202,10 @@ object Computer {
                 else throw FIELD_ERROR(i, j)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
-            Settings.numbers.use_number = Number.DEC
+            Settings.numbers.type = Number.DEC
         }
         else if (number == "PROPER"){
-            Settings.numbers.use_number = Number.PROPER
+            Settings.numbers.type = Number.PROPER
         }
         else throw UNKNOWN_NUMBER()
         val current : Matrix = Matrix(arr)
@@ -276,10 +277,10 @@ object Computer {
                 else throw FIELD_ERROR_SLE(i, j, true)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
-            Settings.numbers.use_number = Number.DEC
+            Settings.numbers.type = Number.DEC
         }
         else if (number == "PROPER"){
-            Settings.numbers.use_number = Number.PROPER
+            Settings.numbers.type = Number.PROPER
         }
         else throw UNKNOWN_NUMBER()
         val left : Matrix = Matrix(left_arr)
