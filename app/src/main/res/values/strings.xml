@@ -27,4 +27,5 @@
     <string name="lexeme">Значение функции в точках</string>
     <string name="lexeme_description">Посчитать значение в одной или нескольких точках</string>
     <string name="lexeme_english">Lexeme</string>
+    <string name="compute">COMPUTE</string>
 </resources>

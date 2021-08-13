@@ -44,15 +44,15 @@ class PracticeAlgebraFragment : Fragment() {
     private var detTypes = arrayOf("LAPLASS", "TRIANGLE", "SARUSS", "BASIC")
     var inverseTypes = arrayOf("GAUSS", "ALGEBRAIC_COMPLEMENT")
     var rankTypes = arrayOf("TRIANGLE", "MINORS")
-    var operations = arrayOf("Determinant", "Inverse", "Rank")
+    var operations = arrayOf("Определитель", "Обратная", "Ранг")
     var numberTypes = arrayOf("PROPER", "DEC")
 
-    fun updateSle(N : Int) {
+    fun updateSle(N: Int) {
         listSle.clear()
         binding.sleStolbec.removeAllViews()
 
         val i = 0
-        for (i in 0 until N){
+        for (i in 0 until N) {
             val editText = EditText(context)
             editText.hint = "$i"
             editText.textAlignment = View.TEXT_ALIGNMENT_CENTER
@@ -69,7 +69,7 @@ class PracticeAlgebraFragment : Fragment() {
     private var _binding: FragmentPracticeAlgebraBinding? = null
     private val binding get() = _binding!!
 
-    fun changeMatrix(N : Int, M: Int) {
+    fun changeMatrix(N: Int, M: Int) {
         binding.linearLayoutCompatMatrix.removeAllViews()
         listMatr.clear()
         for (i in 0 until N) {
@@ -100,8 +100,6 @@ class PracticeAlgebraFragment : Fragment() {
     }
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?, savedInstanceState: Bundle?
@@ -109,21 +107,44 @@ class PracticeAlgebraFragment : Fragment() {
 
         _binding = FragmentPracticeAlgebraBinding.inflate(inflater, container, false)
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
-      //  adapter.setDropDownViewResource(R.layout.my_spinner_item)
+        val adapter =
+            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
 
-        binding.mSize.adapter = adapter
-        binding.nSize.adapter = adapter
-        binding.spinnerDet.adapter =
-            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, detTypes)
-        binding.spinnerInv.adapter = ArrayAdapter(
+        val adapterMain = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            operations
+        )
+        binding.spinnerChoice.adapter = adapterMain
+        binding.spinnerTypeDet.adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            detTypes
+        )
+
+        binding.spinnerTypeInv.adapter = ArrayAdapter(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item,
             inverseTypes
         )
-        binding.spinnerRank.adapter =
-            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, rankTypes)
-        binding.spinnerTypeNumbers.adapter =  ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, numberTypes)
+
+        binding.spinnerTypeRank.adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            rankTypes
+        )
+
+
+        //  adapter.setDropDownViewResource(R.layout.my_spinner_item)
+
+        binding.mSize.adapter = adapter
+        binding.nSize.adapter = adapter
+
+        binding.spinnerTypeNumbers.adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            numberTypes
+        )
 
         fun changeN(item: String) {
             N = item.toInt()
@@ -136,120 +157,158 @@ class PracticeAlgebraFragment : Fragment() {
             changeMatrix(N, M)
         }
 
-        fun changeTypeDet(item : String){
-            typeDet = item
+
+        fun changeNumberTyper(item: String) {
+            numbersType = item
         }
 
+        fun changeTypeDet(item: String){
+            if(binding.spinnerTypeDet.visibility == View.VISIBLE)
+                TYPE_COMPUTE = item
+        }
         fun changeTypeInv(item: String){
-            typeInv = item
+            if(binding.spinnerTypeInv.visibility == View.VISIBLE)
+                TYPE_COMPUTE = item
         }
 
         fun changeTypeRank(item: String){
-            typeRank = item
+            if(binding.spinnerTypeRank.visibility == View.VISIBLE)
+                TYPE_COMPUTE = item
         }
 
-        fun changeNumberTyper(item: String){
-            numbersType = item
+        fun operationTypeListener(item: String) {
+            when (item) {
+                "Определитель" -> {
+                    TYPE = "Определитель"
+                    binding.spinnerTypeRank.visibility = View.GONE
+                    binding.spinnerTypeInv.visibility = View.GONE
+                    binding.spinnerTypeDet.visibility = View.VISIBLE
+                }
+                "Обратная" -> {
+                    TYPE = "Обратная"
+                    binding.spinnerTypeRank.visibility = View.GONE
+                    binding.spinnerTypeInv.visibility = View.VISIBLE
+                    binding.spinnerTypeDet.visibility = View.GONE
+                }
+                "Ранг" -> {
+                    TYPE = "Ранг"
+                    binding.spinnerTypeRank.visibility = View.VISIBLE
+                    binding.spinnerTypeInv.visibility = View.GONE
+                    binding.spinnerTypeDet.visibility = View.GONE
+                }
+            }
         }
+
         val itemSelectedListenerN: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeN)
         val itemSelectedListenerM: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeM)
-        val itemSelectedListenerDET: AdapterView.OnItemSelectedListener = getOnItemSelectListener (::changeTypeDet)
-        val itemSelectedListenerINV: AdapterView.OnItemSelectedListener = getOnItemSelectListener (::changeTypeInv)
-        val itemSelectedListenerRANK : AdapterView.OnItemSelectedListener = getOnItemSelectListener (::changeTypeRank)
-        val itemSelectedListenerNumberType : AdapterView.OnItemSelectedListener = getOnItemSelectListener (::changeNumberTyper)
+        val itemSelectedListenerNumberType: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeNumberTyper)
+        val intemOperationSelectedListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::operationTypeListener)
+        val typeDetChangeListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeTypeDet)
+        val typeInvChangeListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeTypeInv)
+        val typeRankChangeListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeTypeRank)
 
         binding.mSize.onItemSelectedListener = itemSelectedListenerN
         binding.nSize.onItemSelectedListener = itemSelectedListenerM
-        binding.spinnerDet.onItemSelectedListener = itemSelectedListenerDET
-        binding.spinnerInv.onItemSelectedListener = itemSelectedListenerINV
-        binding.spinnerRank.onItemSelectedListener = itemSelectedListenerRANK
-        binding.spinnerTypeNumbers.onItemSelectedListener = itemSelectedListenerNumberType
 
+        binding.spinnerTypeNumbers.onItemSelectedListener = itemSelectedListenerNumberType
+        binding.spinnerChoice.onItemSelectedListener = intemOperationSelectedListener
+
+        binding.spinnerTypeDet.onItemSelectedListener = typeDetChangeListener
+        binding.spinnerTypeInv.onItemSelectedListener = typeInvChangeListener
+        binding.spinnerTypeRank.onItemSelectedListener = typeRankChangeListener
 
         changeMatrix(N, M)
 
-        binding.detButton.setOnClickListener {
-            val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-            var m = 0
-            for (i in 0 until N) {
-                val row: ArrayList<String?> = ArrayList<String?>(M)
-                for (j in 0 until M) {
-                    row.add(listMatr[m].text.toString())
-                    m++
+        binding.compute.setOnClickListener {
+            when(TYPE){
+                "Определитель" -> {
+                    val list: ArrayList<ArrayList<String?>> = ArrayList(N)
+                    var m = 0
+                    for (i in 0 until N) {
+                        val row: ArrayList<String?> = ArrayList<String?>(M)
+                        for (j in 0 until M) {
+                            row.add(listMatr[m].text.toString())
+                            m++
+                        }
+                        list.add(row)
+                    }
+                    var answer: String
+                    var log = ""
+                    try {
+                        answer =
+                            "Ответ: " + MRV.count_determinant(list, TYPE_COMPUTE, numbersType) + "\n"
+                        log = MRV.get_log_as_str()
+                    } catch (matrix_fail: MRV.MATRIX_FAIL) {
+                        answer = "Матрица пуста"
+                    } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
+                        answer =
+                            "Матрица не является квадратной. Вычислить определитель невозможно."
+                    } catch (field_error: MRV.FIELD_ERROR) {
+                        answer =
+                            "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
+                    }
+                    //TODO("Вывод необходимо переделать")
+                    binding.log.text = answer + log
                 }
-                list.add(row)
+                "Обратная" -> {
+                    val list: ArrayList<ArrayList<String?>> = ArrayList(N)
+                    var m = 0
+                    for (i in 0..N - 1) {
+                        val row: ArrayList<String?> = ArrayList(M)
+                        for (j in 0..M - 1) {
+                            row.add(listMatr[m].text.toString())
+                            m++
+                        }
+                        list.add(row)
+                    }
+                    var answer: String
+                    var log = ""
+                    try {
+                        answer = "Ответ: " + MRV.find_inverse_matrix(list, TYPE_COMPUTE, numbersType) + "\n"
+                        log = MRV.get_log_as_str()
+                    } catch (matrix_fail: MRV.MATRIX_FAIL) {
+                        answer = "Матрица пуста"
+                    } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
+                        answer = "Матрица не является квадратной. Вычислить обратную невозможно."
+                    } catch (field_error: MRV.FIELD_ERROR) {
+                        answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
+                    } catch (degenerate_matrix: MRV.DEGENERATE_MATRIX) {
+                        answer = "Матрица является вырожденной. Нахождение обратной невозможно."
+                    }
+                    //TODO("Вывод необходимо переделать")
+                    binding.log.text = answer + log
+                }
+                "Ранг" -> {
+                    val list: ArrayList<ArrayList<String?>> = ArrayList(N)
+                    var m = 0
+                    for (i in 0 until N) {
+                        val row: ArrayList<String?> = ArrayList<String?>(M)
+                        for (j in 0 until M) {
+                            row.add(listMatr[m].text.toString())
+                            m++
+                        }
+                        list.add(row)
+                    }
+                    var answer: String
+                    var log = ""
+                    try {
+                        answer = "Ответ: " + MRV.count_rank(list, TYPE_COMPUTE, numbersType) + "\n"
+                        log = MRV.get_log_as_str()
+                    } catch (matrix_fail: MRV.MATRIX_FAIL) {
+                        answer = "Матрица пуста"
+                    } catch (field_error: MRV.FIELD_ERROR) {
+                        answer =
+                            "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
+                    }
+                    //TODO("Вывод необходимо переделать")
+                    binding.log.text = answer + log
+                }
             }
-            var answer: String
-            var log = ""
-            try {
-                answer = "Ответ: " + MRV.count_determinant(list, typeDet, numbersType) + "\n"
-                log = MRV.get_log_as_str()
-            } catch (matrix_fail: MRV.MATRIX_FAIL) {
-                answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
-                answer = "Матрица не является квадратной. Вычислить определитель невозможно."
-            } catch (field_error: MRV.FIELD_ERROR) {
-                answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-            }
-            //TODO("Вывод необходимо переделать")
-            binding.log.text = answer + log
         }
 
 
-        binding.invButton.setOnClickListener {
-            val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-            var m = 0
-            for (i in 0..N - 1) {
-                val row: ArrayList<String?> = ArrayList(M)
-                for (j in 0..M - 1) {
-                    row.add(listMatr[m].text.toString())
-                    m++
-                }
-                list.add(row)
-            }
-            var answer: String
-            var log = ""
-            try {
-                answer = "Ответ: " + MRV.find_inverse_matrix(list, typeInv, numbersType) + "\n"
-                log = MRV.get_log_as_str()
-            } catch (matrix_fail: MRV.MATRIX_FAIL) {
-                answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: MRV.NON_QUADRATIC_MATRIX) {
-                answer = "Матрица не является квадратной. Вычислить обратную невозможно."
-            } catch (field_error: MRV.FIELD_ERROR) {
-                answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-            } catch (degenerate_matrix: MRV.DEGENERATE_MATRIX) {
-                answer = "Матрица является вырожденной. Нахождение обратной невозможно."
-            }
-            //TODO("Вывод необходимо переделать")
-            binding.log.text = answer + log
-        }
 
 
-        binding.rankButton.setOnClickListener {
-            val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-            var m = 0
-            for (i in 0 until N) {
-                val row: ArrayList<String?> = ArrayList<String?>(M)
-                for (j in 0 until M) {
-                    row.add(listMatr[m].text.toString())
-                    m++
-                }
-                list.add(row)
-            }
-            var answer: String
-            var log = ""
-            try {
-                answer = "Ответ: " + MRV.count_rank(list, typeRank, numbersType) + "\n"
-                log = MRV.get_log_as_str()
-            } catch (matrix_fail: MRV.MATRIX_FAIL) {
-                answer = "Матрица пуста"
-            } catch (field_error: MRV.FIELD_ERROR) {
-                answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-            }
-            //TODO("Вывод необходимо переделать")
-            binding.log.text = answer + log
-        }
 
 //        val navController = findNavController()
 //
@@ -258,7 +317,7 @@ class PracticeAlgebraFragment : Fragment() {
 //        }
 
         binding.plusSle.setOnClickListener {
-            if(binding.sleStolbec.visibility == View.VISIBLE)
+            if (binding.sleStolbec.visibility == View.VISIBLE)
                 binding.sleStolbec.visibility = View.GONE
             else binding.sleStolbec.visibility = View.VISIBLE
             updateSle(N)
@@ -271,10 +330,8 @@ class PracticeAlgebraFragment : Fragment() {
     companion object {
         private var N = 3
         private var M = 3
-        private var typeDet: String = "LAPLASS"
-        private var typeRank: String = "TRIANGLE"
-        private var typeInv: String = "GAUSS"
         private var numbersType = "PROPER"
-
+        private var TYPE = "Определитель"
+        private var TYPE_COMPUTE = "LAPLASS"
     }
 }
