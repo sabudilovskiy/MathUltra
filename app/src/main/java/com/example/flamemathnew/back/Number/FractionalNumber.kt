@@ -3,6 +3,7 @@ package Number
 import MathObject.Ring
 import MRV.Computer
 import Support.find_GCD
+import com.example.flamemathnew.mid.Settings
 import java.lang.Math.abs
 
 

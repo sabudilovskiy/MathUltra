@@ -1,10 +1,7 @@
 package com.example.flamemathnew.mid
 
 import MRV.Computer
-import Parameters.createDetMethod
-import Parameters.createInverseMethod
-import Parameters.createRankMethod
-import Parameters.createSLEMethod
+import Parameters.*
 
 object Settings {
     object matrix {
@@ -63,6 +60,13 @@ object Settings {
             fun setmethod(key: String) {
                 method = createSLEMethod(key)
             }
+        }
+    }
+    object numbers {
+        var type : Parameters.Number = Parameters.Number.PROPER
+        var use_improrer_fraction = true;
+        fun setType(key : String){
+           type = createNumberType(key)
         }
     }
 }
