@@ -44,7 +44,12 @@
         android:id="@+id/nav_algebra"
         android:name="com.example.flamemathnew.ui.algebra.AlgebraFragment"
         android:label="@string/algebra"
-        tools:layout="@layout/fragment_algebra" />
+        tools:layout="@layout/fragment_algebra" >
+        <argument
+            android:name="key"
+            app:argType="string"
+            android:defaultValue='"linal"' />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_discrete"
