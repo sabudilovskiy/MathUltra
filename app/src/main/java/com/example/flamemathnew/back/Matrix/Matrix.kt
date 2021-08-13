@@ -40,7 +40,7 @@ open class Matrix : Ring {
     protected var cof_det = createNumber(1.0)
     var m = 0
     var n = 0
-    lateinit var arr: ArrayList<ArrayList<Ring>>;
+    var arr: ArrayList<ArrayList<Ring>>;
 
     constructor(_arr: ArrayList<ArrayList<Ring>>) {
         m = _arr.size
