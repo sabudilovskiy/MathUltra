@@ -164,6 +164,7 @@ class Support {
                     TYPE_COMPUTE,
                     numbersType
                 ) + "\n"
+
                 log = MRV.get_log_as_str()
             } catch (matrix_fail: MRV.MATRIX_FAIL) {
                 answer = "Матрица пуста"
