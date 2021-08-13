@@ -45,20 +45,7 @@ fun is_digit(ch : Char ) : Boolean{
     return if ('0' <= ch && ch <= '9') true
     else false
 }
-object MRV {
-    @Throws(
-        ARGUMENT_LIST_MISMATCH::class,
-        UNKNOWN_FUNCTION::class,
-        ERROR_SIGNS::class,
-        IMPOSSIBLE_COUNT::class,
-        MISS_ARGUMENT_BINARY_OPERATOR::class,
-        MISS_ARGUMENT_PRE_OPERATOR::class,
-        MISS_ARGUMENT_POST_OPERATOR::class,
-        HAVE_OPEN_BRACKETS::class,
-        MORE_RIGHT_BRACKETS::class,
-        BAD_ARGUMENTS::class,
-        UNKNOWN_ERROR::class, MRV.Input_Values_Lexemes_Exception::class
-    )
+object Computer {
     fun get_log() : ArrayList<String>{
         return Log.get_log()
     }
@@ -279,7 +266,7 @@ object MRV {
             for (j in 0 until n)
                 if (is_number(temp_matrix_left[i][j]!!)) left_arr[i][j] = createNumber(temp_matrix_left[i][j]!!.toDouble())
                 else throw FIELD_ERROR_SLE(i, j, false)
-        if (temp_matrix_right.size != n) throw MRV.MATRIX_DIMENSION_MISSMATCH()
+        if (temp_matrix_right.size != n) throw Computer.MATRIX_DIMENSION_MISSMATCH()
         val p : Int = temp_matrix_right[0].size
         for (i in 0 until n) if (temp_matrix_right[i].size != p) throw MATRIX_FAIL()
         val right_arr = createRectangleArrayList(createNumber(0.0), n, p)

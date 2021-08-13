@@ -1,7 +1,7 @@
 package Number
 
 import MathObject.Ring
-import MRV.MRV
+import MRV.Computer
 import Matrix.Matrix
 
 class Dec_Number : Ring {
@@ -15,7 +15,7 @@ class Dec_Number : Ring {
             return createNumber(value+right.value)
         }
         else{
-            throw MRV.NON_COMPLIANCE_TYPES()
+            throw Computer.NON_COMPLIANCE_TYPES()
         }
     }
 
@@ -24,7 +24,7 @@ class Dec_Number : Ring {
             return createNumber(value-right.value)
         }
         else{
-            throw MRV.NON_COMPLIANCE_TYPES()
+            throw Computer.NON_COMPLIANCE_TYPES()
         }
     }
 
@@ -35,7 +35,7 @@ class Dec_Number : Ring {
         else if (right is Matrix){
             return right*this
         }
-        else throw MRV.NON_COMPLIANCE_TYPES()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
     override fun div(right: Ring): Ring {
         if (right is Dec_Number){
@@ -44,7 +44,7 @@ class Dec_Number : Ring {
         else if (right is Matrix){
             return right*this
         }
-        else throw MRV.NON_COMPLIANCE_TYPES()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
 
     override fun equals(other: Any?): Boolean {

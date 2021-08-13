@@ -1,7 +1,7 @@
 package Number
 
 import MathObject.Ring
-import MRV.MRV
+import MRV.Computer
 import Support.find_GCD
 import java.lang.Math.abs
 
@@ -42,7 +42,7 @@ class FractionalNumber : Ring {
             val new_numerator: Long = left.numerator * LCM / denominator + right.numerator * LCM / right.denominator
             return FractionalNumber(new_numerator, LCM)
         }
-        else throw MRV.NON_COMPLIANCE_TYPES()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
     override operator fun minus(right : Ring) : Ring {
         if (right is FractionalNumber){
@@ -52,7 +52,7 @@ class FractionalNumber : Ring {
             val new_numerator: Long = left.numerator * LCM / denominator - right.numerator * LCM / right.denominator
             return FractionalNumber(new_numerator, LCM)
         }
-        else throw MRV.NON_COMPLIANCE_TYPES()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
     override operator fun times(right : Ring) : Ring {
         if (right is FractionalNumber){
@@ -75,11 +75,11 @@ class FractionalNumber : Ring {
             val new_denominator = left_denominator*right_denominator
             return FractionalNumber(new_numerator, new_denominator)
         }
-        else throw MRV.NON_COMPLIANCE_TYPES()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
     override fun div(right: Ring): Ring {
         if (right is FractionalNumber) return this/right
-        else throw MRV.NON_COMPLIANCE_TYPES()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
 
     override fun equals(other: Any?): Boolean {
