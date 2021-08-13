@@ -1,6 +1,6 @@
 package AffineSpace
 
-import MRV.MRV
+import MRV.Computer
 import MathObject.MathObject.MathObject
 import Matrix.Matrix
 
@@ -10,7 +10,7 @@ class AffineSpace(_v0: Matrix, arr: ArrayList<Matrix>) : MathObject() {
     init {
         var m : Int = v0.m
         for (vector in arr){
-            if (vector.m != m || vector.n != 1) throw MRV.MATRIX_ERROR()
+            if (vector.m != m || vector.n != 1) throw Computer.MATRIX_ERROR()
         }
     }
     override fun toString(): String {

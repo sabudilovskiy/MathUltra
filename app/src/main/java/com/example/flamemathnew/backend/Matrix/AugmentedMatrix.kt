@@ -5,16 +5,16 @@ import MathObject.Ring
 import Number.FractionalNumber
 import LinearSpace.LinearSpace
 import Logger.Log.add
-import MRV.MRV
-import MRV.MRV.HAVE_NOT_SOLUTIONS
-import MRV.MRV.INVALID_NUMBER_STRING
-import MRV.MRV.MATRIX_DIMENSION_MISSMATCH
-import MRV.MRV.NON_SINGLE
+import MRV.Computer
+import MRV.Computer.HAVE_NOT_SOLUTIONS
+import MRV.Computer.INVALID_NUMBER_STRING
+import MRV.Computer.MATRIX_DIMENSION_MISSMATCH
+import MRV.Computer.NON_SINGLE
 import MathObject.MathObject.MathObject
 import Number.createNumber
 import Parameters.SLE
 import Point.Point
-import Settings.matrix.SLE.getSettings
+import com.example.flamemathnew.mid.Settings.matrix.SLE.getSettings
 import Support.createRectangleArrayList
 import Support.createSingleArrayList
 
@@ -212,7 +212,7 @@ class AugmentedMatrix : Matrix {
                         try {
                              temp = AffineSpace(v, base)
                         }
-                        catch (matrix_error : MRV.MATRIX_ERROR){
+                        catch (matrix_error : Computer.MATRIX_ERROR){
                             println("Этого не должно было произойти")
                         }
                         return temp!!
