@@ -72,23 +72,29 @@ class Support {
             return temp
         }
 
+
+        fun readMatrix(listMatr: ArrayList<String>, N : Int, M : Int) : ArrayList<ArrayList<String?>> {
+            val list: ArrayList<ArrayList<String?>> = ArrayList( N)
+            var m = 0
+            for (i in 0 until  N) {
+                val row: ArrayList<String?> = ArrayList<String?>(M)
+                for (j in 0 until  M) {
+                    row.add(listMatr[m])
+                    m++
+                }
+                list.add(row)
+            }
+            return list
+        }
+
         fun computeInversion(
-            listMatr: ArrayList<EditText>,
+            listMatr: ArrayList<String>,
             TYPE_COMPUTE: String,
             numbersType: String,
             N: Int,
             M: Int
         ): String {
-            val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-            var m = 0
-            for (i in 0..N - 1) {
-                val row: ArrayList<String?> = ArrayList(M)
-                for (j in 0..M - 1) {
-                    row.add(listMatr[m].text.toString())
-                    m++
-                }
-                list.add(row)
-            }
+            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
             var answer: String
             var log = ""
             try {
@@ -113,22 +119,13 @@ class Support {
 
 
         fun computeDeterminant(
-            listMatr: ArrayList<EditText>,
+            listMatr: ArrayList<String>,
             TYPE_COMPUTE: String,
             numbersType: String,
             N: Int,
             M: Int
         ): String {
-            val list: ArrayList<ArrayList<String?>> = ArrayList(N)
-            var m = 0
-            for (i in 0 until N) {
-                val row: ArrayList<String?> = ArrayList<String?>(M)
-                for (j in 0 until M) {
-                    row.add(listMatr[m].text.toString())
-                    m++
-                }
-                list.add(row)
-            }
+            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
             var answer: String
             var log = ""
             try {
@@ -152,21 +149,14 @@ class Support {
             return "$answer $log"
         }
 
-        fun computeRank(listMatr: ArrayList<EditText>,
+
+        fun computeRank(listMatr: ArrayList<String>,
                         TYPE_COMPUTE: String,
                         numbersType: String,
                         N: Int,
                         M: Int) : String{
-            val list: ArrayList<ArrayList<String?>> = ArrayList( N)
-            var m = 0
-            for (i in 0 until  N) {
-                val row: ArrayList<String?> = ArrayList<String?>(M)
-                for (j in 0 until  M) {
-                    row.add(listMatr[m].text.toString())
-                    m++
-                }
-                list.add(row)
-            }
+            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+
             var answer: String
             var log = ""
             try {

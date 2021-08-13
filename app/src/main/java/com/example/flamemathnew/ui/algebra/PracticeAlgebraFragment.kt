@@ -222,16 +222,25 @@ class PracticeAlgebraFragment : Fragment() {
 
         changeMatrix(N, M)
 
+
+        fun readMatrixFromEditText() : ArrayList<String> {
+            var list = ArrayList<String>()
+            for (i in listMatr.indices) {
+                list.add(listMatr[i].text.toString())
+            }
+            return list
+        }
+
         binding.compute.setOnClickListener {
             when(TYPE){
                 "Определитель" -> {
-                    binding.log.text = computeDeterminant(listMatr, TYPE_COMPUTE, numbersType, N, M)
+                    binding.log.text = computeDeterminant(readMatrixFromEditText(), TYPE_COMPUTE, numbersType, N, M)
                 }
                 "Обратная" -> {
-                    binding.log.text = computeInversion(listMatr, TYPE_COMPUTE, numbersType, N, M)
+                    binding.log.text = computeInversion(readMatrixFromEditText(), TYPE_COMPUTE, numbersType, N, M)
                 }
                 "Ранг" -> {
-                    binding.log.text = computeRank(listMatr, TYPE_COMPUTE, numbersType, N, M)
+                    binding.log.text = computeRank(readMatrixFromEditText(), TYPE_COMPUTE, numbersType, N, M)
                 }
             }
         }
