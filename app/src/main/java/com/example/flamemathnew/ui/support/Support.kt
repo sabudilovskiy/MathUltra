@@ -36,7 +36,7 @@ class Support {
                     }
                 }
 
-                answer = "Ответ: " + Computer.SLE(list, "method", "PROPER") + "\n"
+                answer = "Ответ: \n" + Computer.SLE(list, "method", numbersType)
                 log = Computer.get_log_as_str()
             } catch (matrix_fail: Computer.MATRIX_FAIL) {
                 answer = "Матрица пуста"
@@ -47,7 +47,6 @@ class Support {
             } catch (degenerate_matrix: Computer.DEGENERATE_MATRIX) {
                 answer = "Матрица является вырожденной. Нахождение обратной невозможно."
             }
-
             return "$answer $log"
         }
 

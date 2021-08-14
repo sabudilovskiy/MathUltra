@@ -143,7 +143,7 @@ open class Matrix : Ring {
         var i : Int
         if (m > n) i = n - 1
         else i = m - 1
-        while (i>1) {
+        while (i>0) {
             val f = find_non_zero_in_column(i, 0)
             if (!arr[i][i].equals(0.0) && f != i && f != -1) {
                 for (j in i - 1 downTo 0) {

@@ -12,13 +12,13 @@ class Polynom() : Ring() {
     var cofs : ArrayList <Ring> = createSingleArrayList({ createNumber(0.0) }, 1)
     constructor(_cofs: ArrayList<Ring>) : this(){
         var i : Int = _cofs.size - 1
-        while (_cofs[i].equals(0) && i > 0){
+        while (_cofs[i].equals(0.0) && i > 0){
             i--
         }
         if (i == _cofs.size - 1) cofs = _cofs
         else {
             cofs[0] = _cofs[0]
-            for (j in 1 until i) cofs.add(_cofs[i])
+            for (j in 1 until i + 1) cofs.add(_cofs[i])
         }
     }
     override fun plus(right: Ring): Ring {
@@ -74,7 +74,7 @@ class Polynom() : Ring() {
             val res_div : ArrayList<Ring> = arrayListOf()
             while (left.cofs.size >= right.cofs.size){
                 val n : Int = left.cofs.size - right.cofs.size
-                var temp : Polynom = right
+                var temp : Polynom = Polynom(right.cofs)
                 val cof : Ring = left.cofs[left.cofs.size - 1] / temp.cofs[temp.cofs.size - 1]
                 res_div.add(cof)
                 temp.incpower(n)
@@ -96,7 +96,7 @@ class Polynom() : Ring() {
     }
     fun incpower(power : Int){
         val temparr = createSingleArrayList({ createNumber(0.0) }, cofs.size + power)
-        for (i in power until cofs.size) temparr[i+power] = cofs[i]
+        for (i in 0 until cofs.size) temparr[i+power] = cofs[i]
         cofs = temparr
     }
     override fun equals(other: Any?): Boolean {

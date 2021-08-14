@@ -14,9 +14,11 @@ class LinearSpace : MathObject{
         base = arr;
     }
     override fun toString(): String {
-        var temp : String = ""
-        for (vector in base){
-            temp += vector.toString()+"\n"
+        var temp : String = "Линейное пространство: \n"
+        var i : Int = 1
+        for (vector in base) {
+            temp+="v$i = ("+ vector.toString().substring(0, vector.toString().length-2)+")\n"
+            i++
         }
         return temp
     }
