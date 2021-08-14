@@ -1,5 +1,6 @@
 package com.example.flamemathnew.ui.settings
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -32,7 +33,7 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSettingsBinding.inflate(inflater,container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
 
         fun changeTypeNumbers(item: String) {
@@ -45,6 +46,11 @@ class SettingsFragment : Fragment() {
         val itemSelectedListener: AdapterView.OnItemSelectedListener =
             getOnItemSelectListener(::changeTypeNumbers)
 
+        val pref = requireContext().getSharedPreferences("TYPE_NUMBERS", Context.MODE_PRIVATE).getString("TYPE_NUMBERS","PROPER")
+        when (pref){
+            "PROPER"-> numberTypes = arrayOf("PROPER", "DEC")
+            else -> numberTypes = arrayOf("DEC", "PROPER")
+        }
         binding.spinnerTypeNumbers.adapter = ArrayAdapter(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item,
@@ -55,7 +61,7 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
-    companion object{
+    companion object {
         var TYPE_NUMBERS = "PROPER"
     }
 
