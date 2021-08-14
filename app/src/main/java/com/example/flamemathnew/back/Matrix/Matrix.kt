@@ -145,7 +145,10 @@ open class Matrix : Ring {
         log_this("Для того, чтобы преобразовать матрицу методом Гаусса необходимо сначала сделать матрицу верхнетреугольной.")
         triangular_transformation()
         log_this("Мы добились того, что под главной диагональю одни нули. Осталось добиться того же над главной диагональю, где это возможно")
-        for (i in m - 1 downTo 1) {
+        var i : Int
+        if (m > n) i = n - 1
+        else i = m - 1
+        while (i>1) {
             val f = find_non_zero_in_column(i, 0)
             if (!arr[i][i].equals(0.0) && f != i && f != -1) {
                 for (j in i - 1 downTo 0) {
@@ -159,6 +162,7 @@ open class Matrix : Ring {
             } else if (f == i || f == -1) {
                 add("Так как " + (i + 1) + " столбец выше главной диагонали уже обнулён, то ничего не делаем", "")
             }
+            i--
         }
         log_this("Теперь и над, и под главной диагональю нули. Осталось добиться того, чтобы на главной диагонали были только единицы.")
         for (i in 0 until m) if (!arr[i][i].equals(0.0) && !arr[i][i].equals(1.0)) div_string(i, arr[i][i])
