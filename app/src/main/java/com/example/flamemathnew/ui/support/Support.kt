@@ -35,7 +35,7 @@ class Support {
                     }
                 }
 
-                answer = "Ответ: " + Computer.SLE(list, true, "method", "PROPER") + "\n"
+                answer = "Ответ: " + Computer.SLE(list, true, "method", numbersType) + "\n"
                 log = Computer.get_log_as_str()
             } catch (matrix_fail: Computer.MATRIX_FAIL) {
                 answer = "Матрица пуста"

@@ -85,6 +85,8 @@ class PracticeAlgebraFragment : Fragment() {
         pref = requireContext().getSharedPreferences("TYPE_NUMBERS", Context.MODE_PRIVATE)
         Log.d("PREF_NUMBER_TAG", "Pref: ${pref.getString("TYPE_NUMBERS","PROPER")}")
 
+        TYPE_NUMBER = pref.getString("TYPE_NUMBERS","PROPER")!!
+
         val adapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
 
@@ -211,19 +213,13 @@ class PracticeAlgebraFragment : Fragment() {
                 list.add(listSle[i].text.toString())
             }
 
-            for (i in list.indices){
-                for (j in list[i].indices){
-                    Log.d("TAG_MATRIX_SLE2", "... ${list[i][j]}")
-                }
-            }
-
             return list
         }
 
         binding.compute.setOnClickListener {
             if (binding.sleStolbec.visibility == View.VISIBLE) {
                 binding.log.text =
-                    computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE, N, M)
+                    computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
             } else {
                 when (TYPE) {
                     "Определитель" -> {
@@ -237,11 +233,11 @@ class PracticeAlgebraFragment : Fragment() {
                     }
                     "Обратная" -> {
                         binding.log.text =
-                            computeInversion(readMatrixFromEditText(), TYPE_COMPUTE, "DEC", N, M)
+                            computeInversion(readMatrixFromEditText(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
                     }
                     "Ранг" -> {
                         binding.log.text =
-                            computeRank(readMatrixFromEditText(), TYPE_COMPUTE, "DEC", N, M)
+                            computeRank(readMatrixFromEditText(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
                     }
                 }
             }
@@ -284,5 +280,6 @@ class PracticeAlgebraFragment : Fragment() {
         private var M = 3
         private var TYPE = "Определитель"
         private var TYPE_COMPUTE = "LAPLASS"
+        private var TYPE_NUMBER = "PROPER"
     }
 }
