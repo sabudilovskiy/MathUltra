@@ -71,8 +71,19 @@ class Polynom() : Ring() {
     override fun div(right: Ring): Ring {
         if (right is Polynom){
             var left = Polynom(cofs)
-            if (left.cofs.size >= right.cofs.size){
-                TODO("не сделано")
+            val res_div : ArrayList<Ring> = arrayListOf()
+            while (left.cofs.size >= right.cofs.size){
+                val n : Int = left.cofs.size - right.cofs.size
+                var temp : Polynom = right
+                val cof : Ring = left.cofs[left.cofs.size - 1] / temp.cofs[temp.cofs.size - 1]
+                res_div.add(cof)
+                temp.incpower(n)
+                temp = (temp * cof) as Polynom
+                left = (left - temp) as Polynom
+            }
+            if (left.cofs.size == 1 && left.cofs[0].equals(0.0)){
+                res_div.reverse()
+                return Polynom(res_div)
             }
             else throw Computer.BAD_ARGUMENTS()
         }
@@ -83,7 +94,11 @@ class Polynom() : Ring() {
         }
         else throw Computer.NON_COMPLIANCE_TYPES()
     }
-
+    fun incpower(power : Int){
+        val temparr = createSingleArrayList(createNumber(0.0), cofs.size + power)
+        for (i in power until cofs.size) temparr[i+power] = cofs[i]
+        cofs = temparr
+    }
     override fun equals(other: Any?): Boolean {
         TODO("Not yet implemented")
     }

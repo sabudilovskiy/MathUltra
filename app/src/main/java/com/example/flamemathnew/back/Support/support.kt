@@ -5,10 +5,15 @@ import java.lang.Math.abs
 
 //создаём массив с n одинаковых элементов. Первый аргумент - экземпляр, второй аргумент - количество
 inline fun <reified T> createSingleArrayList(something : T, n : Int) : ArrayList <T> {
-    val array : ArrayList<T> = arrayListOf();
+    val array : ArrayList<T> = arrayListOf()
+    val arr : MutableList<T> = arrayListOf()
     if (n > 0) {
         var i : Int = 0;
-        while (i++ < n) array.add(something)
+        while (i < n) {
+            arr.add(something)
+            array.add(arr[i])
+            i++
+        }
         return array
     }
     else throw IllegalArgumentException()
