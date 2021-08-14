@@ -23,11 +23,18 @@ class Support {
                        numbersType: String,
                        N: Int,
                        M: Int) : String {
-            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M+1)
 
             var answer: String
             var log = ""
             try {
+
+                for (i in list.indices){
+                    for (j in list[i].indices){
+                        Log.d("TAG_MATRIX_SLE", "... ${list[i][j]}")
+                    }
+                }
+
                 answer = "Ответ: " + Computer.SLE(list, true, "method", "PROPER") + "\n"
                 log = Computer.get_log_as_str()
             } catch (matrix_fail: Computer.MATRIX_FAIL) {

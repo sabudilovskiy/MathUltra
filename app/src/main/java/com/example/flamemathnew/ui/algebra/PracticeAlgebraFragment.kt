@@ -210,6 +210,13 @@ class PracticeAlgebraFragment : Fragment() {
             for (i in 0 until N) {
                 list.add(listSle[i].text.toString())
             }
+
+            for (i in list.indices){
+                for (j in list[i].indices){
+                    Log.d("TAG_MATRIX_SLE2", "... ${list[i][j]}")
+                }
+            }
+
             return list
         }
 
