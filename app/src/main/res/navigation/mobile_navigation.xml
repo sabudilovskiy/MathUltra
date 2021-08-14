@@ -42,7 +42,7 @@
 
     <activity
         android:id="@+id/nav_algebra"
-        android:name="com.example.flamemathnew.ui.algebra.AlgebraFragment"
+        android:name="com.example.flamemathnew.ui.algebra.AlgebraActivity"
         android:label="@string/algebra"
         tools:layout="@layout/fragment_algebra" >
         <argument
@@ -77,4 +77,20 @@
         android:name="com.example.flamemathnew.ui.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/practiceAlgebraFragment"
+        android:name="com.example.flamemathnew.ui.algebra.PracticeAlgebraFragment"
+        android:label="PracticeAlgebraFragment" >
+        <action
+            android:id="@+id/action_practiceAlgebraFragment_to_multMatrixFragment"
+            app:destination="@id/multMatrixFragment"
+            app:enterAnim="@anim/slide_enter_anim"
+            app:exitAnim="@anim/slide_exit_anim"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/multMatrixFragment"
+        android:name="com.example.flamemathnew.ui.algebra.MultMatrixFragment"
+        android:label="MultMatrixFragment" />
 </navigation>

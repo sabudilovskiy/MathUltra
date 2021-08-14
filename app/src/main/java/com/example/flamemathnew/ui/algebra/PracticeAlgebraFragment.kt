@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentPracticeAlgebraBinding
@@ -209,7 +210,6 @@ class PracticeAlgebraFragment : Fragment() {
             if (binding.sleStolbec.visibility == View.VISIBLE) {
                 binding.log.text = computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE, N, M)
             } else {
-
                 when (TYPE) {
                     "Определитель" -> {
                         binding.log.text = computeDeterminant(
@@ -232,11 +232,11 @@ class PracticeAlgebraFragment : Fragment() {
             }
         }
 
-
-//        val navController = findNavController()
+//        val navController = NavHostFragment.findNavController(this)
 //
-//        binding.goMultMatrix.setOnClickListener{
-//            navController.navigate(R.id.action_nav_gallery_to_multMatrixFragment2)
+//        binding.multMatr.setOnClickListener{
+//            val action = PracticeAlgebraFragmentDirections.actionPracticeAlgebraFragmentToMultMatrixFragment()
+//            navController.navigate(action)
 //        }
 
         binding.plusSle.setOnClickListener {

@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.algebra.AlgebraFragment"
+            android:name=".ui.algebra.AlgebraActivity"
             android:theme="@style/Theme.FlameMathNew.NoActionBar">
         </activity>
     </application>

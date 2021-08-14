@@ -8,7 +8,7 @@ import com.example.flamemathnew.databinding.FragmentAlgebraBinding
 import com.example.flamemathnew.ui.adapters.MyPagerAdapter
 import com.google.android.material.tabs.TabLayout
 
-class AlgebraFragment : AppCompatActivity() {
+class AlgebraActivity : AppCompatActivity() {
     private lateinit var myPagerAdapter: MyPagerAdapter
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
@@ -16,16 +16,10 @@ class AlgebraFragment : AppCompatActivity() {
     private var _binding: FragmentAlgebraBinding? = null
     private val binding get() = _binding!!
 
-    val args: AlgebraFragmentArgs by navArgs()
-    var key : String = "linal"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         myPagerAdapter =
-            MyPagerAdapter(applicationContext, supportFragmentManager, key)
+            MyPagerAdapter(applicationContext, supportFragmentManager, "linal")
         super.onCreate(savedInstanceState)
-        args.let {
-            key = it.key
-        }
 
         _binding = FragmentAlgebraBinding.inflate(layoutInflater)
 
