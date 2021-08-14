@@ -1,6 +1,9 @@
 package com.example.flamemathnew.ui.algebra
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +51,6 @@ class PracticeAlgebraFragment : Fragment() {
     private var inverseTypes = arrayOf("GAUSS", "ALGEBRAIC_COMPLEMENT")
     private var rankTypes = arrayOf("TRIANGLE", "MINORS")
     private var operations = arrayOf("Определитель", "Обратная", "Ранг")
-    private var numberTypes = arrayOf("PROPER", "DEC")
 
     private fun updateSle(N: Int) {
         listSle.clear()
@@ -71,6 +73,7 @@ class PracticeAlgebraFragment : Fragment() {
 
     private var _binding: FragmentPracticeAlgebraBinding? = null
     private val binding get() = _binding!!
+    private lateinit var pref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +81,9 @@ class PracticeAlgebraFragment : Fragment() {
     ): View {
 
         _binding = FragmentPracticeAlgebraBinding.inflate(inflater, container, false)
+
+        pref = requireContext().getSharedPreferences("TYPE_NUMBERS", Context.MODE_PRIVATE)
+        Log.d("PREF_NUMBER_TAG", "Pref: ${pref.getString("TYPE_NUMBERS","PROPER")}")
 
         val adapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
@@ -88,6 +94,7 @@ class PracticeAlgebraFragment : Fragment() {
             operations
         )
         binding.spinnerChoice.adapter = adapterMain
+
         binding.spinnerTypeDet.adapter = ArrayAdapter(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item,
@@ -200,7 +207,7 @@ class PracticeAlgebraFragment : Fragment() {
             for (i in listMatr.indices) {
                 list.add(listMatr[i].text.toString())
             }
-            for (i in 0 until N){
+            for (i in 0 until N) {
                 list.add(listSle[i].text.toString())
             }
             return list
@@ -208,7 +215,8 @@ class PracticeAlgebraFragment : Fragment() {
 
         binding.compute.setOnClickListener {
             if (binding.sleStolbec.visibility == View.VISIBLE) {
-                binding.log.text = computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE, N, M)
+                binding.log.text =
+                    computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE, N, M)
             } else {
                 when (TYPE) {
                     "Определитель" -> {
@@ -234,8 +242,9 @@ class PracticeAlgebraFragment : Fragment() {
 
 //        val navController = NavHostFragment.findNavController(this)
 //
-//        binding.multMatr.setOnClickListener{
-//            val action = PracticeAlgebraFragmentDirections.actionPracticeAlgebraFragmentToMultMatrixFragment()
+//        binding.multMatr.setOnClickListener {
+//            val action =
+//                PracticeAlgebraFragmentDirections.actionPracticeAlgebraFragmentToMultMatrixFragment()
 //            navController.navigate(action)
 //        }
 

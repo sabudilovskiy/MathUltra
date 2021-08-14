@@ -83,11 +83,7 @@
         android:label="PracticeAlgebraFragment" >
         <action
             android:id="@+id/action_practiceAlgebraFragment_to_multMatrixFragment"
-            app:destination="@id/multMatrixFragment"
-            app:enterAnim="@anim/slide_enter_anim"
-            app:exitAnim="@anim/slide_exit_anim"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:destination="@id/multMatrixFragment" />
     </fragment>
     <fragment
         android:id="@+id/multMatrixFragment"

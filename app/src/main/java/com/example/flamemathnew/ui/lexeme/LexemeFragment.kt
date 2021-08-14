@@ -21,6 +21,7 @@ class LexemeFragment : Fragment() {
 
     private var _binding: FragmentLexemeBinding? = null
     private val binding get() = _binding!!
+
     private val keys = ArrayList<String?>()
     private val values = ArrayList<String?>()
     private val editTextsKey = ArrayList<EditText>()
