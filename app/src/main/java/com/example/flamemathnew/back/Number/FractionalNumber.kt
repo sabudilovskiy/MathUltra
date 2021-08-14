@@ -26,7 +26,7 @@ class FractionalNumber : Ring {
         if (number != 0.0)
         {
             var temp : Double = number
-            while (abs(temp) < 1) {
+            while (abs(temp - temp.toLong().toDouble()) != 0.0) {
                 temp*=10
                 denominator*=10
             }

@@ -4,14 +4,25 @@ import java.lang.IllegalArgumentException
 import java.lang.Math.abs
 
 //создаём массив с n одинаковых элементов. Первый аргумент - экземпляр, второй аргумент - количество
-inline fun <reified T> createSingleArrayList(something : T, n : Int) : ArrayList <T> {
+//inline fun <reified T> createSingleArrayList(something : T, n : Int) : ArrayList <T> {
+//    val array : ArrayList<T> = arrayListOf()
+//    if (n > 0) {
+//        var i : Int = 0;
+//        while (i < n) {
+//            array.add(something)
+//            i++
+//        }
+//        return array
+//    }
+//    else throw IllegalArgumentException()
+//}
+//создаём массив с n элементов, создаваемых при помощи лямбды. Первый аргумент - лямба, второй аргумент - количество
+inline fun <reified T> createSingleArrayList(func : () -> T, n : Int) : ArrayList <T> {
     val array : ArrayList<T> = arrayListOf()
-    val arr : MutableList<T> = arrayListOf()
     if (n > 0) {
         var i : Int = 0;
         while (i < n) {
-            arr.add(something)
-            array.add(arr[i])
+            array.add(func())
             i++
         }
         return array
@@ -19,15 +30,25 @@ inline fun <reified T> createSingleArrayList(something : T, n : Int) : ArrayList
     else throw IllegalArgumentException()
 
 }
-inline fun <reified T> createRectangleArrayList(something: T, m: Int, n: Int) : ArrayList<ArrayList<T>> {
+//создаём массив с m*n элементов, создаваемых при помощи лямбды. Первый аргумент - лямба, m, n
+inline fun <reified T> createRectangleArrayList(func : () -> T, m: Int, n: Int) : ArrayList<ArrayList<T>> {
     val array : ArrayList<ArrayList<T>> = arrayListOf()
     if (n > 0) {
         var i : Int = 0;
-        while (i++ < m) array.add(createSingleArrayList(something, n))
+        while (i++ < m) array.add(createSingleArrayList(func, n))
         return array
     }
     else throw IllegalArgumentException()
 }
+//inline fun <reified T> createRectangleArrayList(something: T, m: Int, n: Int) : ArrayList<ArrayList<T>> {
+//    val array : ArrayList<ArrayList<T>> = arrayListOf()
+//    if (n > 0) {
+//        var i : Int = 0;
+//        while (i++ < m) array.add(createSingleArrayList(something, n))
+//        return array
+//    }
+//    else throw IllegalArgumentException()
+//}
 
 fun find_GCD(a : Long, b : Long) : Long {
     var temp_a: Long = abs(a)

@@ -23,8 +23,9 @@ class Support {
                        numbersType: String,
                        N: Int,
                        M: Int) : String {
-            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M+1)
-
+            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+            val free_arr : ArrayList<ArrayList<String?>> = readMatrixend(listMatr, 1, M)
+            for (i in 0 until M) list[i].add(free_arr[0][i])
             var answer: String
             var log = ""
             try {
@@ -35,7 +36,7 @@ class Support {
                     }
                 }
 
-                answer = "Ответ: " + Computer.SLE(list, true, "method", "PROPER") + "\n"
+                answer = "Ответ: " + Computer.SLE(list, "method", "PROPER") + "\n"
                 log = Computer.get_log_as_str()
             } catch (matrix_fail: Computer.MATRIX_FAIL) {
                 answer = "Матрица пуста"
@@ -121,7 +122,19 @@ class Support {
             }
             return list
         }
-
+        fun readMatrixend(listMatr: ArrayList<String>, N : Int, M : Int) : ArrayList<ArrayList<String?>> {
+            val list: ArrayList<ArrayList<String?>> = ArrayList( N)
+            var m = listMatr.size - M*N
+            for (i in 0 until  N) {
+                val row: ArrayList<String?> = ArrayList<String?>(M)
+                for (j in 0 until  M) {
+                    row.add(listMatr[m])
+                    m++
+                }
+                list.add(row)
+            }
+            return list
+        }
         fun computeInversion(
             listMatr: ArrayList<String>,
             TYPE_COMPUTE: String,

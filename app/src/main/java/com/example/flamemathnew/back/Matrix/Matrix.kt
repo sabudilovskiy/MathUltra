@@ -23,15 +23,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 public fun create_vector_str(cords: ArrayList<Ring>): Matrix {
-    val zero = createNumber(0.0)
-    val temp = createRectangleArrayList(zero, 1, cords.size)
+    val temp = createRectangleArrayList({createNumber(0.0)}, 1, cords.size)
     for (i in 0 until cords.size) temp[0][i] = cords[i]
     return Matrix(temp)
 }
 
 public fun create_vector_col(cords: ArrayList<Ring>): Matrix {
-    val zero = createNumber(0.0)
-    val temp = createRectangleArrayList(zero, cords.size, 1)
+    val temp = createRectangleArrayList({ createNumber(0.0) }, cords.size, 1)
     for (i in 0 until cords.size) temp[i][0] = cords[i]
     return Matrix(temp)
 }
@@ -45,18 +43,16 @@ open class Matrix : Ring {
     constructor(_arr: ArrayList<ArrayList<Ring>>) {
         m = _arr.size
         if (m > 0) n = _arr[0].size else n = 0
-        arr = createRectangleArrayList<Ring>(createNumber(0.0), m, n)
+        arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n)
         for (i in 0 until m) for (j in 0 until n) arr[i][j] = _arr[i][j]
     }
 
     //создаёт единичную матрицу n на n
     constructor(n: Int) {
-        val zero = createNumber(0.0)
-        val one = createNumber(1.0)
-        arr = createRectangleArrayList<Ring>(zero, n, n)
+        arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, n, n)
         m = n
         this.n = n
-        for (i in 0 until n) for (j in 0 until n) if (i == j) arr[i][j] = one
+        for (i in 0 until n) for (j in 0 until n) if (i == j) arr[i][j] = createNumber(1.0)
     }
 
 
@@ -88,8 +84,7 @@ open class Matrix : Ring {
 
     protected open fun delete_string(a: Int) {
         if (0 <= a && a < m) {
-            val zero = createNumber(0.0)
-            val temp = createRectangleArrayList<Ring>(zero, m - 1, n)
+            val temp = createRectangleArrayList<Ring>({ createNumber(0.0) }, m - 1, n)
             for (i in 0 until a) for (j in 0 until n) temp[i][j] = arr[i][j]
             for (i in a + 1 until m) for (j in 0 until n) temp[i - 1][j] = arr[i][j]
             arr = temp
@@ -100,7 +95,7 @@ open class Matrix : Ring {
     protected fun delete_column(a: Int) {
         if (0 <= a && a < n) {
             val zero = createNumber(0.0)
-            val temp = createRectangleArrayList<Ring>(zero, m, n - 1)
+            val temp = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n - 1)
             for (i in 0 until m) for (j in 0 until a) temp[i][j] = arr[i][j]
             for (i in 0 until m) for (j in a + 1 until n) temp[i][j - 1] = arr[i][j]
             arr = temp
@@ -224,8 +219,7 @@ open class Matrix : Ring {
             var a = 0
             var b = 0
             val m_new = m - str.size
-            val zero = createNumber(0.0)
-            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList(zero, m_new, m_new)
+            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumber(0.0) }, m_new, m_new)
             while (k < m_new * m_new) {
                 var crossed_out = false
                 for (j in str) if (a == j) {
@@ -251,8 +245,7 @@ open class Matrix : Ring {
         return if (str.size == col.size) {
             var k = 0
             val m_new = str.size
-            val zero = createNumber(0.0)
-            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList(zero, m_new, m_new)
+            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumber(0.0) }, m_new, m_new)
             var i = 0
             while (i < m && k < m_new * m_new) {
                 var j = 0
@@ -428,9 +421,8 @@ open class Matrix : Ring {
     }
 
     fun decompositonWithStr(str: Int): Ring {
-        val zero = createNumber(0.0)
-        var det = zero
-        val A = createSingleArrayList<Ring>(zero, m) //массив алгебраических дополнений
+        var det = createNumber(0.0)
+        val A = createSingleArrayList<Ring>({ createNumber(0.0) }, m) //массив алгебраических дополнений
         log_this("Для подсчёта определителя будем использовать разложение в строку. Раскладываем по " + (str + 1) + " строке.")
         for (i in 0 until n) {
             if (arr[str][i].equals(0.0)) {
@@ -438,7 +430,7 @@ open class Matrix : Ring {
                     "",
                     "Так как a" + (str + 1) + (i + 1) + " равно нулю, то считать A" + (str + 1) + (i + 1) + " нет необходимости."
                 )
-                A[i] = zero
+                A[i] = createNumber(0.0)
             } else A[i] = algebraic_complement(str, i)
         }
         var temp = "det = "
@@ -464,9 +456,8 @@ open class Matrix : Ring {
     }
 
     fun decompositonWithCol(col: Int): Ring {
-        val zero = createNumber(0.0)
-        var det = zero
-        val A = createSingleArrayList<Ring>(zero, m) //массив алгебраических дополнений
+        var det = createNumber(0.0)
+        val A = createSingleArrayList<Ring>({ createNumber(0.0) }, m) //массив алгебраических дополнений
         log_this("Для подсчёта определителя будем использовать разложение в столбец. Раскладываем по " + (col + 1) + " столбцу.")
         for (i in 0 until n) {
             if (arr[i][col].equals(0.0)) {
@@ -539,7 +530,7 @@ open class Matrix : Ring {
         if (found){
             add("a" + (a + 1) + (b + 1) + '\u2260' + " 0 ", "")
             add("", "Теперь рассмотрим все миноры, в которые входит данный элемент.")
-            val temp_arr = createRectangleArrayList<Ring>(createNumber(0.0), 1, 1)
+            val temp_arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, 1, 1)
             var cur_minor = Matrix(temp_arr)
             var cur_str = arrayOfNulls<Int>(1)
             var cur_col = arrayOfNulls<Int>(1)
@@ -592,8 +583,7 @@ open class Matrix : Ring {
     }
 
     fun transposition() {
-        val zero = createNumber(0.0)
-        val new_arr = createRectangleArrayList<Ring>(zero, n, m)
+        val new_arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, n, m)
         for (i in 0 until m) for (j in 0 until n) new_arr[j][i] = arr[i][j]
         arr = new_arr
         val temp = n
@@ -632,7 +622,7 @@ open class Matrix : Ring {
             val det = copy.determinant()
             if (!det.equals(0.0)){
                 //матрица из дополнений
-                val _arr = createRectangleArrayList<Ring>(createNumber(0.0), m, n)
+                val _arr = createRectangleArrayList<Ring>({createNumber(0.0)}, m, n)
                 for (i in 0 until n) for (j in 0 until n){
                     _arr[i][j] = copy.algebraic_complement(i, j)
                 }
@@ -653,7 +643,7 @@ open class Matrix : Ring {
                 val m = left.m
                 val n = left.n
                 val zero = createNumber(0.0)
-                val arr = createRectangleArrayList<Ring>(zero, m, n)
+                val arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n)
                 for (i in 0 until m) for (j in 0 until n) arr[i][j] = left.arr[i][j] + right.arr[i][j]
                 return Matrix(arr)
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
@@ -667,8 +657,7 @@ open class Matrix : Ring {
             if (left.m == right.m && left.n == right.n) {
                 val m = left.m
                 val n = left.n
-                val zero = createNumber(0.0)
-                val arr = createRectangleArrayList<Ring>(zero, m, n)
+                val arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n)
                 for (i in 0 until m) for (j in 0 until n) arr[i][j] = left.arr[i][j] - right.arr[i][j]
                 return Matrix(arr)
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
@@ -689,7 +678,7 @@ open class Matrix : Ring {
                 val n = left.n
                 val p = right.n
                 val zero = createNumber(0.0)
-                val arr = createRectangleArrayList<Ring>(zero, m, p)
+                val arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, p)
                 for (i in 0 until m) for (j in 0 until p) for (k in 0 until n) arr[i][j] += left.arr[i][k] * right.arr[k][j]
                 return Matrix(arr)
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()

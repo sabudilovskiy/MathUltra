@@ -10,12 +10,12 @@ class Point : MathObject{
     var n = 0
 
     internal constructor(n: Int) {
-        coords = createSingleArrayList(createNumber(0.0), n)
+        coords = createSingleArrayList({createNumber(0.0)}, n)
         this.n = n
     }
 
     constructor(arr: MutableList<Double>) {
-        coords = createSingleArrayList(createNumber(0.0),arr.size)
+        coords = createSingleArrayList({ createNumber(0.0) },arr.size)
         for (i in 0 until arr.size) coords[i] = createNumber(arr[i])
     }
     constructor(_arr: ArrayList<Ring>){

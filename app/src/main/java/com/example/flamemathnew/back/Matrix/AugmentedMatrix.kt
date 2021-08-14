@@ -25,7 +25,7 @@ class AugmentedMatrix : Matrix {
         val augmented_m = _augmented_arr.size
         if (augmented_m == m) {
             if (augmented_m > 0) augmented_n = _augmented_arr[0].size else augmented_n = 0
-            augmented_arr = createRectangleArrayList<Ring>(createNumber(0.0), augmented_m, augmented_n)
+            augmented_arr = createRectangleArrayList<Ring>({createNumber(0.0)}, augmented_m, augmented_n)
             for (i in 0 until augmented_m) for (j in 0 until augmented_n) augmented_arr[i][j] = _augmented_arr[i][j]
         } else throw MATRIX_DIMENSION_MISSMATCH()
     }
@@ -78,7 +78,7 @@ class AugmentedMatrix : Matrix {
 
     @Throws(INVALID_NUMBER_STRING::class)
     override fun rank(): Int {
-        val temp_arr = createRectangleArrayList<Ring>(FractionalNumber(0.0), m, n+augmented_n)
+        val temp_arr = createRectangleArrayList<Ring>({FractionalNumber(0.0)}, m, n+augmented_n)
         for (i in 0 until m) for (j in 0 until n + augmented_n) {
             if (j < n) temp_arr[i][j] = arr[i][j] else temp_arr[i][j] = augmented_arr[i][j - n]
         }
@@ -101,8 +101,7 @@ class AugmentedMatrix : Matrix {
     }
 
     override fun delete_string(a: Int) {
-        val zero = createNumber(0.0)
-        val temp = createRectangleArrayList<Ring>(zero, m-1, augmented_n)
+        val temp = createRectangleArrayList<Ring>({ createNumber(0.0) }, m-1, augmented_n)
         for (i in 0 until a) for (j in 0 until augmented_n) temp[i][j] = augmented_arr[i][j]
         for (i in a + 1 until m) for (j in 0 until augmented_n) temp[i - 1][j] = augmented_arr[i][j]
         augmented_arr = temp
@@ -110,7 +109,7 @@ class AugmentedMatrix : Matrix {
     }
 
     protected fun reset_augmented() {
-        augmented_arr = createRectangleArrayList(createNumber(0.0), m, 1)
+        augmented_arr = createRectangleArrayList({ createNumber(0.0) }, m, 1)
     }
 
     protected fun is_homogeneous(): Boolean {
@@ -123,7 +122,7 @@ class AugmentedMatrix : Matrix {
     fun substituion(array: ArrayList<Ring>): Matrix {
         if (n - m == array.size && augmented_n == 1) {
             if (is_single()) {
-                val cof : ArrayList<Ring> = createSingleArrayList<Ring> (createNumber(0.0), n)
+                val cof : ArrayList<Ring> = createSingleArrayList<Ring> ({createNumber(0.0)}, n)
                 for (i in m until n) cof[i] = array[i - m]
                 for (i in 0 until m) {
                     var temp1 = "x" + (i + 1) + " = "
@@ -168,43 +167,45 @@ class AugmentedMatrix : Matrix {
                 add("", "Решим систему методом Гаусса")
                 copy.gauss_transformation()
                 copy.reduce_null_strings()
-                if (m == n) {
-                    val answer : ArrayList<Ring> = createSingleArrayList<Ring>(createNumber(0.0), n)
-                    for (i in 0 until n) if (arr[i][i].equals(1.0)) answer[i] = augmented_arr[0][i] else throw HAVE_NOT_SOLUTIONS()
+                if (copy.m == copy.n) {
+                    val answer : ArrayList<Ring> = createSingleArrayList<Ring>({createNumber(0.0)}, copy.n)
+                    for (i in 0 until n) if (copy.arr[i][i].equals(1.0)) answer[i] = augmented_arr[0][i] else throw HAVE_NOT_SOLUTIONS()
                     return Point(answer)
-                } else {
-                    val base = createSingleArrayList<Matrix>(Matrix(1), n-m);
+                }
+                else if (copy.m < copy.n){
+                    val base = createSingleArrayList<Matrix>({Matrix(1)}, copy.n-copy.m)
                     if (is_homogeneous()) {
                         add(
                             "",
                             "Так как СЛАУ является однородной и прямоугольной, то она задаёт линейное подпространство(оболочку). Найдём базис."
                         )
                         for (i in 0 until n - m) {
-                            val cords_vector = createSingleArrayList(createNumber(0.0),n - m)
+                            val cords_vector = createSingleArrayList({createNumber(0.0)},n - m)
                             cords_vector[i] = createNumber(1.0)
                             for (j in m until n) add("x" + (j + 1) + " = " + cords_vector[j], "")
                             for (j in 0 until m) {
-                                base[i] = substituion(cords_vector)
+                                base[i] = copy.substituion(cords_vector)
                                 base[i].log_this("")
                             }
                         }
                         return LinearSpace(base)
-                    } else {
+                    }
+                    else {
                         add(
                             "",
                             "Так как СЛАУ является неоднородной и прямоугольной, то она задаёт линейное многообразие. Найдём базис."
                         )
                         add("", "Найдём частное решение")
-                        val v = substituion(createSingleArrayList(createNumber(0.0), n - m))
+                        val v = copy.substituion(createSingleArrayList({ createNumber(0.0) }, n - m))
                         v.log_this("Это вектор, на который перенесёно линейное подпространство")
                         copy.reset_augmented()
                         copy.log_this("Найдём базис соответствующего пространства. Для этого обнулим столбец свободных членов.")
                         for (i in 0 until n - m) {
-                            val cords_vector = createSingleArrayList<Ring>(createNumber(0.0),n - m)
+                            val cords_vector = createSingleArrayList<Ring>({ createNumber(0.0) },n - m)
                             cords_vector[i] = createNumber(1.0)
                             for (j in m until n) add("x" + (j + 1) + " = " + cords_vector[j - m], "")
                             for (j in 0 until m) {
-                                base[i] = substituion(cords_vector)
+                                base[i] = copy.substituion(cords_vector)
                                 base[i].log_this("")
                             }
                         }
@@ -217,6 +218,10 @@ class AugmentedMatrix : Matrix {
                         }
                         return temp!!
                     }
+                }
+                else {
+                    copy.log_this("Так как строк больше, чем столбцов и сократить ничего нельзя, то система не имеет решений.")
+                    throw HAVE_NOT_SOLUTIONS()
                 }
             }
         } else throw MATRIX_DIMENSION_MISSMATCH()

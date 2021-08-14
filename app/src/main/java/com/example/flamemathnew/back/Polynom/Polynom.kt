@@ -9,7 +9,7 @@ import Support.createSingleArrayList
 import android.os.Build
 
 class Polynom() : Ring() {
-    var cofs : ArrayList <Ring> = createSingleArrayList(createNumber(0.0), 1)
+    var cofs : ArrayList <Ring> = createSingleArrayList({ createNumber(0.0) }, 1)
     constructor(_cofs: ArrayList<Ring>) : this(){
         var i : Int = _cofs.size - 1
         while (_cofs[i].equals(0) && i > 0){
@@ -27,9 +27,9 @@ class Polynom() : Ring() {
             val temp_arr : ArrayList<Ring>
             if (left.cofs.size != right.cofs.size)
             {
-                temp_arr = createSingleArrayList(createNumber(0.0), if(left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
+                temp_arr = createSingleArrayList({ createNumber(0.0) }, if(left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
             }
-            else temp_arr = createSingleArrayList(createNumber(0.0), left.cofs.size)
+            else temp_arr = createSingleArrayList({ createNumber(0.0) }, left.cofs.size)
             for (i in 0 until left.cofs.size) temp_arr[i] = temp_arr[i] + left.cofs[i]
             for (i in 0 until right.cofs.size) temp_arr[i] = temp_arr[i] + right.cofs[i]
             return Polynom(temp_arr)
@@ -43,9 +43,9 @@ class Polynom() : Ring() {
             val temp_arr : ArrayList<Ring>
             if (left.cofs.size != right.cofs.size)
             {
-                temp_arr = createSingleArrayList(createNumber(0.0), if(left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
+                temp_arr = createSingleArrayList({ createNumber(0.0) }, if(left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
             }
-            else temp_arr = createSingleArrayList(createNumber(0.0), left.cofs.size)
+            else temp_arr = createSingleArrayList({ createNumber(0.0) }, left.cofs.size)
             for (i in 0 until left.cofs.size) temp_arr[i] = temp_arr[i] + left.cofs[i]
             for (i in 0 until right.cofs.size) temp_arr[i] = temp_arr[i] - right.cofs[i]
             return Polynom(temp_arr)
@@ -56,12 +56,12 @@ class Polynom() : Ring() {
     override fun times(right: Ring): Ring {
         if (right is Polynom){
             val left = this
-            val temp_arr = createSingleArrayList(createNumber(0.0), left.cofs.size + right.cofs.size + 1)
+            val temp_arr = createSingleArrayList({ createNumber(0.0) }, left.cofs.size + right.cofs.size + 1)
             for (i in 0 until left.cofs.size) for (j in 0 until right.cofs.size) temp_arr[i+j] = temp_arr[i+j] + left.cofs[i] * right.cofs[j]
             return Polynom(temp_arr)
         }
         else if (right is FractionalNumber || right is Dec_Number){
-            val temp_arr = createSingleArrayList(createNumber(0.0), cofs.size)
+            val temp_arr = createSingleArrayList({ createNumber(0.0) }, cofs.size)
             for (i in 0 until cofs.size) temp_arr[i] = cofs[i] * right
             return Polynom(temp_arr)
         }
@@ -88,14 +88,14 @@ class Polynom() : Ring() {
             else throw Computer.BAD_ARGUMENTS()
         }
         else if (right is FractionalNumber || right is Dec_Number){
-            val temp_arr = createSingleArrayList(createNumber(0.0), cofs.size)
+            val temp_arr = createSingleArrayList({createNumber(0.0)}, cofs.size)
             for (i in 0 until cofs.size) temp_arr[i] = cofs[i] / right
             return Polynom(temp_arr)
         }
         else throw Computer.NON_COMPLIANCE_TYPES()
     }
     fun incpower(power : Int){
-        val temparr = createSingleArrayList(createNumber(0.0), cofs.size + power)
+        val temparr = createSingleArrayList({ createNumber(0.0) }, cofs.size + power)
         for (i in power until cofs.size) temparr[i+power] = cofs[i]
         cofs = temparr
     }
