@@ -72,13 +72,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/spinner_type_numbers"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mult_matr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="Умножить"
                     android:textAlignment="center"
                     android:textSize="15sp" />
 
@@ -87,9 +88,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="SLE"
+                    android:text="СЛАУ"
                     android:textAlignment="center"
                     android:textSize="15sp" />
+
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -145,7 +147,7 @@
                             android:layout_margin="5dp"
                             android:orientation="vertical"
                             android:paddingTop="16dp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             app:cardBackgroundColor="#FFFDFB">
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -249,6 +251,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/log"
+                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

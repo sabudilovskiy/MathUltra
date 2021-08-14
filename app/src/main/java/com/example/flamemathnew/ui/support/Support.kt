@@ -17,6 +17,33 @@ class Support {
         private val RED_TEXT_TAG = "RED_TEXT_TAG"
 
 
+
+        fun computeSLE(listMatr: ArrayList<String>,
+                       TYPE_COMPUTE: String,
+                       numbersType: String,
+                       N: Int,
+                       M: Int) : String {
+            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+
+            var answer: String
+            var log = ""
+            try {
+                answer = "Ответ: " + Computer.SLE(list, true, "method", "PROPER") + "\n"
+                log = Computer.get_log_as_str()
+            } catch (matrix_fail: Computer.MATRIX_FAIL) {
+                answer = "Матрица пуста"
+            } catch (non_quadratic_matrix: Computer.NON_QUADRATIC_MATRIX) {
+                answer = "Матрица не является квадратной. Вычислить обратную невозможно."
+            } catch (field_error: Computer.FIELD_ERROR) {
+                answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
+            } catch (degenerate_matrix: Computer.DEGENERATE_MATRIX) {
+                answer = "Матрица является вырожденной. Нахождение обратной невозможно."
+            }
+
+            return "$answer $log"
+        }
+
+
         fun computeLexemes(
             editText: EditText,
             keys: ArrayList<String?>,
