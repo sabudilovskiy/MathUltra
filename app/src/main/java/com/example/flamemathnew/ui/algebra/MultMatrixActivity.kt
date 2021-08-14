@@ -1,8 +1,8 @@
 package com.example.flamemathnew.ui.algebra
 
 import MRV.Computer
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +14,8 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentMultMatrixBinding
 
+class MultMatrixActivity : AppCompatActivity() {
 
-class MultMatrixFragment : Fragment() {
 
 
     private var dimens = arrayOf("1", "2", "3", "4", "5", "6", "7")
@@ -25,53 +25,17 @@ class MultMatrixFragment : Fragment() {
     private var listMatr: ArrayList<EditText> = arrayListOf()
     private var listMatr2: ArrayList<EditText> = arrayListOf()
     var numberTypes = arrayOf("PROPER", "DEC")
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-    }
-
-
-    fun changeMatrix(N: Int, M: Int, v: LinearLayoutCompat, listMatr: ArrayList<EditText>) {
-        v.removeAllViews()
-        listMatr.clear()
-        for (i in 0 until N) {
-            val linearLayoutCompat = LinearLayoutCompat(requireContext())
-            linearLayoutCompat.orientation = LinearLayoutCompat.HORIZONTAL
-            val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-
-            linearLayoutCompat.layoutParams = params
-            for (j in 0 until M) {
-                val params2 = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-                val editText = EditText(context)
-                editText.hint = "A" + (i + 1) + (j + 1)
-                editText.textAlignment = View.TEXT_ALIGNMENT_CENTER
-                editText.width = 250 - M * 10
-                editText.height = 250 - M * 10
-                editText.textSize = 20f
-                params2.weight = 1f
-                editText.layoutParams = params2
-                linearLayoutCompat.addView(editText)
-                listMatr.add(editText)
-            }
-            v.addView(linearLayoutCompat)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState:
-        Bundle?
-    ): View {
-
-        _binding = FragmentMultMatrixBinding.inflate(inflater, container, false)
+        _binding = FragmentMultMatrixBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         changeMatrix(N, M, binding.linearLayoutCompatMatrix1, listMatr)
         changeMatrix(N, M, binding.linearLayoutCompatMatrix2, listMatr2)
-        binding.spinnerTimes.adapter =  ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, numberTypes)
+        binding.spinnerTimes.adapter =  ArrayAdapter(applicationContext, R.layout.support_simple_spinner_dropdown_item, numberTypes)
         fun changeN(item: String){
             N = item.toInt()
             changeMatrix(N, M, binding.linearLayoutCompatMatrix1, listMatr)
@@ -95,8 +59,8 @@ class MultMatrixFragment : Fragment() {
             MultMatrixFragment.numberType = item
         }
 
-        val adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
-      //  adapter.setDropDownViewResource(R.layout.my_spinner_item)
+        val adapter = ArrayAdapter(applicationContext, R.layout.support_simple_spinner_dropdown_item, dimens)
+        //  adapter.setDropDownViewResource(R.layout.my_spinner_item)
 
         binding.mSize.adapter = adapter
         binding.nSize.adapter = adapter
@@ -148,14 +112,47 @@ class MultMatrixFragment : Fragment() {
             binding.logMult.text = answer
         }
 
-        return binding.root
+
     }
+
+
+    fun changeMatrix(N: Int, M: Int, v: LinearLayoutCompat, listMatr: ArrayList<EditText>) {
+        v.removeAllViews()
+        listMatr.clear()
+        for (i in 0 until N) {
+            val linearLayoutCompat = LinearLayoutCompat(applicationContext)
+            linearLayoutCompat.orientation = LinearLayoutCompat.HORIZONTAL
+            val params = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            linearLayoutCompat.layoutParams = params
+            for (j in 0 until M) {
+                val params2 = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                val editText = EditText(applicationContext)
+                editText.hint = "A" + (i + 1) + (j + 1)
+                editText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                editText.width = 250 - M * 10
+                editText.height = 250 - M * 10
+                editText.textSize = 20f
+                params2.weight = 1f
+                editText.layoutParams = params2
+                linearLayoutCompat.addView(editText)
+                listMatr.add(editText)
+            }
+            v.addView(linearLayoutCompat)
+        }
+    }
+
 
     companion object {
         private var N = 1
         private var M = 1
         private var N2 = 1
         private var M2 = 1
-        var numberType = "PROPER"
+        private var numberType = "PROPER"
     }
+
 }
