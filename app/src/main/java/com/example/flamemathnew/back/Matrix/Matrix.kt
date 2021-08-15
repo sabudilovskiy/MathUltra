@@ -21,19 +21,19 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 public fun create_vector_str(cords: ArrayList<Ring>): Matrix {
-    val temp = createRectangleArrayList({createNumb(0.0)}, 1, cords.size)
+    val temp : ArrayList<ArrayList<Ring>>  = createRectangleArrayList({createNumb(0.0)}, 1, cords.size)
     for (i in 0 until cords.size) temp[0][i] = cords[i]
     return Matrix(temp)
 }
 
 public fun create_vector_col(cords: ArrayList<Ring>): Matrix {
-    val temp = createRectangleArrayList({ createNumb(0.0) }, cords.size, 1)
+    val temp : ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, cords.size, 1)
     for (i in 0 until cords.size) temp[i][0] = cords[i]
     return Matrix(temp)
 }
 
 open class Matrix : Ring {
-    protected var cof_det = createNumb(1.0)
+    protected var cof_det : Ring = createNumb(1.0)
     var m = 0
     var n = 0
     var arr: ArrayList<ArrayList<Ring>>;
@@ -385,7 +385,7 @@ open class Matrix : Ring {
     fun det_with_triangle(): Ring {
         val copy = Matrix(arr)
         copy.triangular_transformation()
-        var det = createNumb(1.0)
+        var det : Ring = createNumb(1.0)
         var temp = "det = "
         var temp2 = "det = "
         for (i in 0 until m) {
@@ -419,7 +419,7 @@ open class Matrix : Ring {
     }
 
     fun decompositonWithStr(str: Int): Ring {
-        var det = createNumb(0.0)
+        var det : Ring = createNumb(0.0)
         val A = createSingleArrayList<Ring>({ createNumb(0.0) }, m) //массив алгебраических дополнений
         log_this("Для подсчёта определителя будем использовать разложение в строку. Раскладываем по " + (str + 1) + " строке.")
         for (i in 0 until n) {
@@ -454,7 +454,7 @@ open class Matrix : Ring {
     }
 
     fun decompositonWithCol(col: Int): Ring {
-        var det = createNumb(0.0)
+        var det : Ring = createNumb(0.0)
         val A = createSingleArrayList<Ring>({ createNumb(0.0) }, m) //массив алгебраических дополнений
         log_this("Для подсчёта определителя будем использовать разложение в столбец. Раскладываем по " + (col + 1) + " столбцу.")
         for (i in 0 until n) {
@@ -552,7 +552,7 @@ open class Matrix : Ring {
                             temp_col[cur_minor.m] = j
                             val minor = minor(temp_str, temp_col)
                             minor.log_this("Проверим минор.")
-                            var det = createNumb(0.0)
+                            var det : Ring = createNumb(0.0)
                             try {
                                 det = minor.determinant()
                             } catch (ignored: NON_QUADRATIC_MATRIX) {

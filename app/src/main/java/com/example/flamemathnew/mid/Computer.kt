@@ -125,7 +125,7 @@ object Computer {
         val m : Int = temp_matrix.size
         if (m<1) throw MATRIX_FAIL()
         for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
-        val arr = createRectangleArrayList({ createNumb(0.0) }, m, m)
+        val arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m, m)
         for (i in 0 until m)
             for (j in 0 until m)
                 if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
@@ -161,7 +161,7 @@ object Computer {
         val m : Int = temp_matrix.size
         if (m<1) throw MATRIX_FAIL()
         for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
-        val arr = createRectangleArrayList({ createNumb(0.0) }, m, m)
+        val arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m, m)
         for (i in 0 until m)
             for (j in 0 until m)
                 if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
@@ -203,7 +203,7 @@ object Computer {
         if (m<1) throw MATRIX_FAIL()
         val n : Int = temp_matrix[0].size
         for (i in 0 until m) if (temp_matrix[i].size != n) throw MATRIX_ERROR()
-        val arr = createRectangleArrayList({ createNumb(0.0) }, m, n)
+        val arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m, n)
         for (i in 0 until m)
             for (j in 0 until n)
                 if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
@@ -260,7 +260,7 @@ object Computer {
         if (m<1) throw MATRIX_FAIL()
         val n : Int = temp_matrix_left[0].size
         for (i in 0 until m) if (temp_matrix_left[i].size != n) throw MATRIX_ERROR()
-        val left_arr = createRectangleArrayList({ createNumb(0.0) }, m, n)
+        val left_arr : ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m, n)
         for (i in 0 until m)
             for (j in 0 until n)
                 if (is_number(temp_matrix_left[i][j]!!)) left_arr[i][j] = createNumb(temp_matrix_left[i][j]!!.toDouble())
@@ -268,7 +268,7 @@ object Computer {
         if (temp_matrix_right.size != n) throw Computer.MATRIX_DIMENSION_MISSMATCH()
         val p : Int = temp_matrix_right[0].size
         for (i in 0 until n) if (temp_matrix_right[i].size != p) throw MATRIX_FAIL()
-        val right_arr = createRectangleArrayList({ createNumb(0.0) }, n, p)
+        val right_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, n, p)
         for (i in 0 until n)
             for (j in 0 until p)
                 if (is_number(temp_matrix_right[i][j]!!)) right_arr[i][j] = createNumb(temp_matrix_right[i][j]!!.toDouble())

@@ -180,7 +180,7 @@ class AugmentedMatrix : Matrix {
                             "Так как СЛАУ является однородной и прямоугольной, то она задаёт линейное подпространство(оболочку). Найдём базис."
                         )
                         for (i in 0 until copy.n - copy.m) {
-                            val cords_vector = createSingleArrayList({createNumb(0.0)},copy.n - copy.m)
+                            val cords_vector  : ArrayList<Ring> = createSingleArrayList({createNumb(0.0)},copy.n - copy.m)
                             cords_vector[i] = createNumb(1.0)
                             for (j in copy.m until copy.n) add("x" + (j + 1) + " = " + cords_vector[j], "")
                             for (j in 0 until copy.m) {
