@@ -2,7 +2,7 @@ package Matrix
 
 import AffineSpace.AffineSpace
 import MathObject.Ring
-import Number.FractionalNumber
+import Number.FractionalNumb
 import LinearSpace.LinearSpace
 import Logger.Log.add
 import MRV.Computer
@@ -11,7 +11,7 @@ import MRV.Computer.INVALID_NUMBER_STRING
 import MRV.Computer.MATRIX_DIMENSION_MISSMATCH
 import MRV.Computer.NON_SINGLE
 import MathObject.MathObject.MathObject
-import Number.createNumber
+import Number.createNumb
 import Parameters.SLE
 import Point.Point
 import Support.createRectangleArrayList
@@ -25,7 +25,7 @@ class AugmentedMatrix : Matrix {
         val augmented_m = _augmented_arr.size
         if (augmented_m == m) {
             if (augmented_m > 0) augmented_n = _augmented_arr[0].size else augmented_n = 0
-            augmented_arr = createRectangleArrayList<Ring>({createNumber(0.0)}, augmented_m, augmented_n)
+            augmented_arr = createRectangleArrayList<Ring>({createNumb(0.0)}, augmented_m, augmented_n)
             for (i in 0 until augmented_m) for (j in 0 until augmented_n) augmented_arr[i][j] = _augmented_arr[i][j]
         } else throw MATRIX_DIMENSION_MISSMATCH()
     }
@@ -78,7 +78,7 @@ class AugmentedMatrix : Matrix {
 
     @Throws(INVALID_NUMBER_STRING::class)
     override fun rank(): Int {
-        val temp_arr = createRectangleArrayList<Ring>({FractionalNumber(0.0)}, m, n+augmented_n)
+        val temp_arr = createRectangleArrayList<Ring>({FractionalNumb(0.0)}, m, n+augmented_n)
         for (i in 0 until m) for (j in 0 until n + augmented_n) {
             if (j < n) temp_arr[i][j] = arr[i][j] else temp_arr[i][j] = augmented_arr[i][j - n]
         }
@@ -101,7 +101,7 @@ class AugmentedMatrix : Matrix {
     }
 
     override fun delete_string(a: Int) {
-        val temp = createRectangleArrayList<Ring>({ createNumber(0.0) }, m-1, augmented_n)
+        val temp = createRectangleArrayList<Ring>({ createNumb(0.0) }, m-1, augmented_n)
         for (i in 0 until a) for (j in 0 until augmented_n) temp[i][j] = augmented_arr[i][j]
         for (i in a + 1 until m) for (j in 0 until augmented_n) temp[i - 1][j] = augmented_arr[i][j]
         augmented_arr = temp
@@ -109,7 +109,7 @@ class AugmentedMatrix : Matrix {
     }
 
     protected fun reset_augmented() {
-        augmented_arr = createRectangleArrayList({ createNumber(0.0) }, m, 1)
+        augmented_arr = createRectangleArrayList({ createNumb(0.0) }, m, 1)
     }
 
     protected fun is_homogeneous(): Boolean {
@@ -122,7 +122,7 @@ class AugmentedMatrix : Matrix {
     fun substituion(array: ArrayList<Ring>): Matrix {
         if (n - m == array.size && augmented_n == 1) {
             if (is_single()) {
-                val cof : ArrayList<Ring> = createSingleArrayList<Ring> ({createNumber(0.0)}, n)
+                val cof : ArrayList<Ring> = createSingleArrayList<Ring> ({createNumb(0.0)}, n)
                 for (i in m until n) cof[i] = array[i - m]
                 for (i in 0 until m) {
                     var temp1 = "x" + (i + 1) + " = "
@@ -168,7 +168,7 @@ class AugmentedMatrix : Matrix {
                 copy.gauss_transformation()
                 copy.reduce_null_strings()
                 if (copy.m == copy.n) {
-                    val answer : ArrayList<Ring> = createSingleArrayList<Ring>({createNumber(0.0)}, copy.n)
+                    val answer : ArrayList<Ring> = createSingleArrayList<Ring>({createNumb(0.0)}, copy.n)
                     for (i in 0 until copy.n) if (copy.arr[i][i].equals(1.0)) answer[i] = copy.augmented_arr[0][i] else throw HAVE_NOT_SOLUTIONS()
                     return Point(answer)
                 }
@@ -180,8 +180,8 @@ class AugmentedMatrix : Matrix {
                             "Так как СЛАУ является однородной и прямоугольной, то она задаёт линейное подпространство(оболочку). Найдём базис."
                         )
                         for (i in 0 until copy.n - copy.m) {
-                            val cords_vector = createSingleArrayList({createNumber(0.0)},copy.n - copy.m)
-                            cords_vector[i] = createNumber(1.0)
+                            val cords_vector = createSingleArrayList({createNumb(0.0)},copy.n - copy.m)
+                            cords_vector[i] = createNumb(1.0)
                             for (j in copy.m until copy.n) add("x" + (j + 1) + " = " + cords_vector[j], "")
                             for (j in 0 until copy.m) {
                                 base[i] = copy.substituion(cords_vector)
@@ -196,13 +196,13 @@ class AugmentedMatrix : Matrix {
                             "Так как СЛАУ является неоднородной и прямоугольной, то она задаёт линейное многообразие. Найдём базис."
                         )
                         add("", "Найдём частное решение")
-                        val v = copy.substituion(createSingleArrayList({ createNumber(0.0) }, copy.n - copy.m))
+                        val v = copy.substituion(createSingleArrayList({ createNumb(0.0) }, copy.n - copy.m))
                         v.log_this("Это вектор, на который перенесёно линейное подпространство")
                         copy.reset_augmented()
                         copy.log_this("Найдём базис соответствующего пространства. Для этого обнулим столбец свободных членов.")
                         for (i in 0 until copy.n - copy.m) {
-                            val cords_vector = createSingleArrayList<Ring>({ createNumber(0.0) },copy.n - copy.m)
-                            cords_vector[i] = createNumber(1.0)
+                            val cords_vector = createSingleArrayList<Ring>({ createNumb(0.0) },copy.n - copy.m)
+                            cords_vector[i] = createNumb(1.0)
                             for (j in copy.m until copy.n) add("x" + (j + 1) + " = " + cords_vector[j - copy.m], "")
                             for (j in 0 until copy.m) {
                                 base[i] = copy.substituion(cords_vector)

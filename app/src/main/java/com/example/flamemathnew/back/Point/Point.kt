@@ -2,7 +2,7 @@ package Point
 
 import MathObject.Ring
 import MathObject.MathObject.MathObject
-import Number.createNumber
+import Number.createNumb
 import Support.createSingleArrayList
 
 class Point : MathObject{
@@ -10,13 +10,13 @@ class Point : MathObject{
     var n = 0
 
     internal constructor(n: Int) {
-        coords = createSingleArrayList({createNumber(0.0)}, n)
+        coords = createSingleArrayList({createNumb(0.0)}, n)
         this.n = n
     }
 
     constructor(arr: MutableList<Double>) {
-        coords = createSingleArrayList({ createNumber(0.0) },arr.size)
-        for (i in 0 until arr.size) coords[i] = createNumber(arr[i])
+        coords = createSingleArrayList({ createNumb(0.0) },arr.size)
+        for (i in 0 until arr.size) coords[i] = createNumb(arr[i])
     }
     constructor(_arr: ArrayList<Ring>){
         coords = _arr

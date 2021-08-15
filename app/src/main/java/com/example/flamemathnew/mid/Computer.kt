@@ -13,7 +13,7 @@ import MathObject.MathObject.MathObject
 import MathObject.Ring
 import Matrix.AugmentedMatrix
 import Matrix.Matrix
-import Number.createNumber
+import Number.createNumb
 import Parameters.Number
 import Support.createRectangleArrayList
 import com.example.flamemathnew.mid.Settings
@@ -125,10 +125,10 @@ object Computer {
         val m : Int = temp_matrix.size
         if (m<1) throw MATRIX_FAIL()
         for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
-        val arr = createRectangleArrayList({ createNumber(0.0) }, m, m)
+        val arr = createRectangleArrayList({ createNumb(0.0) }, m, m)
         for (i in 0 until m)
             for (j in 0 until m)
-                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
+                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
                 else throw FIELD_ERROR(i, j)
         val current : Matrix = Matrix(arr)
         val answer : Ring
@@ -161,10 +161,10 @@ object Computer {
         val m : Int = temp_matrix.size
         if (m<1) throw MATRIX_FAIL()
         for (i in 0 until m) if (temp_matrix[i].size != m) throw NON_QUADRATIC_MATRIX()
-        val arr = createRectangleArrayList({ createNumber(0.0) }, m, m)
+        val arr = createRectangleArrayList({ createNumb(0.0) }, m, m)
         for (i in 0 until m)
             for (j in 0 until m)
-                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
+                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
                 else throw FIELD_ERROR(i, j)
         val current : Matrix = Matrix(arr)
         val answer : Ring
@@ -203,10 +203,10 @@ object Computer {
         if (m<1) throw MATRIX_FAIL()
         val n : Int = temp_matrix[0].size
         for (i in 0 until m) if (temp_matrix[i].size != n) throw MATRIX_ERROR()
-        val arr = createRectangleArrayList({ createNumber(0.0) }, m, n)
+        val arr = createRectangleArrayList({ createNumb(0.0) }, m, n)
         for (i in 0 until m)
             for (j in 0 until n)
-                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
+                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
                 else throw FIELD_ERROR(i, j)
         val current : Matrix = Matrix(arr)
         val answer : Int
@@ -236,13 +236,13 @@ object Computer {
         for (i in 0 until m) if (temp_matrix[i].size != n) throw MATRIX_FAIL()
         val arr : ArrayList<ArrayList<Ring>>
         val free : ArrayList<ArrayList<Ring>>
-        arr = createRectangleArrayList({ createNumber(0.0) }, m, n-1)
-        free = createRectangleArrayList({ createNumber(0.0) }, m, 1)
+        arr = createRectangleArrayList({ createNumb(0.0) }, m, n-1)
+        free = createRectangleArrayList({ createNumb(0.0) }, m, 1)
         for (i in 0 until m) {
             for (j in 0 until n - 1)
-                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumber(temp_matrix[i][j]!!.toDouble())
+                if (is_number(temp_matrix[i][j]!!)) arr[i][j] = createNumb(temp_matrix[i][j]!!.toDouble())
                 else throw FIELD_ERROR(i, j)
-            if (is_number(temp_matrix[i][n-1]!!)) free[i][0] = createNumber(temp_matrix[i][n-1]!!.toDouble())
+            if (is_number(temp_matrix[i][n-1]!!)) free[i][0] = createNumb(temp_matrix[i][n-1]!!.toDouble())
             else throw FIELD_ERROR(i, n-1)
         }
         val current : AugmentedMatrix = AugmentedMatrix(arr, free)
@@ -260,18 +260,18 @@ object Computer {
         if (m<1) throw MATRIX_FAIL()
         val n : Int = temp_matrix_left[0].size
         for (i in 0 until m) if (temp_matrix_left[i].size != n) throw MATRIX_ERROR()
-        val left_arr = createRectangleArrayList({ createNumber(0.0) }, m, n)
+        val left_arr = createRectangleArrayList({ createNumb(0.0) }, m, n)
         for (i in 0 until m)
             for (j in 0 until n)
-                if (is_number(temp_matrix_left[i][j]!!)) left_arr[i][j] = createNumber(temp_matrix_left[i][j]!!.toDouble())
+                if (is_number(temp_matrix_left[i][j]!!)) left_arr[i][j] = createNumb(temp_matrix_left[i][j]!!.toDouble())
                 else throw FIELD_ERROR_SLE(i, j, false)
         if (temp_matrix_right.size != n) throw Computer.MATRIX_DIMENSION_MISSMATCH()
         val p : Int = temp_matrix_right[0].size
         for (i in 0 until n) if (temp_matrix_right[i].size != p) throw MATRIX_FAIL()
-        val right_arr = createRectangleArrayList({ createNumber(0.0) }, n, p)
+        val right_arr = createRectangleArrayList({ createNumb(0.0) }, n, p)
         for (i in 0 until n)
             for (j in 0 until p)
-                if (is_number(temp_matrix_right[i][j]!!)) right_arr[i][j] = createNumber(temp_matrix_right[i][j]!!.toDouble())
+                if (is_number(temp_matrix_right[i][j]!!)) right_arr[i][j] = createNumb(temp_matrix_right[i][j]!!.toDouble())
                 else throw FIELD_ERROR_SLE(i, j, true)
         if (number == null) throw KEY_NUMBER_EMPTY()
         else if (number == "DEC"){
@@ -331,6 +331,7 @@ object Computer {
     class HAVE_NOT_SOLUTIONS : MATRIX_ERROR()
     class NON_SINGLE : MATRIX_ERROR()
     class NON_COMPLIANCE_TYPES : Exception()
+    class NON_INTEGER : Exception()
     class KEY_METHOD_EMPTY : Exception()
     class UNKNOWN_METHOD : Exception()
     class KEY_NUMBER_EMPTY : Exception()

@@ -1,6 +1,5 @@
 package Matrix
 
-import Logger.Log
 import MathObject.Ring
 import Logger.Log.add
 import MRV.Computer
@@ -8,14 +7,13 @@ import MRV.Computer.DEGENERATE_MATRIX
 import MRV.Computer.INVALID_NUMBER_STRING
 import MRV.Computer.MATRIX_DIMENSION_MISSMATCH
 import MRV.Computer.NON_QUADRATIC_MATRIX
-import Number.Dec_Number
-import Number.FractionalNumber
-import Number.createNumber
+import Number.DecNumb
+import Number.FractionalNumb
+import Number.createNumb
 import Parameters.Det
 import Parameters.Inverse.*
 import Parameters.Rank
 import com.example.flamemathnew.mid.Settings.matrix
-import com.example.flamemathnew.mid.Settings.matrix.Inverse
 import Support.createRectangleArrayList
 import Support.createSingleArrayList
 import com.example.flamemathnew.mid.Settings
@@ -23,19 +21,19 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 public fun create_vector_str(cords: ArrayList<Ring>): Matrix {
-    val temp = createRectangleArrayList({createNumber(0.0)}, 1, cords.size)
+    val temp = createRectangleArrayList({createNumb(0.0)}, 1, cords.size)
     for (i in 0 until cords.size) temp[0][i] = cords[i]
     return Matrix(temp)
 }
 
 public fun create_vector_col(cords: ArrayList<Ring>): Matrix {
-    val temp = createRectangleArrayList({ createNumber(0.0) }, cords.size, 1)
+    val temp = createRectangleArrayList({ createNumb(0.0) }, cords.size, 1)
     for (i in 0 until cords.size) temp[i][0] = cords[i]
     return Matrix(temp)
 }
 
 open class Matrix : Ring {
-    protected var cof_det = createNumber(1.0)
+    protected var cof_det = createNumb(1.0)
     var m = 0
     var n = 0
     var arr: ArrayList<ArrayList<Ring>>;
@@ -43,16 +41,16 @@ open class Matrix : Ring {
     constructor(_arr: ArrayList<ArrayList<Ring>>) {
         m = _arr.size
         if (m > 0) n = _arr[0].size else n = 0
-        arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n)
+        arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, m, n)
         for (i in 0 until m) for (j in 0 until n) arr[i][j] = _arr[i][j]
     }
 
     //создаёт единичную матрицу n на n
     constructor(n: Int) {
-        arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, n, n)
+        arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, n, n)
         m = n
         this.n = n
-        for (i in 0 until n) for (j in 0 until n) if (i == j) arr[i][j] = createNumber(1.0)
+        for (i in 0 until n) for (j in 0 until n) if (i == j) arr[i][j] = createNumb(1.0)
     }
 
 
@@ -72,7 +70,7 @@ open class Matrix : Ring {
     }
     protected fun swap_strings(a: Int, b: Int) {
         if (0 <= a && a < m && 0 <= b && b < m) {
-            cof_det = cof_det * createNumber(-1.0)
+            cof_det = cof_det * createNumb(-1.0)
             for (i in 0 until n) {
                 val first = arr[a][i]
                 val second = arr[b][i]
@@ -84,7 +82,7 @@ open class Matrix : Ring {
 
     protected open fun delete_string(a: Int) {
         if (0 <= a && a < m) {
-            val temp = createRectangleArrayList<Ring>({ createNumber(0.0) }, m - 1, n)
+            val temp = createRectangleArrayList<Ring>({ createNumb(0.0) }, m - 1, n)
             for (i in 0 until a) for (j in 0 until n) temp[i][j] = arr[i][j]
             for (i in a + 1 until m) for (j in 0 until n) temp[i - 1][j] = arr[i][j]
             arr = temp
@@ -94,8 +92,8 @@ open class Matrix : Ring {
 
     protected fun delete_column(a: Int) {
         if (0 <= a && a < n) {
-            val zero = createNumber(0.0)
-            val temp = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n - 1)
+            val zero = createNumb(0.0)
+            val temp = createRectangleArrayList<Ring>({ createNumb(0.0) }, m, n - 1)
             for (i in 0 until m) for (j in 0 until a) temp[i][j] = arr[i][j]
             for (i in 0 until m) for (j in a + 1 until n) temp[i][j - 1] = arr[i][j]
             arr = temp
@@ -165,8 +163,8 @@ open class Matrix : Ring {
 
     //проверяет, является ли матрица единичной в главной части(квадратной подматрице)
     protected fun is_single(): Boolean {
-        val one = createNumber(1.0)
-        val zero = createNumber(0.0)
+        val one = createNumb(1.0)
+        val zero = createNumb(0.0)
         for (i in 0 until m) for (j in 0 until m) if (arr[i][j] != (if (i == j) one else zero)) return false
         return true
     }
@@ -219,7 +217,7 @@ open class Matrix : Ring {
             var a = 0
             var b = 0
             val m_new = m - str.size
-            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumber(0.0) }, m_new, m_new)
+            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m_new, m_new)
             while (k < m_new * m_new) {
                 var crossed_out = false
                 for (j in str) if (a == j) {
@@ -245,7 +243,7 @@ open class Matrix : Ring {
         return if (str.size == col.size) {
             var k = 0
             val m_new = str.size
-            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumber(0.0) }, m_new, m_new)
+            val temp_arr: ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m_new, m_new)
             var i = 0
             while (i < m && k < m_new * m_new) {
                 var j = 0
@@ -272,7 +270,7 @@ open class Matrix : Ring {
     protected fun count_null_in_string(a: Int): Int {
         return if (0 <= a && a < m) {
             var count = 0
-            val zero = createNumber(0.0)
+            val zero = createNumb(0.0)
             for (i in 0 until n) if (arr[a][i] == zero) count++
             count
         } else throw Computer.INVALID_NUMBER_STRING()
@@ -281,7 +279,7 @@ open class Matrix : Ring {
     protected fun count_null_in_column(a: Int): Int {
         return if (0 <= a && a < m) {
             var count = 0
-            val zero = createNumber(0.0)
+            val zero = createNumb(0.0)
             for (i in 0 until m) if (arr[i][a] == zero) count++
             count
         } else throw Computer.INVALID_NUMBER_STRING()
@@ -320,7 +318,7 @@ open class Matrix : Ring {
                 "Получаем минор вычеркнув " + (a + 1) + " строку и " + (b + 1) + " столбец. Вычислим его определитель."
             )
             val minor_determinant = minor.determinant()
-            val value = minor_determinant * createNumber(Math.pow(-1.0, (a + b).toDouble()))
+            val value = minor_determinant * createNumb(Math.pow(-1.0, (a + b).toDouble()))
             add(
                 "A" + (a + 1) + (b + 1) + " = " + minor_determinant + "*" + "-1^(" + (a + 1) + "+" + (b + 1) + ") = " + value,
                 ""
@@ -340,7 +338,7 @@ open class Matrix : Ring {
                     Det.TRIANGLE -> det_with_triangle();
                 };
             } catch (ignored: Computer.MATRIX_DIMENSION_MISSMATCH) {
-                return createNumber(0.0)
+                return createNumb(0.0)
             }
         } else throw Computer.NON_QUADRATIC_MATRIX();
     }
@@ -387,7 +385,7 @@ open class Matrix : Ring {
     fun det_with_triangle(): Ring {
         val copy = Matrix(arr)
         copy.triangular_transformation()
-        var det = createNumber(1.0)
+        var det = createNumb(1.0)
         var temp = "det = "
         var temp2 = "det = "
         for (i in 0 until m) {
@@ -421,8 +419,8 @@ open class Matrix : Ring {
     }
 
     fun decompositonWithStr(str: Int): Ring {
-        var det = createNumber(0.0)
-        val A = createSingleArrayList<Ring>({ createNumber(0.0) }, m) //массив алгебраических дополнений
+        var det = createNumb(0.0)
+        val A = createSingleArrayList<Ring>({ createNumb(0.0) }, m) //массив алгебраических дополнений
         log_this("Для подсчёта определителя будем использовать разложение в строку. Раскладываем по " + (str + 1) + " строке.")
         for (i in 0 until n) {
             if (arr[str][i].equals(0.0)) {
@@ -430,7 +428,7 @@ open class Matrix : Ring {
                     "",
                     "Так как a" + (str + 1) + (i + 1) + " равно нулю, то считать A" + (str + 1) + (i + 1) + " нет необходимости."
                 )
-                A[i] = createNumber(0.0)
+                A[i] = createNumb(0.0)
             } else A[i] = algebraic_complement(str, i)
         }
         var temp = "det = "
@@ -456,12 +454,12 @@ open class Matrix : Ring {
     }
 
     fun decompositonWithCol(col: Int): Ring {
-        var det = createNumber(0.0)
-        val A = createSingleArrayList<Ring>({ createNumber(0.0) }, m) //массив алгебраических дополнений
+        var det = createNumb(0.0)
+        val A = createSingleArrayList<Ring>({ createNumb(0.0) }, m) //массив алгебраических дополнений
         log_this("Для подсчёта определителя будем использовать разложение в столбец. Раскладываем по " + (col + 1) + " столбцу.")
         for (i in 0 until n) {
             if (arr[i][col].equals(0.0)) {
-                A[i] = createNumber(0.0)
+                A[i] = createNumb(0.0)
                 add(
                     "",
                     "Так как a" + (i + 1) + (col + 1) + " равно нулю, то считать A" + (i + 1) + (col + 1) + " нет необходимости."
@@ -530,7 +528,7 @@ open class Matrix : Ring {
         if (found){
             add("a" + (a + 1) + (b + 1) + '\u2260' + " 0 ", "")
             add("", "Теперь рассмотрим все миноры, в которые входит данный элемент.")
-            val temp_arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, 1, 1)
+            val temp_arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, 1, 1)
             var cur_minor = Matrix(temp_arr)
             var cur_str = arrayOfNulls<Int>(1)
             var cur_col = arrayOfNulls<Int>(1)
@@ -554,13 +552,13 @@ open class Matrix : Ring {
                             temp_col[cur_minor.m] = j
                             val minor = minor(temp_str, temp_col)
                             minor.log_this("Проверим минор.")
-                            var det = createNumber(0.0)
+                            var det = createNumb(0.0)
                             try {
                                 det = minor.determinant()
                             } catch (ignored: NON_QUADRATIC_MATRIX) {
                             } catch (ignored: INVALID_NUMBER_STRING) {
                             }
-                            if (det != createNumber(0.0)) {
+                            if (det != createNumb(0.0)) {
                                 cur_minor = minor
                                 cur_minor.log_this("Так как этот минор не равен нулю, то теперь мы будем рассматривать миноры, которые включают его")
                                 cur_str = temp_str
@@ -583,7 +581,7 @@ open class Matrix : Ring {
     }
 
     fun transposition() {
-        val new_arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, n, m)
+        val new_arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, n, m)
         for (i in 0 until m) for (j in 0 until n) new_arr[j][i] = arr[i][j]
         arr = new_arr
         val temp = n
@@ -622,7 +620,7 @@ open class Matrix : Ring {
             val det = copy.determinant()
             if (!det.equals(0.0)){
                 //матрица из дополнений
-                val _arr = createRectangleArrayList<Ring>({createNumber(0.0)}, m, n)
+                val _arr = createRectangleArrayList<Ring>({createNumb(0.0)}, m, n)
                 for (i in 0 until n) for (j in 0 until n){
                     _arr[i][j] = copy.algebraic_complement(i, j)
                 }
@@ -642,8 +640,8 @@ open class Matrix : Ring {
             if (left.m == right.m && left.n == right.n) {
                 val m = left.m
                 val n = left.n
-                val zero = createNumber(0.0)
-                val arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n)
+                val zero = createNumb(0.0)
+                val arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, m, n)
                 for (i in 0 until m) for (j in 0 until n) arr[i][j] = left.arr[i][j] + right.arr[i][j]
                 return Matrix(arr)
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
@@ -657,7 +655,7 @@ open class Matrix : Ring {
             if (left.m == right.m && left.n == right.n) {
                 val m = left.m
                 val n = left.n
-                val arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, n)
+                val arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, m, n)
                 for (i in 0 until m) for (j in 0 until n) arr[i][j] = left.arr[i][j] - right.arr[i][j]
                 return Matrix(arr)
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
@@ -666,7 +664,7 @@ open class Matrix : Ring {
     }
 
     override fun times(right: Ring): Ring {
-        if (right is Dec_Number || right is FractionalNumber){
+        if (right is DecNumb || right is FractionalNumb){
             val copy : Matrix = Matrix(arr)
             for (i in 0 until m) copy.mult_string(i, right)
             return copy
@@ -677,8 +675,8 @@ open class Matrix : Ring {
                 val m = left.m
                 val n = left.n
                 val p = right.n
-                val zero = createNumber(0.0)
-                val arr = createRectangleArrayList<Ring>({ createNumber(0.0) }, m, p)
+                val zero = createNumb(0.0)
+                val arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, m, p)
                 for (i in 0 until m) for (j in 0 until p) for (k in 0 until n) arr[i][j] += left.arr[i][k] * right.arr[k][j]
                 return Matrix(arr)
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
@@ -687,7 +685,7 @@ open class Matrix : Ring {
     }
 
     override fun div(right: Ring): Ring {
-        if (right is Dec_Number || right is FractionalNumber){
+        if (right is DecNumb || right is FractionalNumb){
             val copy : Matrix = Matrix(arr)
             for (i in 0 until m) copy.div_string(i, right)
             return copy
@@ -716,7 +714,7 @@ open class Matrix : Ring {
 
     override fun unaryMinus() : Ring{
         val copy = Matrix(arr)
-        for (i in 0 until m) copy.mult_string(i, createNumber(-1.0))
+        for (i in 0 until m) copy.mult_string(i, createNumb(-1.0))
         return copy
     }
 
