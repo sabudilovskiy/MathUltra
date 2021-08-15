@@ -3,6 +3,7 @@ package Number
 import MRV.Computer
 import MathObject.Ring
 import Parameters.Number.PROPER
+import android.text.BoringLayout
 import com.example.flamemathnew.mid.Settings
 import kotlin.math.abs
 
@@ -27,25 +28,36 @@ public fun createNumb(value : Long) : Numb {
 public fun findDividers(numb : Numb) : ArrayList<Ring>{
     var temp : Long
     val answer = arrayListOf<Ring>()
-    if (numb is DecNumb){
-        if (numb.value.toLong().toDouble() - numb.value == 0.0) temp = numb.value.toLong()
-        else throw Computer.NON_INTEGER()
-    }
-    else if (numb is FractionalNumb){
-        if (numb.denominator == 1L) temp = numb.numerator
-        else throw Computer.NON_INTEGER()
+    if (isInteger(numb)) {
+        if (numb is FractionalNumb) temp = numb.numerator
+        else if (numb is DecNumb) temp = numb.value.toLong()
+        else throw Computer.NON_COMPLIANCE_TYPES()
     }
     else throw Computer.NON_COMPLIANCE_TYPES()
     temp = abs(temp)
-    var l : Long = 3L
-    while (l < temp ){
+    var l : Long = 2L
+    while (temp % l == 0L){
+        temp = temp/l
+        answer.add(createNumb(l))
+    }
+    l++
+    while (l <= temp ){
         while (temp % l == 0L){
             temp = temp/l
             answer.add(createNumb(l))
         }
-        l++
+        l+=2L
     }
     return answer
+}
+public fun isInteger(numb: Numb) : Boolean{
+    if (numb is DecNumb){
+        return numb.value.toLong().toDouble() - numb.value == 0.0
+    }
+    else if (numb is FractionalNumb){
+        return numb.denominator == 1L
+    }
+    else throw Computer.NON_COMPLIANCE_TYPES()
 }
 public fun max(left : Ring, right : Ring): Ring {
     if ((left is FractionalNumb || left is DecNumb) && (right is FractionalNumb || right is DecNumb) ){

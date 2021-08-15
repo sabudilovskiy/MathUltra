@@ -28,7 +28,9 @@ inline fun <reified T> createSingleArrayList(func : () -> T, n : Int) : ArrayLis
         return array
     }
     else throw IllegalArgumentException()
-
+}
+fun Int.toBinary(len: Int): String {
+    return String.format("%" + len + "s", this.toString(2)).replace(" ".toRegex(), "0")
 }
 //создаём массив с m*n элементов, создаваемых при помощи лямбды. Первый аргумент - лямба, m, n
 inline fun <reified T> createRectangleArrayList(func : () -> T, m: Int, n: Int) : ArrayList<ArrayList<T>> {

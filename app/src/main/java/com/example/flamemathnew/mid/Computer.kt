@@ -336,6 +336,7 @@ object Computer {
     class UNKNOWN_METHOD : Exception()
     class KEY_NUMBER_EMPTY : Exception()
     class UNKNOWN_NUMBER : Exception()
+    class CANNOTDIV : Exception()
     open class FIELD_ERROR : Exception{
         public var i : Int = -1
         public var j : Int = -1
