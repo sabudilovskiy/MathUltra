@@ -3,6 +3,7 @@ package Number
 import MathObject.Ring
 import MRV.Computer
 import Support.find_GCD
+import com.example.flamemathnew.back.Polynom.Polynom
 import com.example.flamemathnew.mid.Settings
 import java.lang.Math.abs
 
@@ -12,6 +13,9 @@ class FractionalNumb : Numb {
     var denominator : Long = 1;
     constructor(value : Long){
         numerator = value;
+    }
+    constructor(value : Int){
+        numerator = value.toLong();
     }
     constructor(_numerator : Long, _denominator : Long){
         val GCD : Long = find_GCD(_numerator, _denominator)
@@ -36,7 +40,7 @@ class FractionalNumb : Numb {
 
     }
 
-    override fun compareTo(right: Numb) : Int{
+    override operator fun compareTo(right: Numb) : Int{
         if (right is DecNumb) return -right.compareTo(this)
         else if (right is FractionalNumb) {
             val difference : FractionalNumb = (this - right) as FractionalNumb
@@ -55,6 +59,7 @@ class FractionalNumb : Numb {
             val new_numerator: Long = left.numerator * LCM / denominator + right.numerator * LCM / right.denominator
             return FractionalNumb(new_numerator, LCM)
         }
+        else if (right is Polynom) return right + this
         else throw Computer.NON_COMPLIANCE_TYPES()
     }
     override operator fun minus(right : Ring) : Ring {
@@ -64,6 +69,9 @@ class FractionalNumb : Numb {
             val LCM: Long = left.denominator * right.denominator / GCD
             val new_numerator: Long = left.numerator * LCM / denominator - right.numerator * LCM / right.denominator
             return FractionalNumb(new_numerator, LCM)
+        }
+        else if (right is Polynom){
+            return -(right - this)
         }
         else throw Computer.NON_COMPLIANCE_TYPES()
     }
@@ -87,6 +95,9 @@ class FractionalNumb : Numb {
             val new_numerator = left_numerator*right_numerator
             val new_denominator = left_denominator*right_denominator
             return FractionalNumb(new_numerator, new_denominator)
+        }
+        else if (right is Polynom) {
+            return right * this
         }
         else throw Computer.NON_COMPLIANCE_TYPES()
     }
@@ -128,12 +139,12 @@ class FractionalNumb : Numb {
         if (!Settings.numbers.use_improrer_fraction){
             val int_value = numerator/denominator
             val true_numerator = numerator%denominator
-            if (denominator != 1L) return " $int_value $true_numerator/$denominator"
-            else return " " + numerator + " "
+            if (denominator != 1L) return "$int_value $true_numerator/$denominator"
+            else return numerator.toString()
         }
         else {
             if (denominator != 1L) return "  $numerator/$denominator"
-            else return " " + numerator + " "
+            else return numerator.toString()
         }
     }
     fun toDouble() : Double{

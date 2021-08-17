@@ -25,6 +25,15 @@ public fun createNumb(value : Long) : Numb {
         return DecNumb(value)
     }
 }
+public fun createNumb(value : Int) : Numb {
+    val cur_set : Parameters.Number = Settings.numbers.type;
+    if (cur_set.equals(PROPER)) {
+        return FractionalNumb(value)
+    }
+    else {
+        return DecNumb(value)
+    }
+}
 public fun findDividers(numb : Numb) : ArrayList<Ring>{
     var temp : Long
     val answer = arrayListOf<Ring>()
@@ -74,5 +83,5 @@ public fun max(left : Ring, right : Ring): Ring {
 }
 
 abstract class Numb : Ring() {
-    abstract fun compareTo(right : Numb) : Int
+    abstract operator fun compareTo(right : Numb) : Int
 }

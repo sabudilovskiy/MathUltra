@@ -9,6 +9,7 @@ import MRV.Computer.MATRIX_DIMENSION_MISSMATCH
 import MRV.Computer.NON_QUADRATIC_MATRIX
 import Number.DecNumb
 import Number.FractionalNumb
+import Number.Numb
 import Number.createNumb
 import Parameters.Det
 import Parameters.Inverse.*
@@ -16,6 +17,7 @@ import Parameters.Rank
 import com.example.flamemathnew.mid.Settings.matrix
 import Support.createRectangleArrayList
 import Support.createSingleArrayList
+import com.example.flamemathnew.back.Polynom.Polynom
 import com.example.flamemathnew.mid.Settings
 import java.util.*
 import kotlin.collections.ArrayList
@@ -118,11 +120,11 @@ open class Matrix : Ring {
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
-    protected open fun mult_string(a: Int, k: Ring) {
+    protected open fun mult_string(a: Int, k: Ring, save_det : Boolean = true) {
         if (0 <= a && a < m) {
             for (i in 0 until n) arr[a][i] = arr[a][i] * k
             log_this("Умножаем " + (a + 1) + " строку на " + k)
-            cof_det = cof_det / k
+            if (save_det) cof_det = cof_det / k
         } else throw Computer.INVALID_NUMBER_STRING()
     }
 
@@ -634,6 +636,17 @@ open class Matrix : Ring {
             else throw DEGENERATE_MATRIX()
         } else throw NON_QUADRATIC_MATRIX()
     }
+    fun findEigenvalues() : ArrayList<Ring> {
+        if (m == n){
+            val temp_arr : ArrayList<Ring> = arrayListOf(createNumb(0.0), createNumb(1.0))
+            val lambda : Polynom = Polynom(temp_arr, "λ")
+            val char_matrix : Matrix = (this - Matrix(m)*lambda) as Matrix
+            val char_polynom : Polynom = char_matrix.det_with_laplass() as Polynom
+            val roots : ArrayList<Ring> = char_polynom.solve()
+            return roots
+        }
+        else throw NON_QUADRATIC_MATRIX()
+    }
     override fun plus(right: Ring): Ring {
         if (right is Matrix){
             val left: Matrix = this
@@ -664,9 +677,9 @@ open class Matrix : Ring {
     }
 
     override fun times(right: Ring): Ring {
-        if (right is DecNumb || right is FractionalNumb){
+        if (right is Numb || right is Polynom){
             val copy : Matrix = Matrix(arr)
-            for (i in 0 until m) copy.mult_string(i, right)
+            for (i in 0 until m) copy.mult_string(i, right, false)
             return copy
         }
         else if (right is Matrix){

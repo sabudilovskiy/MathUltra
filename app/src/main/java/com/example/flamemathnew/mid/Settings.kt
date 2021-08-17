@@ -7,7 +7,7 @@ object Settings {
     object matrix {
         object Det {
             private var second : Parameters.Det = Parameters.Det.BASIC
-            private var thirst : Parameters.Det = Parameters.Det.SARUSS
+            private var thirst : Parameters.Det = Parameters.Det.LAPLASS
             private var fourth : Parameters.Det = Parameters.Det.LAPLASS
             private var border = 5
             fun setdefaultSettings() {

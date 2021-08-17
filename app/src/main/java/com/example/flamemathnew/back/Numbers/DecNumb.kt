@@ -3,16 +3,20 @@ package Number
 import MathObject.Ring
 import MRV.Computer
 import Matrix.Matrix
+import com.example.flamemathnew.back.Polynom.Polynom
 
 class DecNumb : Numb {
     var value : Double = 0.0
     constructor(_value : Double){
         value = _value
     }
+    constructor(_value : Int){
+        value = _value.toDouble()
+    }
     constructor(_value : Long){
         value = _value.toDouble()
     }
-    override fun compareTo(right: Numb): Int {
+    override operator fun compareTo(right: Numb): Int {
         if (right is DecNumb){
             if (value == right.value) return 0
             else if (value > right.value) return 1
@@ -28,6 +32,9 @@ class DecNumb : Numb {
         if (right is DecNumb){
             return createNumb(value+right.value)
         }
+        else if (right is Polynom){
+            return right + this
+        }
         else{
             throw Computer.NON_COMPLIANCE_TYPES()
         }
@@ -36,6 +43,9 @@ class DecNumb : Numb {
     override fun minus(right: Ring): Ring {
         if (right is DecNumb){
             return createNumb(value-right.value)
+        }
+        else if (right is Polynom){
+            return this + (-right)
         }
         else{
             throw Computer.NON_COMPLIANCE_TYPES()
@@ -48,6 +58,9 @@ class DecNumb : Numb {
         }
         else if (right is Matrix){
             return right*this
+        }
+        else if (right is Polynom) {
+            return right * this
         }
         else throw Computer.NON_COMPLIANCE_TYPES()
     }

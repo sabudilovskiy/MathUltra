@@ -65,9 +65,9 @@ class AugmentedMatrix : Matrix {
     }
 
     @Throws(INVALID_NUMBER_STRING::class)
-    override fun mult_string(a: Int, k: Ring) {
+    override fun mult_string(a: Int, k: Ring, save_det : Boolean) {
         for (i in 0 until augmented_n) augmented_arr[a][i] = augmented_arr[a][i] * k
-        super.mult_string(a, k)
+        super.mult_string(a, k, save_det)
     }
 
     @Throws(INVALID_NUMBER_STRING::class)
