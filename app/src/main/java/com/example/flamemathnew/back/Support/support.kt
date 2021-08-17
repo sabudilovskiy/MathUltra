@@ -1,7 +1,7 @@
 package Support
 
-import java.lang.IllegalArgumentException
 import java.lang.Math.abs
+import kotlin.IllegalArgumentException
 
 //создаём массив с n одинаковых элементов. Первый аргумент - экземпляр, второй аргумент - количество
 //inline fun <reified T> createSingleArrayList(something : T, n : Int) : ArrayList <T> {
@@ -51,7 +51,68 @@ inline fun <reified T> createRectangleArrayList(func : () -> T, m: Int, n: Int) 
 //    }
 //    else throw IllegalArgumentException()
 //}
+//Convert To Power
+fun CTP(ch : Char) : Char{
+    when (ch){
+        '0' -> return '⁰'
+        '1' -> return '¹'
+        '2' -> return '²'
+        '3' -> return '³'
+        '4' -> return '⁴'
+        '5' -> return '⁵'
+        '6' -> return '⁶'
+        '7' -> return '⁷'
+        '8' -> return '⁸'
+        '9' -> return '⁹'
+        else -> return ch
+    }
+}
+//Convert To Power
+fun CTP(numb : Int) : String{
+    var temp : String = ""
+    return CTP(numb.toString())
+}
+//Convert To Index
+fun CTP(numb : String) : String{
+    var i : Int = 0
+    var temp : String = ""
+    while (i < numb.length){
+        temp += CTP(numb[i])
+        i++
+    }
+    return temp
+}
 
+//Convert To Index
+fun CTI(ch : Char) : Char{
+    when (ch){
+        '0' -> return '₀'
+        '1' -> return '₁'
+        '2' -> return '₂'
+        '3' -> return '₃'
+        '4' -> return '₄'
+        '5' -> return '₅'
+        '6' -> return '₆'
+        '7' -> return '₇'
+        '8' -> return '₈'
+        '9' -> return '₉'
+        else -> return ch
+    }
+}
+//Convert To Index
+fun CTI(numb : Int) : String{
+    return CTI(numb.toString())
+}
+//Convert To Index
+fun CTI(numb : String) : String{
+    var i : Int = 0
+    var temp : String = ""
+    while (i < numb.length){
+        temp += CTI(numb[i])
+        i++
+    }
+    return temp
+}
 fun find_GCD(a : Long, b : Long) : Long {
     var temp_a: Long = abs(a)
     var temp_b: Long = abs(b)

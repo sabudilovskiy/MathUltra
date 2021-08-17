@@ -2,7 +2,6 @@ package Matrix
 
 import MathObject.Ring
 import Logger.Log.commit
-import Logger.Tag
 import Logger.Tag.*
 import MRV.Computer
 import MRV.Computer.DEGENERATE_MATRIX
@@ -16,6 +15,7 @@ import Number.createNumb
 import Parameters.Det
 import Parameters.Inverse.*
 import Parameters.Rank
+import Support.CTI
 import com.example.flamemathnew.mid.Settings.matrix
 import Support.createRectangleArrayList
 import Support.createSingleArrayList
@@ -23,7 +23,6 @@ import com.example.flamemathnew.back.Polynom.Polynom
 import com.example.flamemathnew.mid.Settings
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.log
 
 public fun create_vector_str(cords: ArrayList<Ring>): Matrix {
     val temp : ArrayList<ArrayList<Ring>>  = createRectangleArrayList({createNumb(0.0)}, 1, cords.size)
@@ -126,7 +125,6 @@ open class Matrix : Ring {
     protected open fun mult_string(a: Int, k: Ring, save_det : Boolean = true) {
         if (0 <= a && a < m) {
             for (i in 0 until n) arr[a][i] = arr[a][i] * k
-            log_this("Умножаем " + (a + 1) + " строку на " + k)
             if (save_det) cof_det = cof_det / k
         } else throw Computer.INVALID_NUMBER_STRING()
     }
@@ -134,7 +132,6 @@ open class Matrix : Ring {
     protected open fun div_string(a: Int, k: Ring) {
         if (0 <= a && a < m) {
             for (i in 0 until n) arr[a][i] = arr[a][i] / k
-            log_this("Делим " + (a + 1) + " строку на " + k)
             cof_det = cof_det * k
         } else throw Computer.INVALID_NUMBER_STRING()
     }
@@ -151,7 +148,7 @@ open class Matrix : Ring {
             if (!arr[i][i].equals(0.0) && f != i && f != -1) {
                 for (j in i - 1 downTo 0) {
                     commit(
-                        "k" + j + "= -a" + j + i + " / a" + i + i + "=" + -arr[j][i] + " / " + arr[i][i] + " = " + (-arr[j][i] / arr[i][i]),
+                        "k" + j + "= -a" + CTI(j) + CTI(i)+ " / a" + CTI(i) + CTI(i) + "=" + -arr[j][i] + " / " + arr[i][i] + " = " + (-arr[j][i] / arr[i][i]),
                         SOLUTION
                     )
                     val k = -arr[j][i] / arr[i][i]
@@ -164,7 +161,10 @@ open class Matrix : Ring {
             i--
         }
         log_this("Теперь и над, и под главной диагональю нули. Осталось добиться того, чтобы на главной диагонали были только единицы.")
-        for (i in 0 until m) if (!arr[i][i].equals(0.0) && !arr[i][i].equals(1.0)) div_string(i, arr[i][i])
+        for (i in 0 until m) if (!arr[i][i].equals(0.0) && !arr[i][i].equals(1.0)) {
+            log_this("Делим " + (i + 1) + " строку на " + arr[i][i].toString())
+            div_string(i, arr[i][i])
+        }
     }
 
     //проверяет, является ли матрица единичной в главной части(квадратной подматрице)
@@ -185,7 +185,7 @@ open class Matrix : Ring {
             if (!arr[i][i].equals(0.0) && f != -1) {
                 for (j in i + 1 until m) {
                     commit(
-                        "k" + (j + 1) + "= -a" + (j + 1) + (i + 1) + " / a" + (i + 1) + (i + 1) + "=" + -arr[j][i] + " / " + arr[i][i] + " = " + -arr[j][i] / arr[i][i],
+                        "k" + (j + 1) + "= -a" + CTI(j + 1) + CTI(i + 1) + " / a" + CTI(i + 1) + CTI(i + 1) + "=" + -arr[j][i] + " / " + arr[i][i] + " = " + -arr[j][i] / arr[i][i],
                         SOLUTION
                     )
                     val k = -arr[j][i] / arr[i][i]
@@ -318,7 +318,7 @@ open class Matrix : Ring {
                 "Для вычисления алгебраического дополнения необходимо умножить -1 в степени суммы индексов элемента на его минор.",
                 BASE_RULES
             )
-            commit("Найдём A" + (a + 1) + (b + 1), PROCEEDING)
+            commit("Найдём A" + CTI(a + 1) + CTI(b + 1), PROCEEDING)
             val minor = complement_minor(a, b)
             commit(
                 "Получаем минор вычеркнув " + (a + 1) + " строку и " + (b + 1) + " столбец. Вычислим его определитель.",
@@ -356,14 +356,14 @@ open class Matrix : Ring {
             if (m == 1) {
                 log_this()
                 commit("Определитель матрицы из одного элемента равен этому элеменету.", METHOD_DESCRIPTION)
-                commit("det = " + "a11" + " = " + arr[0][0], SOLUTION)
+                commit("det = " + "a${CTI(1)}+${CTI(1)}" + " = " + arr[0][0], SOLUTION)
                 det = arr[0][0]
             } else if (m == 2) {
                 det = arr[0][0] * arr[1][1] - arr[0][1] * arr[1][0]
                 log_this()
                 commit("Определитель матрицы 2 на 2 равен произведению элементов на главной минус произведение элементов на побочной диагонали.", METHOD_DESCRIPTION)
                 commit(
-                    "det = a11*22 - a12*a21 = " + arr[0][0] + "*" + arr[1][1] + "-" + arr[0][1] + "*" + arr[1][0] + " =  " + det,
+                    "det = a${CTI(11)}*${CTI(22)} - a${CTI(12)}*a${CTI(21)} = " + arr[0][0] + "*" + arr[1][1] + "-" + arr[0][1] + "*" + arr[1][0] + " =  " + det,
                     SOLUTION
                 )
             } else throw MATRIX_DIMENSION_MISSMATCH()
@@ -379,7 +379,7 @@ open class Matrix : Ring {
                 det - arr[2][0] * arr[1][1] * arr[0][2] - arr[1][0] * arr[0][1] * arr[2][2] - arr[0][0] * arr[2][1] * arr[1][2]
             log_this()
             commit("Определитель матрицы 3 на 3 можно вычислить используя правило треугольника или способ Саррюса. ", METHOD_DESCRIPTION)
-            commit("det = a11*a22*a33 + a12*a23*a31 + a13*a21*a32 - a31*a22*a13 - a21*a12*a33 - a11*a32*a23 =", METHOD_RULES)
+            commit("det = a${CTI(11)}*a${CTI(22)}*a${CTI(33)} + a${CTI(12)}*a${CTI(23)}*a${CTI(31)} + a${CTI(13)}*a${CTI(21)}*a${CTI(32)} - a${CTI(31)}*a${CTI(22)}*a${CTI(13)} - a${CTI(21)}*a${CTI(12)}*a${CTI(33)} - a${CTI(11)}*a${CTI(32)}*a${CTI(23)} =", METHOD_RULES)
             commit(
                 "= " + arr[0][0] + "*" + arr[1][1] + "*" + arr[2][2] + " " + arr[0][1] + "*" + arr[1][2] + "*" + arr[2][0] + " " + arr[0][2] + "*" + arr[1][0] + "*" + arr[2][1] + " -(" + arr[2][0] + "*" + arr[1][1] + "*" + arr[0][2] + " " + arr[1][0] + "*" + arr[0][1] + "*" + arr[2][2] + " " + arr[0][0] + "*" + arr[2][1] + "*" + arr[1][2] + ") =",
                 SOLUTION
@@ -439,7 +439,7 @@ open class Matrix : Ring {
         for (i in 0 until n) {
             if (arr[str][i].equals(0.0)) {
                 commit(
-                    "Так как a" + (str + 1) + (i + 1) + " равно нулю, то считать A" + (str + 1) + (i + 1) + " нет необходимости.",
+                    "Так как a" + CTI(str + 1) + CTI(i + 1) + " равно нулю, то считать A" + CTI(str + 1) + CTI(i + 1) + " нет необходимости.",
                     SKIPPED
                 )
                 A[i] = createNumb(0.0)
@@ -450,7 +450,7 @@ open class Matrix : Ring {
         var temp3 = "det ="
         for (i in 0 until n) {
             det += A[i] * arr[str][i]
-            temp += "A" + (str + 1) + (i + 1) + "*" + "a" + (str + 1) + (i + 1) + " + "
+            temp += "A" + CTI(str + 1) + CTI(i + 1) + "*" + "a" + CTI(str + 1) + CTI(i + 1) + " + "
             temp2 += " " + A[i] + "*" + arr[str][i] + " + "
             temp3 += (A[i] * arr[str][i]).toString() + " + "
         }
@@ -475,7 +475,7 @@ open class Matrix : Ring {
             if (arr[i][col].equals(0.0)) {
                 A[i] = createNumb(0.0)
                 commit(
-                    "Так как a" + (i + 1) + (col + 1) + " равно нулю, то считать A" + (i + 1) + (col + 1) + " нет необходимости.",
+                    "Так как a" + CTI(i + 1) + CTI(col + 1) + " равно нулю, то считать A" + CTI(i + 1) + CTI(col + 1) + " нет необходимости.",
                     SKIPPED
                 )
             } else A[i] = algebraic_complement(i, col)
@@ -485,7 +485,7 @@ open class Matrix : Ring {
         var temp3 = "det ="
         for (i in 0 until n) {
             det += A[i] * arr[i][col]
-            temp += "A" + (i + 1) + (col + 1) + "*" + "a" + (i + 1) + (col + 1) + " + "
+            temp += "A" + CTI(i + 1) + CTI(col + 1) + "*" + "a" + CTI(i + 1) + CTI(col + 1) + " + "
             temp2 += " " + A[i] + "*" + arr[i][col] + " + "
             temp3 += (A[i] * arr[i][col]).toString() + " + "
         }
@@ -544,7 +544,7 @@ open class Matrix : Ring {
             i++
         }
         if (found){
-            commit("a" + (a + 1) + (b + 1) + '\u2260' + " 0 ", SOLUTION)
+            commit("a" + CTI(a + 1) + CTI(b + 1) + '\u2260' + " 0 ", SOLUTION)
             commit("Теперь рассмотрим все миноры, в которые входит данный элемент.", PROCEEDING)
             val temp_arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, 1, 1)
             var cur_minor = Matrix(temp_arr)
@@ -690,16 +690,16 @@ open class Matrix : Ring {
         while (i < roots.size){
             if (roots[i] == roots[i-1]) j++
             else {
-                temp+=", a$i = $j"
+                temp+=", a${CTI(i)} = $j"
                 algebraicMultiplicity.add(j)
                 j = 1
                 eigenvalues.add(roots[i])
-                temp = "λ$i = ${roots[i]}"
+                temp = "λ${CTI(i)} = ${roots[i]}"
             }
             i++
         }
         i = 0
-        temp+=", a$i = $j"
+        temp+=", a${CTI(i)} = $j"
         algebraicMultiplicity.add(j)
         commit("Для вычисления геометрической кратности необходимо из изначальной матрицы вычесть собственное значение. Посчитать ранк получившейся матрицы и из размерности матрицы вычесть его.", METHOD_DESCRIPTION )
         while (i < eigenvalues.size){
@@ -708,9 +708,9 @@ open class Matrix : Ring {
             val cur_char_matrix : Matrix = (this - temp_matrix) as Matrix
             cur_char_matrix.log_this()
             val rank_matrix = cur_char_matrix.rank()
-            commit("r(A-E*λ$i) = $rank_matrix", SOLUTION)
+            commit("r(A-E*λ${CTI(i)}) = $rank_matrix", SOLUTION)
             val cur_geometricMultiplicity : Int = n - rank_matrix
-            commit("k$i = $n - $rank_matrix = $cur_geometricMultiplicity", SOLUTION)
+            commit("s${CTI(i)} = $n - $rank_matrix = $cur_geometricMultiplicity", SOLUTION)
             geometricMultiplicity.add(cur_geometricMultiplicity)
             i++
         }

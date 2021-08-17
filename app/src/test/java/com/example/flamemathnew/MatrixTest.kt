@@ -20,5 +20,9 @@ fun main(){
     }
     val matrix = Matrix(arr)
     val jordan = matrix.findJordanForm()
-    println(Log.get_log())
+    val logger = Log.get_log()
+    for (i in logger.indices) {
+        val temp : String = logger[i]
+        println(temp)
+    }
 }

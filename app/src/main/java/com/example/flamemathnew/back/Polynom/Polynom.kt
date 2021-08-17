@@ -5,6 +5,7 @@ import Logger.Tag.*
 import MRV.Computer
 import MathObject.Ring
 import Number.*
+import Support.CTP
 import Support.createSingleArrayList
 import Support.toBinary
 import java.lang.Math.pow
@@ -153,17 +154,17 @@ class Polynom() : Ring() {
                     if (cofs[i] as Numb > zero && i < maxpower()) answer += "+"
                     if (cofs[i] != one && cofs[i] != -one){
                         answer += cofs[i].toString()
-                        if (i > 1) answer += "$key^$i"
+                        if (i > 1) answer += "$key${CTP(i)}"
                         else if (i==1) answer += key
                     }
                     else if (cofs[i] == -one && i != 0){
                         answer += "-"
-                        if (i > 1) answer += "$key^$i"
+                        if (i > 1) answer += "$key${CTP(i)}"
                         else if (i==1) answer += key
                     }
                     else if (cofs[i] == one && i!= 0)
                     {
-                        if (i > 1) answer += "$key^$i"
+                        if (i > 1) answer += "$key${CTP(i)}"
                         else if (i==1) answer += key
                     }
                     else{
@@ -226,43 +227,45 @@ class Polynom() : Ring() {
                         }
                     }
                     catch (error : Computer.CANNOTDIV) {commit("Деление на ${temp_pol} неуспешно. 1 не является корнем", SKIPPED)}
-                    commit("Проверим делителей свободного члена.", PROCEEDING)
-                    val possible_roots = findDividers(mod.cofs[0] as Numb)
-                    var temp : String = ""
-                    for (root in possible_roots) {
-                        temp+="±$root "
-                    }
-                    commit("Возможные кандидаты + $temp", PROCEEDING )
-                    var i : Int = 1
-                    val comb = pow(2.0, possible_roots.size.toDouble()).toInt()
-                    while (i < comb && roots.size < maxpower()){
-                        val temp_cofs : ArrayList<Ring> = createSingleArrayList({createNumb(1L)}, 2)
-                        val cur_comb = i.toBinary(possible_roots.size)
-                        var cur_root : Ring = createNumb(1L)
-                        for (i in 0 until possible_roots.size) if (cur_comb[i] == '1') cur_root *= possible_roots[i]
-                        temp_cofs[0] = -cur_root
-                        temp_pol = Polynom(temp_cofs, key)
-                        try {
-                            mod = (mod / temp_pol) as Polynom
-                            commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
-                            mod.log_this()
-                            roots.add(cur_root)
+                    if (roots.size < maxpower()){
+                        commit("Проверим делителей свободного члена.", PROCEEDING)
+                        val possible_roots = findDividers(mod.cofs[0] as Numb)
+                        var temp : String = ""
+                        for (root in possible_roots) {
+                            temp+="±$root "
                         }
-                        catch (error : Computer.CANNOTDIV){
-                            commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
+                        commit("Возможные кандидаты + $temp", PROCEEDING )
+                        var i : Int = 1
+                        val comb = pow(2.0, possible_roots.size.toDouble()).toInt()
+                        while (i < comb && roots.size < maxpower()){
+                            val temp_cofs : ArrayList<Ring> = createSingleArrayList({createNumb(1L)}, 2)
+                            val cur_comb = i.toBinary(possible_roots.size)
+                            var cur_root : Ring = createNumb(1L)
+                            for (i in 0 until possible_roots.size) if (cur_comb[i] == '1') cur_root *= possible_roots[i]
+                            temp_cofs[0] = -cur_root
+                            temp_pol = Polynom(temp_cofs, key)
+                            try {
+                                mod = (mod / temp_pol) as Polynom
+                                commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
+                                mod.log_this()
+                                roots.add(cur_root)
+                            }
+                            catch (error : Computer.CANNOTDIV){
+                                commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
+                            }
+                            temp_cofs[0] = cur_root
+                            temp_pol = Polynom(temp_cofs, key)
+                            try {
+                                mod = (mod / temp_pol) as Polynom
+                                commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
+                                mod.log_this()
+                                roots.add(cur_root)
+                            }
+                            catch (error : Computer.CANNOTDIV){
+                                commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
+                            }
+                            i++
                         }
-                        temp_cofs[0] = cur_root
-                        temp_pol = Polynom(temp_cofs, key)
-                        try {
-                            mod = (mod / temp_pol) as Polynom
-                            commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
-                            mod.log_this()
-                            roots.add(cur_root)
-                        }
-                        catch (error : Computer.CANNOTDIV){
-                            commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
-                        }
-                        i++
                     }
                     return roots
                 }
