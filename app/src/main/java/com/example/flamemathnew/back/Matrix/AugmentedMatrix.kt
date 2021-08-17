@@ -4,7 +4,8 @@ import AffineSpace.AffineSpace
 import MathObject.Ring
 import Number.FractionalNumb
 import LinearSpace.LinearSpace
-import Logger.Log.add
+import Logger.Log.commit
+import Logger.Tag.*
 import MRV.Computer
 import MRV.Computer.HAVE_NOT_SOLUTIONS
 import MRV.Computer.INVALID_NUMBER_STRING
@@ -143,11 +144,13 @@ class AugmentedMatrix : Matrix {
                         temp1 = temp1.substring(0, temp1.length - 3)
                         temp2 = temp2.substring(0, temp2.length - 3)
                     }
-                    add(temp1, "")
-                    add(temp2, "")
-                    add("x" + (i + 1) + " = " + cof[i], "")
+                    commit(temp1, SOLUTION)
+                    commit(temp2,SOLUTION)
+                    commit("x" + (i + 1) + " = " + cof[i], SOLUTION)
                 }
-                return create_vector_str(cof)
+                val answer = create_vector_str(cof)
+                answer.log_this(ANSWER)
+                return answer
             } else throw NON_SINGLE()
         } else throw MATRIX_DIMENSION_MISSMATCH()
     }
@@ -164,7 +167,7 @@ class AugmentedMatrix : Matrix {
             if (copy.m == copy.n && Settings.matrix.SLE.method === SLE.KRAMER_RULE) {
                 TODO("")
             } else {
-                add("", "Решим систему методом Гаусса")
+                commit("Решим систему методом Гаусса", METHOD_DESCRIPTION)
                 copy.gauss_transformation()
                 copy.reduce_null_strings()
                 if (copy.m == copy.n) {
@@ -175,14 +178,14 @@ class AugmentedMatrix : Matrix {
                 else if (copy.m < copy.n){
                     val base = createSingleArrayList<Matrix>({Matrix(1)}, copy.n-copy.m)
                     if (is_homogeneous()) {
-                        add(
-                            "",
-                            "Так как СЛАУ является однородной и прямоугольной, то она задаёт линейное подпространство(оболочку). Найдём базис."
+                        commit(
+                            "Так как СЛАУ является однородной и прямоугольной, то она задаёт линейное подпространство(оболочку). Найдём базис.",
+                            PROCEEDING
                         )
                         for (i in 0 until copy.n - copy.m) {
                             val cords_vector  : ArrayList<Ring> = createSingleArrayList({createNumb(0.0)},copy.n - copy.m)
                             cords_vector[i] = createNumb(1.0)
-                            for (j in copy.m until copy.n) add("x" + (j + 1) + " = " + cords_vector[j], "")
+                            for (j in copy.m until copy.n) commit("x" + (j + 1) + " = " + cords_vector[j], SOLUTION)
                             for (j in 0 until copy.m) {
                                 base[i] = copy.substituion(cords_vector)
                                 base[i].log_this("")
@@ -191,19 +194,20 @@ class AugmentedMatrix : Matrix {
                         return LinearSpace(base)
                     }
                     else {
-                        add(
-                            "",
-                            "Так как СЛАУ является неоднородной и прямоугольной, то она задаёт линейное многообразие. Найдём базис."
+                        commit(
+                            "Так как СЛАУ является неоднородной и прямоугольной, то она задаёт линейное многообразие. Найдём базис.",
+                            PROCEEDING
                         )
-                        add("", "Найдём частное решение")
+                        commit("Найдём частное решение", PROCEEDING)
                         val v = copy.substituion(createSingleArrayList({ createNumb(0.0) }, copy.n - copy.m))
                         v.log_this("Это вектор, на который перенесёно линейное подпространство")
                         copy.reset_augmented()
-                        copy.log_this("Найдём базис соответствующего пространства. Для этого обнулим столбец свободных членов.")
+                        copy.log_this()
+                        commit("Найдём базис соответствующего пространства. Для этого обнулим столбец свободных членов.", PROCEEDING)
                         for (i in 0 until copy.n - copy.m) {
                             val cords_vector = createSingleArrayList<Ring>({ createNumb(0.0) },copy.n - copy.m)
                             cords_vector[i] = createNumb(1.0)
-                            for (j in copy.m until copy.n) add("x" + (j + 1) + " = " + cords_vector[j - copy.m], "")
+                            for (j in copy.m until copy.n) commit("x" + (j + 1) + " = " + cords_vector[j - copy.m], SOLUTION)
                             for (j in 0 until copy.m) {
                                 base[i] = copy.substituion(cords_vector)
                                 base[i].log_this("")

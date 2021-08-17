@@ -1,7 +1,9 @@
 package Matrix
 
 import MathObject.Ring
-import Logger.Log.add
+import Logger.Log.commit
+import Logger.Tag
+import Logger.Tag.*
 import MRV.Computer
 import MRV.Computer.DEGENERATE_MATRIX
 import MRV.Computer.INVALID_NUMBER_STRING
@@ -21,6 +23,7 @@ import com.example.flamemathnew.back.Polynom.Polynom
 import com.example.flamemathnew.mid.Settings
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.log
 
 public fun create_vector_str(cords: ArrayList<Ring>): Matrix {
     val temp : ArrayList<ArrayList<Ring>>  = createRectangleArrayList({createNumb(0.0)}, 1, cords.size)
@@ -147,15 +150,16 @@ open class Matrix : Ring {
             val f = find_non_zero_in_column(i, 0)
             if (!arr[i][i].equals(0.0) && f != i && f != -1) {
                 for (j in i - 1 downTo 0) {
-                    add(
+                    commit(
                         "k" + j + "= -a" + j + i + " / a" + i + i + "=" + -arr[j][i] + " / " + arr[i][i] + " = " + (-arr[j][i] / arr[i][i]),
-                        ""
+                        SOLUTION
                     )
                     val k = -arr[j][i] / arr[i][i]
                     summ_strings(j, i, k)
                 }
             } else if (f == i || f == -1) {
-                add("Так как " + (i + 1) + " столбец выше главной диагонали уже обнулён, то ничего не делаем", "")
+                commit("Так как " + (i + 1) + " столбец выше главной диагонали уже обнулён, то ничего не делаем",
+                    SKIPPED)
             }
             i--
         }
@@ -180,15 +184,16 @@ open class Matrix : Ring {
             val f = find_non_zero_in_column(i, i + 1)
             if (!arr[i][i].equals(0.0) && f != -1) {
                 for (j in i + 1 until m) {
-                    add(
+                    commit(
                         "k" + (j + 1) + "= -a" + (j + 1) + (i + 1) + " / a" + (i + 1) + (i + 1) + "=" + -arr[j][i] + " / " + arr[i][i] + " = " + -arr[j][i] / arr[i][i],
-                        ""
+                        SOLUTION
                     )
                     val k = -arr[j][i] / arr[i][i]
                     summ_strings(j, i, k)
                 }
             } else if (f == -1) {
-                add("Так как " + (i + 1) + " столбец ниже главной диагонали уже обнулён, то ничего не делаем", "")
+                commit("Так как " + (i + 1) + " столбец ниже главной диагонали уже обнулён, то ничего не делаем",
+                    SKIPPED)
             } else {
                 if (is_null_string(i)) {
                     move_string_to_end(i)
@@ -265,7 +270,7 @@ open class Matrix : Ring {
     protected fun reduce_null_strings() {
         for (i in m - 1 downTo 0) if (is_null_string(i)) {
             delete_string(i)
-            add("", "Вычёркиваем " + (i + 1) + " строку")
+            log_this("Вычёркиваем " + (i + 1) + " строку")
         }
     }
 
@@ -309,21 +314,21 @@ open class Matrix : Ring {
 
     protected fun algebraic_complement(a: Int, b: Int): Ring {
         if (0 <= a && a < m && 0 <= b && b < n) {
-            add(
-                "",
-                "Для вычисления алгебраического дополнения необходимо умножить -1 в степени суммы индексов элемента на его минор."
+            commit(
+                "Для вычисления алгебраического дополнения необходимо умножить -1 в степени суммы индексов элемента на его минор.",
+                BASE_RULES
             )
-            add("", "Найдём A" + (a + 1) + (b + 1))
+            commit("Найдём A" + (a + 1) + (b + 1), PROCEEDING)
             val minor = complement_minor(a, b)
-            add(
-                "",
-                "Получаем минор вычеркнув " + (a + 1) + " строку и " + (b + 1) + " столбец. Вычислим его определитель."
+            commit(
+                "Получаем минор вычеркнув " + (a + 1) + " строку и " + (b + 1) + " столбец. Вычислим его определитель.",
+                PROCEEDING
             )
             val minor_determinant = minor.determinant()
             val value = minor_determinant * createNumb(Math.pow(-1.0, (a + b).toDouble()))
-            add(
+            commit(
                 "A" + (a + 1) + (b + 1) + " = " + minor_determinant + "*" + "-1^(" + (a + 1) + "+" + (b + 1) + ") = " + value,
-                ""
+                SOLUTION
             )
             return value
         } else throw Computer.INVALID_NUMBER_STRING()
@@ -349,15 +354,17 @@ open class Matrix : Ring {
         val det: Ring
         return if (m == n) {
             if (m == 1) {
-                log_this("Определитель матрицы из одного элемента равен этому элеменету.")
-                add("det = " + "a11" + " = " + arr[0][0], "")
+                log_this()
+                commit("Определитель матрицы из одного элемента равен этому элеменету.", METHOD_DESCRIPTION)
+                commit("det = " + "a11" + " = " + arr[0][0], SOLUTION)
                 det = arr[0][0]
             } else if (m == 2) {
                 det = arr[0][0] * arr[1][1] - arr[0][1] * arr[1][0]
-                log_this("Определитель матрицы 2 на 2 равен произведению элементов на главной минус произведение элементов на побочной диагонали.")
-                add(
+                log_this()
+                commit("Определитель матрицы 2 на 2 равен произведению элементов на главной минус произведение элементов на побочной диагонали.", METHOD_DESCRIPTION)
+                commit(
                     "det = a11*22 - a12*a21 = " + arr[0][0] + "*" + arr[1][1] + "-" + arr[0][1] + "*" + arr[1][0] + " =  " + det,
-                    ""
+                    SOLUTION
                 )
             } else throw MATRIX_DIMENSION_MISSMATCH()
             det
@@ -370,16 +377,18 @@ open class Matrix : Ring {
                 arr[0][0] * arr[1][1] * arr[2][2] + arr[0][1] * arr[1][2] * arr[2][0] + arr[0][2] * arr[1][0] * arr[2][1]
             det =
                 det - arr[2][0] * arr[1][1] * arr[0][2] - arr[1][0] * arr[0][1] * arr[2][2] - arr[0][0] * arr[2][1] * arr[1][2]
-            log_this("Определитель матрицы 3 на 3 можно вычислить используя правило треугольника или способ Саррюса. ")
-            add("det = a11*a22*a33 + a12*a23*a31 + a13*a21*a32 - a31*a22*a13 - a21*a12*a33 - a11*a32*a23 =", "")
-            add(
+            log_this()
+            commit("Определитель матрицы 3 на 3 можно вычислить используя правило треугольника или способ Саррюса. ", METHOD_DESCRIPTION)
+            commit("det = a11*a22*a33 + a12*a23*a31 + a13*a21*a32 - a31*a22*a13 - a21*a12*a33 - a11*a32*a23 =", METHOD_RULES)
+            commit(
                 "= " + arr[0][0] + "*" + arr[1][1] + "*" + arr[2][2] + " " + arr[0][1] + "*" + arr[1][2] + "*" + arr[2][0] + " " + arr[0][2] + "*" + arr[1][0] + "*" + arr[2][1] + " -(" + arr[2][0] + "*" + arr[1][1] + "*" + arr[0][2] + " " + arr[1][0] + "*" + arr[0][1] + "*" + arr[2][2] + " " + arr[0][0] + "*" + arr[2][1] + "*" + arr[1][2] + ") =",
-                ""
+                SOLUTION
             )
-            add(
+            commit(
                 "= " + arr[0][0] * arr[1][1] * arr[2][2] + " + " + arr[0][1] * arr[1][2] * arr[2][0] + " + " + arr[0][2] * arr[1][0] * arr[2][1] + " + " + "-(" + arr[2][0] * arr[1][1] * arr[0][2] + " + " + arr[1][0] * arr[0][1] * arr[2][2] + " + " + arr[0][0] * arr[2][1] * arr[1][2] + ")= " + det,
-                ""
+                SOLUTION
             )
+            commit("= " + det, SOLUTION)
             det
         } else throw MATRIX_DIMENSION_MISSMATCH()
     }
@@ -397,12 +406,13 @@ open class Matrix : Ring {
         }
         temp = temp.substring(0, temp.length - 3)
         temp2 = temp2.substring(0, temp2.length - 3)
-        add(
-            temp,
-            "Так как матрица треугольного вида, то определитель равен произведению элементов на главной диагонали."
+        commit(temp, SOLUTION)
+        commit(
+            "Так как матрица треугольного вида, то определитель равен произведению элементов на главной диагонали.",
+            METHOD_DESCRIPTION
         )
-        add(temp2, "")
-        add("det = $det", "")
+        commit(temp2, SOLUTION)
+        commit("det = $det", SOLUTION)
         return det
     }
 
@@ -423,12 +433,14 @@ open class Matrix : Ring {
     fun decompositonWithStr(str: Int): Ring {
         var det : Ring = createNumb(0.0)
         val A = createSingleArrayList<Ring>({ createNumb(0.0) }, m) //массив алгебраических дополнений
-        log_this("Для подсчёта определителя будем использовать разложение в строку. Раскладываем по " + (str + 1) + " строке.")
+        log_this()
+        commit("Для подсчёта определителя будем использовать разложение в строку.", METHOD_DESCRIPTION)
+        commit(" Раскладываем по " + (str + 1) + " строке.", PROCEEDING)
         for (i in 0 until n) {
             if (arr[str][i].equals(0.0)) {
-                add(
-                    "",
-                    "Так как a" + (str + 1) + (i + 1) + " равно нулю, то считать A" + (str + 1) + (i + 1) + " нет необходимости."
+                commit(
+                    "Так как a" + (str + 1) + (i + 1) + " равно нулю, то считать A" + (str + 1) + (i + 1) + " нет необходимости.",
+                    SKIPPED
                 )
                 A[i] = createNumb(0.0)
             } else A[i] = algebraic_complement(str, i)
@@ -445,26 +457,26 @@ open class Matrix : Ring {
         temp = temp.substring(0, temp.length - 3)
         temp2 = temp2.substring(0, temp2.length - 3)
         temp3 = temp3.substring(0, temp3.length - 3)
-        add(
-            temp,
-            "Для того, чтобы посчитать определитель при помощи строчки, надо вычислить сумму произведений элементов на их алгебраические дополнения."
-        )
-        add(temp2, "")
-        add(temp3, "")
-        add("det = $det", "")
+        commit("Для того, чтобы посчитать определитель при помощи строчки, надо вычислить сумму произведений элементов на их алгебраические дополнения.", METHOD_DESCRIPTION)
+        commit(temp, METHOD_RULES)
+        commit(temp2, SOLUTION)
+        commit(temp3, SOLUTION)
+        commit("det = $det", ANSWER)
         return det
     }
 
     fun decompositonWithCol(col: Int): Ring {
         var det : Ring = createNumb(0.0)
         val A = createSingleArrayList<Ring>({ createNumb(0.0) }, m) //массив алгебраических дополнений
-        log_this("Для подсчёта определителя будем использовать разложение в столбец. Раскладываем по " + (col + 1) + " столбцу.")
+        log_this()
+        commit("Для подсчёта определителя будем использовать разложение в столбец.", METHOD_DESCRIPTION)
+        commit("Раскладываем по " + (col + 1) + " столбцу.", PROCEEDING)
         for (i in 0 until n) {
             if (arr[i][col].equals(0.0)) {
                 A[i] = createNumb(0.0)
-                add(
-                    "",
-                    "Так как a" + (i + 1) + (col + 1) + " равно нулю, то считать A" + (i + 1) + (col + 1) + " нет необходимости."
+                commit(
+                    "Так как a" + (i + 1) + (col + 1) + " равно нулю, то считать A" + (i + 1) + (col + 1) + " нет необходимости.",
+                    SKIPPED
                 )
             } else A[i] = algebraic_complement(i, col)
         }
@@ -480,13 +492,11 @@ open class Matrix : Ring {
         temp = temp.substring(0, temp.length - 3)
         temp2 = temp2.substring(0, temp2.length - 3)
         temp3 = temp3.substring(0, temp3.length - 3)
-        add(
-            temp,
-            "Для того, чтобы посчитать определитель при помощи столбца, надо вычислить сумму произведений элементов на их алгебраические дополнения."
-        )
-        add(temp2, "")
-        add(temp3, "")
-        add("det = $det", "")
+        commit("Для того, чтобы посчитать определитель при помощи столбца, надо вычислить сумму произведений элементов на их алгебраические дополнения.", METHOD_DESCRIPTION)
+        commit(temp, METHOD_RULES)
+        commit(temp2, SOLUTION)
+        commit(temp3, SOLUTION)
+        commit("det = $det", ANSWER)
         return det
     }
 
@@ -500,17 +510,23 @@ open class Matrix : Ring {
 
     fun rank_with_triangle(): Int {
         val copy = Matrix(arr)
+        copy.log_this()
+        commit("Ранг равен количеству ненулевых элементов на главной диагонали после приведения к трапецевидному виду", METHOD_DESCRIPTION)
         copy.triangular_transformation()
-        add("", "Ранг равен количеству ненулевых элементов на главной диагонали")
         var count = 0
         for (i in 0 until m) {
             if (!copy.arr[i][i].equals(0.0)) count++
         }
+        commit("Rank = $count", ANSWER)
         return count
     }
 
     fun rank_with_minors(): Int {
-        log_this("Для нахождения ранга методом окламляющих миноров необходимо найти ненулевой элемент.")
+        log_this()
+        commit("Для нахождения ранга методом окламляющих миноров необходимо найти ненулевой элемент. Если его нет, то ранк равен нулю", METHOD_DESCRIPTION)
+        commit("Затем необходимо проверить все миноры, которые включают его. Если найдётся ненулевой минор, то ранк равен двум. Проверяем все миноры, включающие его.", METHOD_DESCRIPTION)
+        commit("Если находим ненулевой минор, то ранк равен его размеру. Продолжаем, пока либо не закончится матрица, либо не сможем найти ненулевой минор.", METHOD_DESCRIPTION)
+        commit("Найдём ненулевой элемент", PROCEEDING)
         var a = 0
         var b = 0
         var found = false
@@ -528,8 +544,8 @@ open class Matrix : Ring {
             i++
         }
         if (found){
-            add("a" + (a + 1) + (b + 1) + '\u2260' + " 0 ", "")
-            add("", "Теперь рассмотрим все миноры, в которые входит данный элемент.")
+            commit("a" + (a + 1) + (b + 1) + '\u2260' + " 0 ", SOLUTION)
+            commit("Теперь рассмотрим все миноры, в которые входит данный элемент.", PROCEEDING)
             val temp_arr = createRectangleArrayList<Ring>({ createNumb(0.0) }, 1, 1)
             var cur_minor = Matrix(temp_arr)
             var cur_str = arrayOfNulls<Int>(1)
@@ -562,7 +578,8 @@ open class Matrix : Ring {
                             }
                             if (det != createNumb(0.0)) {
                                 cur_minor = minor
-                                cur_minor.log_this("Так как этот минор не равен нулю, то теперь мы будем рассматривать миноры, которые включают его")
+                                cur_minor.log_this()
+                                commit("Так как этот минор не равен нулю, то теперь мы будем рассматривать миноры, которые включают его", PROCEEDING)
                                 cur_str = temp_str
                                 cur_col = temp_col
                                 found = true
@@ -573,11 +590,13 @@ open class Matrix : Ring {
                     i++
                 }
             }
-            cur_minor.log_this("Этот минор является базисным.")
+            cur_minor.log_this()
+            commit("Этот минор является базисным", PROCEEDING)
+            commit("Rank = ${cur_minor.m}", ANSWER)
             return cur_minor.m
         }
         else{
-            add("", "Так как в матрице нет ненулевых элементов, то ранк равен 0.")
+            commit("Так как в матрице нет ненулевых элементов, то ранк равен 0.", ANSWER)
             return 0
         }
     }
@@ -610,7 +629,8 @@ open class Matrix : Ring {
             val single = Matrix(m)
             val copy = Matrix(arr)
             val temp = AugmentedMatrix(copy, single)
-            temp.log_this("Чтобы найти обратную матрицу методом Гаусса необходимо дописать справа от неё единичную и методом Гаусса добиться того, чтобы слева была единичная.")
+            temp.log_this()
+            commit("Чтобы найти обратную матрицу методом Гаусса необходимо дописать справа от неё единичную и методом Гаусса добиться того, чтобы слева была единичная.", METHOD_DESCRIPTION)
             temp.gauss_transformation()
             if (temp.get_main().is_single()) temp.get_augmentation() else throw DEGENERATE_MATRIX()
         } else throw NON_QUADRATIC_MATRIX()
@@ -618,7 +638,8 @@ open class Matrix : Ring {
     fun get_inverse_algebraic_complement() : Matrix {
         if (m == n) {
             var copy = Matrix(arr)
-            copy.log_this("Чтобы найти обратную матрицу необходимо найти её определитель, затем составить транспонированную матрицу из алгербраических дополнений элементов матрицы и после разделить её на определитель.")
+            copy.log_this()
+            commit("Чтобы найти обратную матрицу необходимо найти её определитель, затем составить транспонированную матрицу из алгербраических дополнений элементов матрицы и после разделить её на определитель.", METHOD_DESCRIPTION)
             val det = copy.determinant()
             if (!det.equals(0.0)){
                 //матрица из дополнений
@@ -627,10 +648,14 @@ open class Matrix : Ring {
                     _arr[i][j] = copy.algebraic_complement(i, j)
                 }
                 copy = Matrix(_arr)
-                copy.log_this("Матрица из алгебраических дополнений. Транспонируем её")
+                commit("Составим матрицу из алгебраических дополнений", PROCEEDING)
+                copy.log_this()
+                commit("Транспонируем её", PROCEEDING)
                 copy.transposition()
-                copy.log_this("Транспонировали")
+                copy.log_this()
+                commit("Транспонировали. Разделим на определитель изначальной матрицы", PROCEEDING)
                 copy = (copy / det) as Matrix
+                copy.log_this(ANSWER)
                 return copy
             }
             else throw DEGENERATE_MATRIX()
@@ -775,7 +800,7 @@ open class Matrix : Ring {
         else if (right is Matrix){
             val left: Matrix = this
             if (left.n == right.m && right.m == right.n) {
-                add("", " чтобы разделить матрицу на матрицу, надо умножить левую матрицу на противоположную правой")
+                commit( "Чтобы разделить матрицу на матрицу, надо умножить левую матрицу на противоположную правой", BASE_RULES)
                 val real_right = right.getInverse()
                 return left*real_right
             } else throw Computer.MATRIX_DIMENSION_MISSMATCH()
