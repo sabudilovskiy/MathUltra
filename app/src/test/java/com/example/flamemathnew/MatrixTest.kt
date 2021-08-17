@@ -18,6 +18,6 @@ fun main(){
         for (j in 0 until n) arr[i][j] = createNumb(temp_arr[j].toDouble())
     }
     val matrix = Matrix(arr)
-    val eigen : ArrayList<Ring> = matrix.findEigenvalues()
-    for (eig in eigen) println(eig)
+    val jordan = matrix.findJordanForm()
+    println(jordan)
 }

@@ -647,6 +647,75 @@ open class Matrix : Ring {
         }
         else throw NON_QUADRATIC_MATRIX()
     }
+    fun findJordanForm() : Matrix{
+        val roots = findEigenvalues()
+        val eigenvalues : ArrayList<Ring> = arrayListOf()
+        val algebraicMultiplicity : ArrayList<Int> = arrayListOf()
+        val geometricMultiplicity : ArrayList<Int> = arrayListOf()
+        var i : Int = 1
+        var j : Int = 1
+        eigenvalues.add(roots[0])
+        while (i < roots.size){
+            if (roots[i] == roots[i-1]) j++
+            else {
+                algebraicMultiplicity.add(j)
+                j = 1
+                eigenvalues.add(roots[i])
+            }
+            i++
+        }
+        i = 0
+        algebraicMultiplicity.add(j)
+        while (i < eigenvalues.size){
+            var temp_matrix  = Matrix(n)
+            temp_matrix = (temp_matrix *eigenvalues[i]) as Matrix
+            val cur_char_matrix : Matrix = (this - temp_matrix) as Matrix
+            val rank_matrix = cur_char_matrix.rank()
+            val cur_geometricMultiplicity : Int = n - rank_matrix
+            geometricMultiplicity.add(cur_geometricMultiplicity)
+            i++
+        }
+        i = 0
+        j = 0
+        val begin_blocks : ArrayList<Int> = arrayListOf()
+        val end_blocks : ArrayList<Int> = arrayListOf()
+        while (i < eigenvalues.size){
+            begin_blocks.add(j)
+            j+=algebraicMultiplicity[i]
+            end_blocks.add(j)
+            var k = 1
+            while (k < geometricMultiplicity[i]){
+                begin_blocks.add(begin_blocks[begin_blocks.size-1] + 1)
+                end_blocks.add(end_blocks[end_blocks.size - 1])
+                end_blocks[end_blocks.size - 1] = begin_blocks[begin_blocks.size-1] + 1
+                k++
+            }
+            i++
+        }
+        val answer = Matrix(n)
+        i = 0
+        j = 0
+        var k = 0
+        while (k < n){
+            if (j < algebraicMultiplicity[i]) {
+                j++
+            }
+            else{
+                j = 1
+                i++
+            }
+            answer.arr[k][k] = eigenvalues[i]
+            k++
+        }
+        k = 0
+        while (k<geometricMultiplicity.size){
+            if (end_blocks[k] - begin_blocks[k] > 1){
+                for (f in begin_blocks[k] until end_blocks[k]) answer.arr[k][k+1] = createNumb(1)
+            }
+            k++
+        }
+        return answer
+    }
     override fun plus(right: Ring): Ring {
         if (right is Matrix){
             val left: Matrix = this
