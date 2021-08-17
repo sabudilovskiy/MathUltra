@@ -663,10 +663,16 @@ open class Matrix : Ring {
     }
     fun findEigenvalues() : ArrayList<Ring> {
         if (m == n){
+            log_this()
+            commit("Для нахождеия жордановой формы необходимо вычесть λ по главной диагонали, посчитать определитель и найти корни характеристического многочлена.", METHOD_DESCRIPTION)
             val temp_arr : ArrayList<Ring> = arrayListOf(createNumb(0.0), createNumb(1.0))
             val lambda : Polynom = Polynom(temp_arr, "λ")
             val char_matrix : Matrix = (this - Matrix(m)*lambda) as Matrix
+            char_matrix.log_this()
+            commit("Вычли λ, необходимо найти характеристический многочлен", PROCEEDING)
             val char_polynom : Polynom = char_matrix.det_with_laplass() as Polynom
+            commit("A(λ) = ${char_polynom.toString()}", SOLUTION)
+            commit("Найдём его корни", PROCEEDING)
             val roots : ArrayList<Ring> = char_polynom.solve()
             return roots
         }
@@ -680,28 +686,37 @@ open class Matrix : Ring {
         var i : Int = 1
         var j : Int = 1
         eigenvalues.add(roots[0])
+        var temp : String = "λ$i = ${roots[0]}"
         while (i < roots.size){
             if (roots[i] == roots[i-1]) j++
             else {
+                temp+=", a$i = $j"
                 algebraicMultiplicity.add(j)
                 j = 1
                 eigenvalues.add(roots[i])
+                temp = "λ$i = ${roots[i]}"
             }
             i++
         }
         i = 0
+        temp+=", a$i = $j"
         algebraicMultiplicity.add(j)
+        commit("Для вычисления геометрической кратности необходимо из изначальной матрицы вычесть собственное значение. Посчитать ранк получившейся матрицы и из размерности матрицы вычесть его.", METHOD_DESCRIPTION )
         while (i < eigenvalues.size){
             var temp_matrix  = Matrix(n)
             temp_matrix = (temp_matrix *eigenvalues[i]) as Matrix
             val cur_char_matrix : Matrix = (this - temp_matrix) as Matrix
+            cur_char_matrix.log_this()
             val rank_matrix = cur_char_matrix.rank()
+            commit("r(A-E*λ$i) = $rank_matrix", SOLUTION)
             val cur_geometricMultiplicity : Int = n - rank_matrix
+            commit("k$i = $n - $rank_matrix = $cur_geometricMultiplicity", SOLUTION)
             geometricMultiplicity.add(cur_geometricMultiplicity)
             i++
         }
         i = 0
         j = 0
+        commit("Составим матрицу по имеющимся данным. ", PROCEEDING)
         val begin_blocks : ArrayList<Int> = arrayListOf()
         val end_blocks : ArrayList<Int> = arrayListOf()
         while (i < eigenvalues.size){
@@ -739,6 +754,7 @@ open class Matrix : Ring {
             }
             k++
         }
+        answer.log_this(ANSWER)
         return answer
     }
     override fun plus(right: Ring): Ring {

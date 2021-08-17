@@ -1,5 +1,6 @@
 package com.example.flamemathnew
 
+import Logger.Log
 import MathObject.Ring
 import Matrix.Matrix
 import Number.createNumb
@@ -19,5 +20,5 @@ fun main(){
     }
     val matrix = Matrix(arr)
     val jordan = matrix.findJordanForm()
-    println(jordan)
+    println(Log.get_log())
 }

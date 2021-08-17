@@ -1,5 +1,7 @@
 package com.example.flamemathnew.back.Polynom
 
+import Logger.Log.commit
+import Logger.Tag.*
 import MRV.Computer
 import MathObject.Ring
 import Number.*
@@ -182,36 +184,55 @@ class Polynom() : Ring() {
     }
     fun solve() : ArrayList<Ring>{
         if (maxpower() > 0){
+            log_this()
             val roots = arrayListOf<Ring>()
             var mod : Polynom = Polynom(cofs, key)
             val oneArr : ArrayList<Ring> = arrayListOf(createNumb(0.0), createNumb(1.0))
             val one : Polynom = Polynom(oneArr, key)
+            val havezero : Boolean = mod.cofs[0].equals(0.0)
+            if (havezero) commit("Так как свободный член равен нулю, то корнем является ноль. Разделим многочлен, чтобы избавится от нулевых корней", PROCEEDING)
             while (mod.cofs[0].equals(0.0)){
                 mod = (mod / one) as Polynom
                 roots.add(createNumb(0.0))
             }
+            if (havezero) mod.log_this()
             if (onlyintcofs()){
                 if (cofs[maxpower()] == createNumb(1L) || cofs[maxpower()] == createNumb(-1L)){
+                    commit("Проверим ${key} = -1", PROCEEDING)
+                    var temp_pol = Polynom()
                     try {
                         val temp_cofs : ArrayList<Ring> = createSingleArrayList({createNumb(1)}, 2)
-                        val temp_pol = Polynom(temp_cofs, key)
+                        temp_pol = Polynom(temp_cofs, key)
                         while (true) {
                             mod = (mod / temp_pol) as Polynom
+                            commit("Деление на ${temp_pol} успешно. -1 является корнем", SOLUTION)
+                            mod.log_this()
                             roots.add(createNumb(-1))
                         }
                     }
-                    catch (error : Computer.CANNOTDIV) {}
+                    catch (error : Computer.CANNOTDIV) {
+                        commit("Деление на ${temp_pol} неуспешно. -1 не является корнем", SKIPPED)
+                    }
+                    commit("Проверим ${key} = 1", PROCEEDING)
                     try {
                         val temp_cofs : ArrayList<Ring> = createSingleArrayList({createNumb(1)}, 2)
                         temp_cofs[0] = createNumb(-1)
                         val temp_pol = Polynom(temp_cofs, key)
                         while (true) {
                             mod = (mod / temp_pol) as Polynom
+                            commit("Деление на ${temp_pol} успешно. 1 является корнем", SOLUTION)
+                            mod.log_this()
                             roots.add(createNumb(1))
                         }
                     }
-                    catch (error : Computer.CANNOTDIV) {}
+                    catch (error : Computer.CANNOTDIV) {commit("Деление на ${temp_pol} неуспешно. 1 не является корнем", SKIPPED)}
+                    commit("Проверим делителей свободного члена.", PROCEEDING)
                     val possible_roots = findDividers(mod.cofs[0] as Numb)
+                    var temp : String = ""
+                    for (root in possible_roots) {
+                        temp+="±$root "
+                    }
+                    commit("Возможные кандидаты + $temp", PROCEEDING )
                     var i : Int = 1
                     val comb = pow(2.0, possible_roots.size.toDouble()).toInt()
                     while (i < comb && roots.size < maxpower()){
@@ -220,18 +241,26 @@ class Polynom() : Ring() {
                         var cur_root : Ring = createNumb(1L)
                         for (i in 0 until possible_roots.size) if (cur_comb[i] == '1') cur_root *= possible_roots[i]
                         temp_cofs[0] = -cur_root
+                        temp_pol = Polynom(temp_cofs, key)
                         try {
-                            mod = (mod / Polynom(temp_cofs, key)) as Polynom
+                            mod = (mod / temp_pol) as Polynom
+                            commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
+                            mod.log_this()
                             roots.add(cur_root)
                         }
                         catch (error : Computer.CANNOTDIV){
+                            commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
                         }
                         temp_cofs[0] = cur_root
-                        try{
-                            mod = (mod / Polynom(temp_cofs, key)) as Polynom
-                            roots.add(-cur_root)
+                        temp_pol = Polynom(temp_cofs, key)
+                        try {
+                            mod = (mod / temp_pol) as Polynom
+                            commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
+                            mod.log_this()
+                            roots.add(cur_root)
                         }
                         catch (error : Computer.CANNOTDIV){
+                            commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
                         }
                         i++
                     }
