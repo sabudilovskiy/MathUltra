@@ -9,7 +9,7 @@ enum class Id_lexemes {
     MULT, DIV,  //бинарные операторы, низший приоритет
     PLUS, MINUS,  //требуется для определения числа операторов
     NUMBER_OPERATORS,  //технические вещи
-    END, NULL;
+    NULL;
 
     companion object {
         fun getId(lexeme: Id_lexemes): Int {

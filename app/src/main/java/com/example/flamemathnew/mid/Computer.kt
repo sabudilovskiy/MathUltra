@@ -171,7 +171,7 @@ object Computer {
         if (method == null) throw KEY_METHOD_EMPTY()
         else if (method == "GAUSS") {
             try {
-                answer = current.get_inverse_gauss()
+                answer = current.getInverseGauss()
             }
             catch (degenerate_matrix : DEGENERATE_MATRIX){
                 return "Матрица вырождена. Обратная не существует"
@@ -180,7 +180,7 @@ object Computer {
         else if (method == "ALGEBRAIC_COMPLEMENT")
         {
             try {
-                answer = current.get_inverse_algebraic_complement()
+                answer = current.getInverseAlgebraicComplement()
             }
             catch (degenerate_matrix : DEGENERATE_MATRIX){
                 return "Матрица вырождена. Обратная не существует"
@@ -212,10 +212,10 @@ object Computer {
         val answer : Int
         if (method == null) throw KEY_METHOD_EMPTY()
         else if (method == "TRIANGLE"){
-            answer = current.rank_with_triangle()
+            answer = current.rankWithTriangle()
         }
         else if (method == "MINORS"){
-            answer = current.rank_with_minors()
+            answer = current.rankWithMinors()
         }
         else throw UNKNOWN_METHOD()
         return answer

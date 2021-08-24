@@ -84,7 +84,6 @@ class Sentence {
             }
         }
         if (left_brs == right_brs) {
-            add_lexeme(Lexeme(Id_lexemes.END))
             return
         } else {
             val a = find_left_br()
@@ -99,17 +98,13 @@ class Sentence {
 
     fun find_left_br(): Int {
         var i = 0
-        while (_array[i].get_id() !== Id_lexemes.END) {
+        while (i < _array.size) {
             if (_array[i].get_id() === Id_lexemes.LEFT_BR) return i
             i++
         }
         return -1
     }
 
-    //получить номер лексемы-конца
-    fun get_end(): Int {
-        return _array.size - 1
-    }
 
     //добавить лексему
     fun add_lexeme(a: Lexeme) {
@@ -142,7 +137,6 @@ class Sentence {
         for (i in a..b) {
             buffer.add(_array[i])
         }
-        buffer.add(Lexeme(Id_lexemes.END, ArrayList()))
         return Sentence(buffer)
     }
 
@@ -157,7 +151,7 @@ class Sentence {
     fun find_commas(begin: Int): ArrayList<Int> {
         val answer = ArrayList<Int>()
         var i = 0
-        while (_array[i].get_id() !== Id_lexemes.END) {
+        while (i < _array.size) {
             if (_array[i].get_id() === Id_lexemes.COMMA) {
                 answer.add(i + begin + 1)
             } else if (_array[i].get_id() === Id_lexemes.LEFT_BR) {
@@ -185,7 +179,7 @@ class Sentence {
     fun find_highest_priority(): Int {
         var max_priority = 0
         var i = 0
-        while (_array[i].get_id() !== Id_lexemes.END) {
+        while (i < _array.size) {
             if (_array[i].get_id() !== Id_lexemes.ARGUMENT) {
                 val cur_priority = Archieve.get_priority(_array[i].get_id())
                 if (cur_priority > max_priority) {
@@ -199,8 +193,8 @@ class Sentence {
 
     fun find_countable_operator(priority: Int): Int {
         var i = 0
-        while (_array[i].get_id() !== Id_lexemes.END) {
-            if (_array[i].get_id() !== Id_lexemes.ARGUMENT && Archieve.get_priority(_array[i].get_id()) === priority) {
+        while (i < _array.size) {
+            if (_array[i].get_id() !== Id_lexemes.ARGUMENT && Archieve.get_priority(_array[i].get_id()) == priority) {
                 val left = Archieve.get_left_argue(_array[i].get_id())
                 val right = Archieve.get_right_argue(_array[i].get_id())
                 if ((left == 0 || _array[i - 1].get_id() === Id_lexemes.ARGUMENT) && (right == 0 || _array[i + 1].get_id() === Id_lexemes.ARGUMENT)) return i
@@ -211,26 +205,26 @@ class Sentence {
     }
 
     fun have_errors(): Boolean {
-        val n = _array.size - 1
-        if (Archieve.get_left_argue(_array[0].get_id()) === 0 && Archieve.get_right_argue(_array[n].get_id()) === 0) {
+        val n = _array.size
+        if (Archieve.get_left_argue(_array[0].get_id()) == 0 && Archieve.get_right_argue(_array[n-1].get_id()) == 0) {
             for (i in 1 until n) {
                 val cur_id = _array[i].get_id()
                 val left = Archieve.get_left_argue(cur_id)
                 val right = Archieve.get_right_argue(cur_id)
                 if (left > 0 && right > 0) {
-                    if (Archieve.get_right_argue(_array[i - 1].get_id()) === 0 && Archieve.get_left_argue(_array[i + 1].get_id()) === 0) {
+                    if (Archieve.get_right_argue(_array[i - 1].get_id()) == 0 && Archieve.get_left_argue(_array[i + 1].get_id()) == 0) {
                     } else {
                         setError(Id_errors.MISS_ARGUMENT_BINARY_OPERATOR, _array[i])
                         return true
                     }
                 } else if (left > 0) {
-                    if (Archieve.get_right_argue(_array[i - 1].get_id()) === 0 && Archieve.get_left_argue(_array[i + 1].get_id()) !== 0) {
+                    if (Archieve.get_right_argue(_array[i - 1].get_id()) == 0 && Archieve.get_left_argue(_array[i + 1].get_id()) != 0) {
                     } else {
                         setError(Id_errors.MISS_ARGUMENT_POST_OPERATOR, _array[i])
                         return true
                     }
                 } else if (right > 0) {
-                    if (Archieve.get_left_argue(_array[i + 1].get_id()) === 0 && Archieve.get_right_argue(_array[i - 1].get_id()) !== 0) {
+                    if (Archieve.get_left_argue(_array[i + 1].get_id()) == 0 && Archieve.get_right_argue(_array[i - 1].get_id()) != 0) {
                     } else {
                         setError(Id_errors.MISS_ARGUMENT_PRE_OPERATOR, _array[i])
                         return true
@@ -255,7 +249,7 @@ class Sentence {
                 if (getError() === Id_errors.NON_ERROR) {
                     replace_sector(a, b, replace)
                 } else {
-                    return Lexeme(Id_lexemes.END, ArrayList())
+                    return Lexeme(Id_lexemes.NULL, ArrayList())
                 }
             } else {
                 val A = ArrayList<Sentence>()
@@ -272,7 +266,7 @@ class Sentence {
                 for (i in values.indices) {
                     values[i] = A[i].count().get_value()
                     if (getError() !== Id_errors.NON_ERROR) {
-                        return Lexeme(Id_lexemes.END, ArrayList())
+                        return Lexeme(Id_lexemes.NULL, ArrayList())
                     }
                 }
                 val replace = Lexeme(Id_lexemes.ARGUMENT, values)
@@ -281,7 +275,7 @@ class Sentence {
             a = find_left_br()
         }
         if (have_errors()) {
-            return Lexeme(Id_lexemes.END)
+            return Lexeme(Id_lexemes.NULL)
         }
         a = find_highest_priority()
         while (a != 0) {
@@ -297,14 +291,14 @@ class Sentence {
                     left_argue = _array[b - 1].get_values()
                     if (left != left_argue.size) {
                         setError(Id_errors.BAD_ARGUMENTS, _array[b])
-                        return Lexeme(Id_lexemes.END, ArrayList())
+                        return Lexeme(Id_lexemes.NULL, ArrayList())
                     }
                 }
                 if (r != 0) {
                     right_argue = _array[b + 1].get_values()
                     if (right != right_argue.size) {
                         setError(Id_errors.BAD_ARGUMENTS, _array[b])
-                        return Lexeme(Id_lexemes.END, ArrayList())
+                        return Lexeme(Id_lexemes.NULL, ArrayList())
                     }
                 }
                 val argue: ArrayList<Double> = Support.union(left_argue, right_argue)
@@ -315,24 +309,24 @@ class Sentence {
                     replace_sector(b - 1 * l, b + 1 * r, replace)
                 } else {
                     setError(Id_errors.IMPOSSIBLE_COUNT, _array[b])
-                    return Lexeme(Id_lexemes.END, ArrayList())
+                    return Lexeme(Id_lexemes.NULL, ArrayList())
                 }
                 b = find_countable_operator(a)
             }
             a = find_highest_priority()
         }
-        return if (_array.size == 2 && _array[0].get_id() === Id_lexemes.ARGUMENT && _array[1].get_id() === Id_lexemes.END) {
+        return if (_array.size == 1 && _array[0].get_id() === Id_lexemes.ARGUMENT) {
             _array[0]
         } else {
             setError(Id_errors.UNKNOWN_ERROR, -1, -1)
-            Lexeme(Id_lexemes.END, ArrayList())
+            Lexeme(Id_lexemes.NULL, ArrayList())
         }
     }
 
     fun code(): String {
         var A = ""
         var i = 0
-        while (_array[i].get_id() !== Id_lexemes.END) {
+        while (i < _array.size) {
             val cur_lexeme = _array[i]
             A += cur_lexeme.key
             i++

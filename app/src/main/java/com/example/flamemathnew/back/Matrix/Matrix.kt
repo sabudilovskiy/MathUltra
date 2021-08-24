@@ -508,9 +508,8 @@ open class Matrix : Ring {
         }
     }
 
-    fun rank_with_triangle(): Int {
+    fun rankWithTriangle(): Int {
         val copy = Matrix(arr)
-        copy.log_this()
         commit("Ранг равен количеству ненулевых элементов на главной диагонали после приведения к трапецевидному виду", METHOD_DESCRIPTION)
         copy.triangular_transformation()
         var count = 0
@@ -521,7 +520,7 @@ open class Matrix : Ring {
         return count
     }
 
-    fun rank_with_minors(): Int {
+    fun rankWithMinors(): Int {
         log_this()
         commit("Для нахождения ранга методом окламляющих миноров необходимо найти ненулевой элемент. Если его нет, то ранк равен нулю", METHOD_DESCRIPTION)
         commit("Затем необходимо проверить все миноры, которые включают его. Если найдётся ненулевой минор, то ранк равен двум. Проверяем все миноры, включающие его.", METHOD_DESCRIPTION)
@@ -611,20 +610,19 @@ open class Matrix : Ring {
     }
 
     open fun rank(): Int {
-        return if (Settings.matrix.Rank.method === Rank.ELEMENTAL_ROW) {
-            rank_with_triangle()
-        } else 0
+        return when(Settings.matrix.Rank.method){
+            Rank.BORDERING -> rankWithMinors()
+            Rank.ELEMENTAL_ROW -> rankWithTriangle()
+        }
     }
 
     fun getInverse() : Matrix {
-        if (Settings.matrix.Inverse.method == GAUSS ){
-            return get_inverse_gauss()
-        }
-        else{
-            TODO("Не реализовано нахождение через алгебраические дополнения")
+        return when (Settings.matrix.Inverse.method){
+            GAUSS -> getInverseGauss()
+            ALGEBRAIC_COMPLEMENT -> getInverseAlgebraicComplement()
         }
     }
-    fun get_inverse_gauss(): Matrix {
+    fun getInverseGauss(): Matrix {
         return if (m == n) {
             val single = Matrix(m)
             val copy = Matrix(arr)
@@ -635,7 +633,7 @@ open class Matrix : Ring {
             if (temp.get_main().is_single()) temp.get_augmentation() else throw DEGENERATE_MATRIX()
         } else throw NON_QUADRATIC_MATRIX()
     }
-    fun get_inverse_algebraic_complement() : Matrix {
+    fun getInverseAlgebraicComplement() : Matrix {
         if (m == n) {
             var copy = Matrix(arr)
             copy.log_this()
@@ -685,6 +683,10 @@ open class Matrix : Ring {
         val geometricMultiplicity : ArrayList<Int> = arrayListOf()
         var i : Int = 1
         var j : Int = 1
+        val char_matrixs : ArrayList<Matrix> = arrayListOf()
+        var temp_matrix  = Matrix(n)
+        temp_matrix = (temp_matrix *eigenvalues[0]) as Matrix
+        char_matrixs[0] = (this - temp_matrix) as Matrix
         eigenvalues.add(roots[0])
         var temp : String = "λ$i = ${roots[0]}"
         while (i < roots.size){
@@ -694,6 +696,8 @@ open class Matrix : Ring {
                 algebraicMultiplicity.add(j)
                 j = 1
                 eigenvalues.add(roots[i])
+                temp_matrix = (temp_matrix *eigenvalues[i]) as Matrix
+                char_matrixs[i] = (this - temp_matrix) as Matrix
                 temp = "λ${CTI(i)} = ${roots[i]}"
             }
             i++
@@ -703,11 +707,7 @@ open class Matrix : Ring {
         algebraicMultiplicity.add(j)
         commit("Для вычисления геометрической кратности необходимо из изначальной матрицы вычесть собственное значение. Посчитать ранк получившейся матрицы и из размерности матрицы вычесть его.", METHOD_DESCRIPTION )
         while (i < eigenvalues.size){
-            var temp_matrix  = Matrix(n)
-            temp_matrix = (temp_matrix *eigenvalues[i]) as Matrix
-            val cur_char_matrix : Matrix = (this - temp_matrix) as Matrix
-            cur_char_matrix.log_this()
-            val rank_matrix = cur_char_matrix.rank()
+            val rank_matrix = char_matrixs[i].rank()
             commit("r(A-E*λ${CTI(i)}) = $rank_matrix", SOLUTION)
             val cur_geometricMultiplicity : Int = n - rank_matrix
             commit("s${CTI(i)} = $n - $rank_matrix = $cur_geometricMultiplicity", SOLUTION)
@@ -732,7 +732,7 @@ open class Matrix : Ring {
             }
             i++
         }
-        val answer = Matrix(n)
+        val JordanForm = Matrix(n)
         i = 0
         j = 0
         var k = 0
@@ -744,18 +744,19 @@ open class Matrix : Ring {
                 j = 1
                 i++
             }
-            answer.arr[k][k] = eigenvalues[i]
+            JordanForm.arr[k][k] = eigenvalues[i]
             k++
         }
         k = 0
         while (k<geometricMultiplicity.size){
             if (end_blocks[k] - begin_blocks[k] > 1){
-                for (f in begin_blocks[k] until end_blocks[k]) answer.arr[k][k+1] = createNumb(1)
+                for (f in begin_blocks[k] until end_blocks[k]) JordanForm.arr[k][k+1] = createNumb(1)
             }
             k++
         }
-        answer.log_this(ANSWER)
-        return answer
+        JordanForm.log_this(ANSWER)
+
+        return JordanForm
     }
     override fun plus(right: Ring): Ring {
         if (right is Matrix){

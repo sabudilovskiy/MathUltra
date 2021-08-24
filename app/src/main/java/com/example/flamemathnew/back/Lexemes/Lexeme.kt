@@ -58,7 +58,7 @@ class Lexeme {
             } else {
                 A += java.lang.Double.toString(values[0])
             }
-        } else if (id === Id_lexemes.LEFT_BR) A += "(" else if (id === Id_lexemes.RIGHT_BR) A += ")" else if (id === Id_lexemes.VARIABLE) A += "x" else if (id === Id_lexemes.END) ; else {
+        } else if (id === Id_lexemes.LEFT_BR) A += "(" else if (id === Id_lexemes.RIGHT_BR) A += ")" else if (id === Id_lexemes.VARIABLE) A += "x" else {
             A = Archieve.code(id)
         }
         return A

@@ -3,6 +3,8 @@ package Number
 import MRV.Computer
 import MathObject.Ring
 import Parameters.Number.PROPER
+import Support.createSingleArrayList
+import Support.toBinary
 import android.text.BoringLayout
 import com.example.flamemathnew.mid.Settings
 import kotlin.math.abs
@@ -81,7 +83,20 @@ public fun max(left : Ring, right : Ring): Ring {
     }
     else throw Computer.NON_COMPLIANCE_TYPES()
 }
-
+fun allComb(dividers : ArrayList<Ring>) : ArrayList<Ring>{
+    var i : Int = 1
+    val comb = Math.pow(2.0, dividers.size.toDouble()).toInt()
+    val answer : ArrayList<Ring> = arrayListOf()
+    while (i < comb) {
+        val temp_cofs: ArrayList<Ring> = createSingleArrayList({ createNumb(1L) }, 2)
+        val cur_comb = i.toBinary(dividers.size)
+        var cur_root: Ring = createNumb(1L)
+        for (j in 0 until dividers.size) if (cur_comb[j] == '1') cur_root *= dividers[j]
+        answer.add(cur_root)
+        i++
+    }
+    return answer
+}
 abstract class Numb : Ring() {
     abstract operator fun compareTo(right : Numb) : Int
 }

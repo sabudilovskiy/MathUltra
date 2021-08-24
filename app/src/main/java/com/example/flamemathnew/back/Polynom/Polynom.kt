@@ -229,19 +229,16 @@ class Polynom() : Ring() {
                     catch (error : Computer.CANNOTDIV) {commit("Деление на ${temp_pol} неуспешно. 1 не является корнем", SKIPPED)}
                     if (roots.size < maxpower()){
                         commit("Проверим делителей свободного члена.", PROCEEDING)
-                        val possible_roots = findDividers(mod.cofs[0] as Numb)
+                        val dividers = findDividers(mod.cofs[0] as Numb)
+                        val possible_roots = allComb(dividers)
                         var temp : String = ""
-                        for (root in possible_roots) {
-                            temp+="±$root "
-                        }
-                        commit("Возможные кандидаты + $temp", PROCEEDING )
+                        for (root in possible_roots) temp+="±$root "
+                        commit("Возможные кандидаты: $temp", PROCEEDING )
                         var i : Int = 1
-                        val comb = pow(2.0, possible_roots.size.toDouble()).toInt()
-                        while (i < comb && roots.size < maxpower()){
+                        val n = possible_roots.size
+                        while (i < n && roots.size < maxpower()){
                             val temp_cofs : ArrayList<Ring> = createSingleArrayList({createNumb(1L)}, 2)
-                            val cur_comb = i.toBinary(possible_roots.size)
-                            var cur_root : Ring = createNumb(1L)
-                            for (i in 0 until possible_roots.size) if (cur_comb[i] == '1') cur_root *= possible_roots[i]
+                            var cur_root : Ring = possible_roots[i]
                             temp_cofs[0] = -cur_root
                             temp_pol = Polynom(temp_cofs, key)
                             try {
@@ -253,6 +250,7 @@ class Polynom() : Ring() {
                             catch (error : Computer.CANNOTDIV){
                                 commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
                             }
+                            cur_root = -cur_root
                             temp_cofs[0] = cur_root
                             temp_pol = Polynom(temp_cofs, key)
                             try {
