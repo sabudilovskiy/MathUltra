@@ -1,22 +1,26 @@
 package com.example.flamemathnew.repository
 
+import com.example.flamemathnew.backend.my.LocalDataProvider
 import io.reactivex.Flowable
 import io.reactivex.Single
+import javax.inject.Inject
 
-class HistoryRepositoryImpl : HistoryRepository {
+class HistoryRepositoryImpl @Inject constructor(
+    private val localDataProvider: LocalDataProvider
+) : HistoryRepository {
+
     override fun insertLexeme(item: String) {
-        TODO("Not yet implemented")
+        localDataProvider.insertLexeme(item)
     }
+    override fun getAllLexemes(): Flowable<List<String>> =
+        localDataProvider.getAllLexemes()
 
-    override fun getAllLexemes(): Flowable<List<String>> {
-        TODO("Not yet implemented")
-    }
 
-    override fun getLexemeById(id: Long): Single<String> {
-        TODO("Not yet implemented")
-    }
+    override fun getLexemeById(id: Long): Single<String> =
+        localDataProvider.getLexemeById(id)
+
 
     override fun deleteLexeme(item: String) {
-        TODO("Not yet implemented")
+        localDataProvider.deleteLexeme(item)
     }
 }
