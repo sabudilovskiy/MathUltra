@@ -14,34 +14,17 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentPracticeAlgebraBinding
+import com.example.flamemathnew.ui.algebra.AlgebraHelper.Companion.getOnItemSelectListener
 import com.example.flamemathnew.ui.support.Support.Companion.computeDeterminant
 import com.example.flamemathnew.ui.support.Support.Companion.computeInversion
 import com.example.flamemathnew.ui.support.Support.Companion.computeRank
 import com.example.flamemathnew.ui.support.Support.Companion.computeSLE
 import com.example.flamemathnew.ui.support.UISupport.Companion.changeMatrix
 
-
-fun getOnItemSelectListener(action: (item: String) -> Unit): AdapterView.OnItemSelectedListener {
-    val listener = object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(
-            parent: AdapterView<*>,
-            view: View,
-            position: Int,
-            id: Long
-        ) {
-            val item = parent.getItemAtPosition(position) as String
-            action(item)
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>?) {}
-    }
-    return listener
-}
-
 class PracticeAlgebraFragment : Fragment() {
 
-    private var listMatr: ArrayList<EditText> = arrayListOf()
-    private var listSle: ArrayList<EditText> = arrayListOf()
+    private var listMatr: MutableList<EditText> = mutableListOf()
+    private var listSle: MutableList<EditText> = mutableListOf()
 
     private var dimens = arrayOf("1", "2", "3", "4", "5")
     private var detTypes = arrayOf("LAPLASS", "TRIANGLE", "SARUSS", "BASIC")
@@ -193,16 +176,16 @@ class PracticeAlgebraFragment : Fragment() {
         changeMatrix(listMatr, binding.linearLayoutCompatMatrix, requireContext(), N, M)
 
 
-        fun readMatrixFromEditText(): ArrayList<String> {
-            var list = ArrayList<String>()
+        fun readMatrixFromEditText(): MutableList<String> {
+            var list = mutableListOf<String>()
             for (i in listMatr.indices) {
                 list.add(listMatr[i].text.toString())
             }
             return list
         }
 
-        fun readMatrixFromEditTextExpanded(): ArrayList<String> {
-            var list = ArrayList<String>()
+        fun readMatrixFromEditTextExpanded(): MutableList<String> {
+            var list = mutableListOf<String>()
             for (i in listMatr.indices) {
                 list.add(listMatr[i].text.toString())
             }

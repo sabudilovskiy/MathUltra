@@ -1,15 +1,15 @@
 package com.example.flamemathnew.ui.support
 
-
-import MRV.Computer
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.widget.EditText
+import com.example.flamemathnew.mid.Computer
+import com.example.flamemathnew.mid.exceptions.*
 import com.example.flamemathnew.ui.algebra.PracticeAlgebraFragment
-import java.util.ArrayList
+//import java.util.ArrayList
 
 class Support {
 
@@ -18,13 +18,13 @@ class Support {
 
 
 
-        fun computeSLE(listMatr: ArrayList<String>,
+        fun computeSLE(listMatr: MutableList<String>,
                        TYPE_COMPUTE: String,
                        numbersType: String,
                        N: Int,
                        M: Int) : String {
-            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
-            val free_arr : ArrayList<ArrayList<String?>> = readMatrixend(listMatr, 1, M)
+            val list: MutableList<MutableList<String?>> = readMatrix(listMatr, N, M)
+            val free_arr : MutableList<MutableList<String?>> = readMatrixend(listMatr, 1, M)
             for (i in 0 until M) list[i].add(free_arr[0][i])
             var answer: String
             var log = ""
@@ -37,14 +37,14 @@ class Support {
                 }
 
                 answer = "Ответ: \n" + Computer.SLE(list, "method", numbersType)
-                log = Computer.get_log_as_str()
-            } catch (matrix_fail: Computer.MATRIX_FAIL) {
+                log = Computer.getLogAsStr()
+            } catch (matrix_fail: MatrixFailException) {
                 answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: Computer.NON_QUADRATIC_MATRIX) {
+            } catch (non_quadratic_matrix: NonQuadraticMatrixException) {
                 answer = "Матрица не является квадратной. Вычислить обратную невозможно."
-            } catch (field_error: Computer.FIELD_ERROR) {
+            } catch (field_error: FieldErrorException) {
                 answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-            } catch (degenerate_matrix: Computer.DEGENERATE_MATRIX) {
+            } catch (degenerate_matrix: DegenerateMatrixException) {
                 answer = "Матрица является вырожденной. Нахождение обратной невозможно."
             }
             return "$answer $log"
@@ -53,54 +53,54 @@ class Support {
 
         fun computeLexemes(
             editText: EditText,
-            keys: ArrayList<String?>,
-            values: ArrayList<String?>
+            keys: MutableList<String?>,
+            values: MutableList<String?>
         ): String {
             var temp = ""
             try {
                 temp = """Result """.trimIndent() + java.lang.String.valueOf(
-                    Computer.count_lexemes(
+                    Computer.countLexemes(
                         editText.text.toString(), keys, values
                     )
                 )
-            } catch (error: Computer.ARGUMENT_LIST_MISMATCH) {
+            } catch (error: ArgumentListMismatchException) {
                 temp = "Списки аргументов не соответствуют."
-            } catch (error: Computer.UNKNOWN_FUNCTION) {
+            } catch (error: UnknownFunctionException) {
                 temp = "Неизвестная функция "
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.ERROR_SIGNS) {
+            } catch (error: ErrorSignsException) {
                 temp =
                     "Какое-то из чисел записано с ошибкой: слишком много точек." + "Место ошибки: " + Integer.toString(
                         error.error_begin
                     )
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.IMPOSSIBLE_COUNT) {
+            } catch (error: ImpossibleCountException) {
                 temp = "Функцию в заданной точке невозможно вычислить."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.MISS_ARGUMENT_BINARY_OPERATOR) {
+            } catch (error: MissArgumentBinaryOperatorException) {
                 temp = "У какого-то из бинарных операторов отсутствует аргумент."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.MISS_ARGUMENT_PRE_OPERATOR) {
+            } catch (error: MissArgumentPreOperatorException) {
                 temp = "У какого-то из преоператоров отсутствует аргумент."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.MISS_ARGUMENT_POST_OPERATOR) {
+            } catch (error: MissArgumentPostOperatorException) {
                 temp =
                     "У какого-то из постоператоров отсутствует аргумент." + "Ошибка от: " + error.error_begin + " до: " + error.error_end
-            } catch (error: Computer.HAVE_OPEN_BRACKETS) {
+            } catch (error: HaveOpenBracketsException) {
                 temp = "Есть незакрытая скобка."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.MORE_RIGHT_BRACKETS) {
+            } catch (error: MoreRightBracketsException) {
                 temp = "Закрыто больше скобок, чем открыто."
-            } catch (error: Computer.BAD_ARGUMENTS) {
+            } catch (error: BadArgumentsException) {
                 temp = "У какого-то операторов недостаточно или слишком много аргументов."
                 redText(error.error_begin, error.error_end, editText)
-            } catch (error: Computer.UNKNOWN_ERROR) {
+            } catch (error: UnknownErrorException) {
                 temp = "Неизвестная ошибка."
-            } catch (error: Computer.Input_Input_Lexemes_Exception) {
+            } catch (error: InputInputLexemesException) {
                 temp = "Функция не введена"
-            } catch (error: Computer.Input_Keys_Lexemes_Exception) {
+            } catch (error: InputKeysLexemesException) {
                 temp = "Ключ переменной №" + (error.number_key + 1) + " не введён"
-            } catch (error: Computer.Input_Values_Lexemes_Exception) {
+            } catch (error: InputValuesLexemesException) {
                 temp =
                     "В вводе значения переменной №" + (error.number_value + 1) + " допущена ошибка"
             }
@@ -108,11 +108,11 @@ class Support {
         }
 
 
-        fun readMatrix(listMatr: ArrayList<String>, N : Int, M : Int) : ArrayList<ArrayList<String?>> {
-            val list: ArrayList<ArrayList<String?>> = ArrayList( N)
+        fun readMatrix(listMatr: MutableList<String>, N : Int, M : Int) : MutableList<MutableList<String?>> {
+            val list: MutableList<MutableList<String?>> = MutableList( N) {i -> mutableListOf()}
             var m = 0
             for (i in 0 until  N) {
-                val row: ArrayList<String?> = ArrayList<String?>(M)
+                val row: MutableList<String?> = MutableList<String?>(M) {i -> ""}
                 for (j in 0 until  M) {
                     row.add(listMatr[m])
                     m++
@@ -121,11 +121,11 @@ class Support {
             }
             return list
         }
-        fun readMatrixend(listMatr: ArrayList<String>, N : Int, M : Int) : ArrayList<ArrayList<String?>> {
-            val list: ArrayList<ArrayList<String?>> = ArrayList( N)
+        fun readMatrixend(listMatr: MutableList<String>, N : Int, M : Int) : MutableList<MutableList<String?>> {
+            val list: MutableList<MutableList<String?>> = MutableList( N) {i-> mutableListOf()}
             var m = listMatr.size - M*N
             for (i in 0 until  N) {
-                val row: ArrayList<String?> = ArrayList<String?>(M)
+                val row: MutableList<String?> = MutableList<String?>(M){i-> ""}
                 for (j in 0 until  M) {
                     row.add(listMatr[m])
                     m++
@@ -135,29 +135,29 @@ class Support {
             return list
         }
         fun computeInversion(
-            listMatr: ArrayList<String>,
+            listMatr: MutableList<String>,
             TYPE_COMPUTE: String,
             numbersType: String,
             N: Int,
             M: Int
         ): String {
-            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+            val list: MutableList<MutableList<String?>> = readMatrix(listMatr, N, M)
             var answer: String
             var log = ""
             try {
-                answer = "Ответ: " + Computer.find_inverse_matrix(
+                answer = "Ответ: " + Computer.findInverseMatrix(
                     list,
                     TYPE_COMPUTE,
                     numbersType
                 ) + "\n"
-                log = Computer.get_log_as_str()
-            } catch (matrix_fail: Computer.MATRIX_FAIL) {
+                log = Computer.getLogAsStr()
+            } catch (matrix_fail: MatrixFailException) {
                 answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: Computer.NON_QUADRATIC_MATRIX) {
+            } catch (non_quadratic_matrix: NonQuadraticMatrixException) {
                 answer = "Матрица не является квадратной. Вычислить обратную невозможно."
-            } catch (field_error: Computer.FIELD_ERROR) {
+            } catch (field_error: FieldErrorException) {
                 answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
-            } catch (degenerate_matrix: Computer.DEGENERATE_MATRIX) {
+            } catch (degenerate_matrix: DegenerateMatrixException) {
                 answer = "Матрица является вырожденной. Нахождение обратной невозможно."
             }
             //TODO("Вывод необходимо переделать")
@@ -166,29 +166,29 @@ class Support {
 
 
         fun computeDeterminant(
-            listMatr: ArrayList<String>,
+            listMatr: MutableList<String>,
             TYPE_COMPUTE: String,
             numbersType: String,
             N: Int,
             M: Int
         ): String {
-            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+            val list: MutableList<MutableList<String?>> = readMatrix(listMatr, N, M)
             var answer: String
             var log = ""
             try {
                 answer =
-                    "Ответ: " + Computer.count_determinant(
+                    "Ответ: " + Computer.countDeterminant(
                         list,
                         TYPE_COMPUTE,
                         numbersType
                     ) + "\n"
-                log = Computer.get_log_as_str()
-            } catch (matrix_fail: Computer.MATRIX_FAIL) {
+                log = Computer.getLogAsStr()
+            } catch (matrix_fail: MatrixFailException) {
                 answer = "Матрица пуста"
-            } catch (non_quadratic_matrix: Computer.NON_QUADRATIC_MATRIX) {
+            } catch (non_quadratic_matrix: NonQuadraticMatrixException) {
                 answer =
                     "Матрица не является квадратной. Вычислить определитель невозможно."
-            } catch (field_error: Computer.FIELD_ERROR) {
+            } catch (field_error: FieldErrorException) {
                 answer =
                     "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
             }
@@ -197,25 +197,25 @@ class Support {
         }
 
 
-        fun computeRank(listMatr: ArrayList<String>,
+        fun computeRank(listMatr: MutableList<String>,
                         TYPE_COMPUTE: String,
                         numbersType: String,
                         N: Int,
                         M: Int) : String{
-            val list: ArrayList<ArrayList<String?>> = readMatrix(listMatr, N, M)
+            val list: MutableList<MutableList<String?>> = readMatrix(listMatr, N, M)
 
             var answer: String
             var log = ""
             try {
-                answer = "Ответ: " + Computer.count_rank(list,
+                answer = "Ответ: " + Computer.countRank(list,
                     TYPE_COMPUTE,
                     numbersType
                 ) + "\n"
 
-                log = Computer.get_log_as_str()
-            } catch (matrix_fail: Computer.MATRIX_FAIL) {
+                log = Computer.getLogAsStr()
+            } catch (matrix_fail: MatrixFailException) {
                 answer = "Матрица пуста"
-            } catch (field_error: Computer.FIELD_ERROR) {
+            } catch (field_error: FieldErrorException) {
                 answer =
                     "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
             }

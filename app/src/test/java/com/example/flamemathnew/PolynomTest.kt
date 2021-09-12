@@ -3,7 +3,7 @@ package com.example.flamemathnew
 import MathObject.Ring
 import Number.createNumb
 import Support.createSingleArrayList
-import com.example.flamemathnew.back.Polynom.Polynom
+import com.example.flamemathnew.back.polynom.Polynom
 
 fun main(){
     println("Введите n: ")

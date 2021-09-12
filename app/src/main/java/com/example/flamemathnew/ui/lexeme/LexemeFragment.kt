@@ -1,7 +1,6 @@
 package com.example.flamemathnew.ui.lexeme
 
 
-import Lexemes.ErrorHandler
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +10,9 @@ import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.flamemathnew.back.lexemes.ErrorHandler
 import com.example.flamemathnew.databinding.FragmentLexemeBinding
 import com.example.flamemathnew.ui.support.Support.Companion.computeLexemes
-import java.util.*
 
 class LexemeFragment : Fragment() {
 
@@ -22,10 +21,10 @@ class LexemeFragment : Fragment() {
     private var _binding: FragmentLexemeBinding? = null
     private val binding get() = _binding!!
 
-    private val keys = ArrayList<String?>()
-    private val values = ArrayList<String?>()
-    private val editTextsKey = ArrayList<EditText>()
-    private val editTextsValues = ArrayList<EditText>()
+    private val keys = mutableListOf<String?>()
+    private val values = mutableListOf<String?>()
+    private val editTextsKey = mutableListOf<EditText>()
+    private val editTextsValues = mutableListOf<EditText>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -144,7 +143,7 @@ class LexemeFragment : Fragment() {
             editTextsValues.clear()
             keys.clear()
             values.clear()
-            ErrorHandler.set_default()
+            ErrorHandler.setDefault()
             binding.floatingRestart.visibility = View.GONE
             binding.btnCompute.isEnabled = false
             lexemeViewModelImpl.editTextLexeme.value = ""

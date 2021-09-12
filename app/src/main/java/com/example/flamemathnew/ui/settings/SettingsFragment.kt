@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentSettingsBinding
-import com.example.flamemathnew.ui.algebra.getOnItemSelectListener
+import com.example.flamemathnew.ui.algebra.AlgebraHelper.Companion.getOnItemSelectListener
 
 
 class SettingsFragment : Fragment() {

@@ -11,7 +11,7 @@ class UISupport {
 
     companion object {
         fun changeMatrix(
-            listMatr: ArrayList<EditText>,
+            listMatr: MutableList<EditText>,
             linearLayout: LinearLayoutCompat,
             context: Context,
             N: Int,

@@ -9,5 +9,10 @@ data class LexemeEntity(
     val expression: String,
 ){
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L
+    var id: Long = 0L
+
+    constructor(expression: String, id: Long) : this(expression)
+    {
+        this.id = id
+    }
 }

@@ -1,9 +1,7 @@
 package com.example.flamemathnew.ui.algebra
 
-import MRV.Computer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -12,7 +10,13 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.example.flamemathnew.R
+import com.example.flamemathnew.back.parameters.Number
 import com.example.flamemathnew.databinding.FragmentMultMatrixBinding
+import com.example.flamemathnew.mid.Computer
+import com.example.flamemathnew.mid.exceptions.FieldErrorException
+import com.example.flamemathnew.mid.exceptions.MatrixDimensionMismatchException
+import com.example.flamemathnew.mid.exceptions.MatrixFailException
+import com.example.flamemathnew.ui.algebra.AlgebraHelper.Companion.getOnItemSelectListener
 
 class MultMatrixActivity : AppCompatActivity() {
 
@@ -22,8 +26,8 @@ class MultMatrixActivity : AppCompatActivity() {
 
     private var _binding: FragmentMultMatrixBinding? = null
     private val binding get() = _binding!!
-    private var listMatr: ArrayList<EditText> = arrayListOf()
-    private var listMatr2: ArrayList<EditText> = arrayListOf()
+    private var listMatr: MutableList<EditText> = mutableListOf()
+    private var listMatr2: MutableList<EditText> = mutableListOf()
     var numberTypes = arrayOf("PROPER", "DEC")
 
 
@@ -56,7 +60,7 @@ class MultMatrixActivity : AppCompatActivity() {
             changeMatrix(N2, M2, binding.linearLayoutCompatMatrix2, listMatr2)
         }
         fun changeNumberTyper(item: String){
-            MultMatrixFragment.numberType = item
+            MultMatrixFragment.numberType = Number.valueOf(item)
         }
 
         val adapter = ArrayAdapter(applicationContext, R.layout.support_simple_spinner_dropdown_item, dimens)
@@ -78,11 +82,11 @@ class MultMatrixActivity : AppCompatActivity() {
         binding.mSize2.onItemSelectedListener = itemSelectedListenerN2
         binding.nSize2.onItemSelectedListener = itemSelectedListenerM2
         binding.timesButton.setOnClickListener {
-            val left_arr : ArrayList<ArrayList<String?>> = ArrayList(N)
-            val right_arr : ArrayList<ArrayList<String?>> = ArrayList(N2)
+            val left_arr : MutableList<MutableList<String?>> = MutableList(N) {i -> mutableListOf()}
+            val right_arr : MutableList<MutableList<String?>> =  MutableList(N2) {i -> mutableListOf()}
             var m = 0
             for (i in 0..N - 1) {
-                val row: ArrayList<String?> = ArrayList(M)
+                val row: MutableList<String?> = MutableList(M) {i -> ""}
                 for (j in 0..M - 1) {
                     row.add(listMatr[m].text.toString())
                     m++
@@ -91,7 +95,7 @@ class MultMatrixActivity : AppCompatActivity() {
             }
             m = 0
             for (i in 0..N2 - 1) {
-                val row: ArrayList<String?> = ArrayList(M2)
+                val row: MutableList<String?> = MutableList(M2) {i -> ""}
                 for (j in 0..M2 - 1) {
                     row.add(listMatr2[m].text.toString())
                     m++
@@ -102,11 +106,11 @@ class MultMatrixActivity : AppCompatActivity() {
             try {
                 answer = Computer.times(left_arr, right_arr, numberType)
             }
-            catch (matrix_fail: Computer.MATRIX_FAIL) {
+            catch (matrix_fail: MatrixFailException) {
                 answer = "Матрица пуста"
-            } catch (error: Computer.MATRIX_DIMENSION_MISSMATCH) {
+            } catch (error: MatrixDimensionMismatchException) {
                 answer = "Вторая размерность первой матрицы не равна первой размерности второй. Умножение невозможно выполнить"
-            } catch (field_error: Computer.FIELD_ERROR) {
+            } catch (field_error: FieldErrorException) {
                 answer = "Допущена ошибка в вводе A" + (field_error.i + 1) + (field_error.j + 1)
             }
             binding.logMult.text = answer
@@ -116,7 +120,7 @@ class MultMatrixActivity : AppCompatActivity() {
     }
 
 
-    fun changeMatrix(N: Int, M: Int, v: LinearLayoutCompat, listMatr: ArrayList<EditText>) {
+    fun changeMatrix(N: Int, M: Int, v: LinearLayoutCompat, listMatr: MutableList<EditText>) {
         v.removeAllViews()
         listMatr.clear()
         for (i in 0 until N) {
@@ -152,7 +156,7 @@ class MultMatrixActivity : AppCompatActivity() {
         private var M = 1
         private var N2 = 1
         private var M2 = 1
-        private var numberType = "PROPER"
+        private var numberType = Number.PROPER
     }
 
 }
