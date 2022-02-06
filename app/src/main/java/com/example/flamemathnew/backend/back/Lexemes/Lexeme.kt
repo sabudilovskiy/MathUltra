@@ -1,52 +1,48 @@
-package com.example.flamemathnew.back.lexemes
+package com.example.flamemathnew.backend.back.Lexemes
 
-class Lexeme {
+open class Lexeme {
     var key: String = ""
         protected set
-    @JvmField protected var id: IdLexemes = IdLexemes.NULL
-    @JvmField protected var values = mutableListOf<Double>()
+    protected var id: Id_lexemes = Id_lexemes.NULL
+    protected var values = ArrayList<Double>()
     var begin = 0
     var end = 0
 
-    constructor() {
-        values.add(3.0)
-    }
-
-    constructor(id: IdLexemes, values: MutableList<Double>) {
+    constructor(id: Id_lexemes, values: ArrayList<Double>) {
         this.values = values
         this.id = id
         key = code()
     }
 
-    constructor(id: IdLexemes) {
+    constructor(id: Id_lexemes) {
         this.id = id
         key = code()
     }
 
     constructor(key: String) {
-        id = IdLexemes.VARIABLE
+        id = Id_lexemes.VARIABLE
         this.key = key
     }
 
-    fun getId(): IdLexemes {
+    fun get_id(): Id_lexemes {
         return id
     }
 
-    fun getValue(i: Int): Double {
+    fun get_value(i: Int): Double {
         return values[i]
     }
 
-    fun getValue(): Double {
+    fun get_value(): Double {
         return values[0]
     }
 
-    fun getValues(): MutableList<Double> {
+    fun get_values(): ArrayList<Double> {
         return values
     }
 
     private fun code(): String {
         var A = ""
-        if (id === IdLexemes.ARGUMENT) {
+        if (id === Id_lexemes.ARGUMENT) {
             if (values.size > 1) {
                 A += "("
                 A += values[0]
@@ -58,7 +54,7 @@ class Lexeme {
             } else {
                 A += java.lang.Double.toString(values[0])
             }
-        } else if (id === IdLexemes.LEFT_BR) A += "(" else if (id === IdLexemes.RIGHT_BR) A += ")" else if (id === IdLexemes.VARIABLE) A += "x" else {
+        } else if (id === Id_lexemes.LEFT_BR) A += "(" else if (id === Id_lexemes.RIGHT_BR) A += ")" else if (id === Id_lexemes.VARIABLE) A += "x" else {
             A = Archieve.code(id)
         }
         return A

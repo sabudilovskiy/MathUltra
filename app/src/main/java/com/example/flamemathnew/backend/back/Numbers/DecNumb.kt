@@ -11,68 +11,91 @@ class DecNumb : Numb {
     constructor(_value: Double) {
         value = _value
     }
-
     constructor(_value: Int) {
         value = _value.toDouble()
     }
-
     constructor(_value: Long) {
         value = _value.toDouble()
     }
 
     override operator fun compareTo(right: Numb): Int {
-        if (right is DecNumb) {
-            if (value == right.value) return 0
-            else if (value > right.value) return 1
-            else return -1
-        } else if (right is FractionalNumb) {
-            return FractionalNumb(value).compareTo(right)
-        } else throw Computer.NON_COMPLIANCE_TYPES()
+        return when (right) {
+            is DecNumb -> {
+                when {
+                    value == right.value -> 0
+                    value > right.value -> 1
+                    else -> -1
+                }
+            }
+            is FractionalNumb -> {
+                FractionalNumb(value).compareTo(right)
+            }
+            else -> throw Computer.NON_COMPLIANCE_TYPES()
+        }
     }
 
     override fun plus(right: Ring): Ring {
-        if (right is DecNumb) {
-            return createNumb(value + right.value)
-        } else if (right is Polynom) {
-            return right + this
-        } else {
-            throw Computer.NON_COMPLIANCE_TYPES()
+        return when (right) {
+            is DecNumb -> {
+                createNumb(value + right.value)
+            }
+            is Polynom -> {
+                right + this
+            }
+            else -> {
+                throw Computer.NON_COMPLIANCE_TYPES()
+            }
         }
     }
 
     override fun minus(right: Ring): Ring {
-        if (right is DecNumb) {
-            return createNumb(value - right.value)
-        } else if (right is Polynom) {
-            return this + (-right)
-        } else {
-            throw Computer.NON_COMPLIANCE_TYPES()
+        return when (right) {
+            is DecNumb -> {
+                createNumb(value - right.value)
+            }
+            is Polynom -> {
+                this + (-right)
+            }
+            else -> {
+                throw Computer.NON_COMPLIANCE_TYPES()
+            }
         }
     }
 
     override fun times(right: Ring): Ring {
-        if (right is DecNumb) {
-            return createNumb(value * right.value)
-        } else if (right is Matrix) {
-            return right * this
-        } else if (right is Polynom) {
-            return right * this
-        } else throw Computer.NON_COMPLIANCE_TYPES()
+        return when (right) {
+            is DecNumb -> {
+                createNumb(value * right.value)
+            }
+            is Matrix -> {
+                right * this
+            }
+            is Polynom -> {
+                right * this
+            }
+            else -> throw Computer.NON_COMPLIANCE_TYPES()
+        }
     }
 
     override fun div(right: Ring): Ring {
-        if (right is DecNumb) {
-            return createNumb(value / right.value)
-        } else if (right is Matrix) {
-            return right * this
-        } else throw Computer.NON_COMPLIANCE_TYPES()
+        return when (right) {
+            is DecNumb -> {
+                createNumb(value / right.value)
+            }
+            is Matrix -> {
+                right * this
+            }
+            else -> throw Computer.NON_COMPLIANCE_TYPES()
+        }
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other === null) return false
-        else if (other is DecNumb) return value == other.value
-        else if (other is Double) return value == other
-        else return false
+        return when {
+            other === null -> false
+            other is DecNumb -> value == other.value
+            other is Double -> value == other
+            else -> false
+        }
     }
 
     override fun unaryMinus(): Ring {

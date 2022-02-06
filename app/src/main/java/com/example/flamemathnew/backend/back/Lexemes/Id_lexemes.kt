@@ -1,6 +1,6 @@
-package com.example.flamemathnew.back.lexemes
+package com.example.flamemathnew.backend.back.Lexemes
 
-enum class IdLexemes {
+enum class Id_lexemes {
     //пре-унарные операторы, высший приоритет
     ARGUMENT, VARIABLE, LEFT_BR, RIGHT_BR, COMMA, ABS, SIN, COS, TG, CTG, ARCSIN, ARCCOS, ARCTG, ARCCTG, EXP, LN,  //псевдо пре-унарный оператор
     LOG,  //пост-унарные операторы, приоритет: 2
@@ -12,14 +12,14 @@ enum class IdLexemes {
     NULL;
 
     companion object {
-        fun getId(lexeme: IdLexemes): Int {
+        fun getId(lexeme: Id_lexemes): Int {
             for (i in values().indices) {
                 if (lexeme == values()[i]) return i
             }
             throw NumberFormatException("No such element in enum")
         }
 
-        fun getById(id: Int): IdLexemes {
+        fun getById(id: Int): Id_lexemes {
             return values()[id]
         }
     }

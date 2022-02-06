@@ -1,4 +1,4 @@
-package com.example.flamemathnew.ui.adapters
+package com.example.flamemathnew.backend.ui.adapters
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.flamemathnew.R
-
 
 class ActionFragment : Fragment() {
     private var text: String? = null

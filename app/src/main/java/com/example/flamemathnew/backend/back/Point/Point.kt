@@ -24,7 +24,7 @@ class Point : MathObject {
     }
 
     fun getCoord(i: Int): Ring {
-        return if (0 <= i && i < n) coords[i] else throw IllegalArgumentException()
+        return if (i in 0 until n) coords[i] else throw IllegalArgumentException()
     }
 
     override fun toString(): String {

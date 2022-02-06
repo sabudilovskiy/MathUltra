@@ -24,21 +24,25 @@ class Polynom() : Ring() {
 
     override fun plus(right: Ring): Ring {
         if (right is Polynom) {
+
             if (right.key == key) {
                 val left = this
-                val temp_arr: ArrayList<Ring>
-                if (left.cofs.size != right.cofs.size) {
-                    temp_arr = createSingleArrayList({ createNumb(0.0) }, if (left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
-                } else temp_arr = createSingleArrayList({ createNumb(0.0) }, left.cofs.size)
-                for (i in 0 until left.cofs.size) temp_arr[i] = temp_arr[i] + left.cofs[i]
-                for (i in 0 until right.cofs.size) temp_arr[i] = temp_arr[i] + right.cofs[i]
-                return Polynom(temp_arr, key)
+
+                val tempArr: ArrayList<Ring> = if (left.cofs.size != right.cofs.size) {
+                    createSingleArrayList({ createNumb(0.0) }, if (left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
+                } else createSingleArrayList({ createNumb(0.0) }, left.cofs.size)
+
+                for (i in 0 until left.cofs.size) tempArr[i] = tempArr[i] + left.cofs[i]
+                for (i in 0 until right.cofs.size) tempArr[i] = tempArr[i] + right.cofs[i]
+                return Polynom(tempArr, key)
+
             } else throw Computer.NON_COMPLIANCE_TYPES()
+
         } else if (right is Numb) {
-            val temp_arr: ArrayList<Ring> = createSingleArrayList({ createNumb(0) }, cofs.size)
-            for (i in 0 until cofs.size) temp_arr[i] += cofs[i]
-            temp_arr[0] -= right
-            return Polynom(temp_arr, key)
+            val tempArr: ArrayList<Ring> = createSingleArrayList({ createNumb(0) }, cofs.size)
+            for (i in 0 until cofs.size) tempArr[i] += cofs[i]
+            tempArr[0] -= right
+            return Polynom(tempArr, key)
         } else throw Computer.NON_COMPLIANCE_TYPES()
     }
 
@@ -46,35 +50,37 @@ class Polynom() : Ring() {
         if (right is Polynom) {
             if (key == right.key) {
                 val left = this
-                val temp_arr: ArrayList<Ring>
-                if (left.cofs.size != right.cofs.size) {
-                    temp_arr = createSingleArrayList({ createNumb(0.0) }, if (left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
-                } else temp_arr = createSingleArrayList({ createNumb(0.0) }, left.cofs.size)
-                for (i in 0 until left.cofs.size) temp_arr[i] = temp_arr[i] + left.cofs[i]
-                for (i in 0 until right.cofs.size) temp_arr[i] = temp_arr[i] - right.cofs[i]
-                return Polynom(temp_arr, key)
+
+                val tempArr: ArrayList<Ring> = if (left.cofs.size != right.cofs.size) {
+                    createSingleArrayList({ createNumb(0.0) }, if (left.cofs.size > right.cofs.size) left.cofs.size else right.cofs.size)
+                } else createSingleArrayList({ createNumb(0.0) }, left.cofs.size)
+
+                for (i in 0 until left.cofs.size) tempArr[i] = tempArr[i] + left.cofs[i]
+                for (i in 0 until right.cofs.size) tempArr[i] = tempArr[i] - right.cofs[i]
+                return Polynom(tempArr, key)
             } else throw Computer.NON_COMPLIANCE_TYPES()
 
         } else if (right is Numb) {
-            val temp_arr: ArrayList<Ring> = createSingleArrayList({ createNumb(0) }, cofs.size)
-            for (i in 0 until cofs.size) temp_arr[i] += cofs[i]
-            temp_arr[0] -= right
-            return Polynom(temp_arr, key)
+            val tempArr: ArrayList<Ring> = createSingleArrayList({ createNumb(0) }, cofs.size)
+            for (i in 0 until cofs.size) tempArr[i] += cofs[i]
+            tempArr[0] -= right
+            return Polynom(tempArr, key)
         } else throw Computer.NON_COMPLIANCE_TYPES()
     }
 
     override fun times(right: Ring): Ring {
-        if (right is Polynom) {
+        return if (right is Polynom) {
             if (key == right.key) {
                 val left = this
-                val temp_arr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, left.maxpower() + right.maxpower() + 1)
-                for (i in 0 until left.cofs.size) for (j in 0 until right.cofs.size) temp_arr[i + j] = temp_arr[i + j] + left.cofs[i] * right.cofs[j]
-                return Polynom(temp_arr, key)
+                val tempArr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, left.maxpower() + right.maxpower() + 1)
+                for (i in 0 until left.cofs.size) for (j in 0 until right.cofs.size) tempArr[i + j] = tempArr[i + j] + left.cofs[i] * right.cofs[j]
+                Polynom(tempArr, key)
             } else throw Computer.NON_COMPLIANCE_TYPES()
+
         } else if (right is Numb) {
-            val temp_arr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size)
-            for (i in 0 until cofs.size) temp_arr[i] = cofs[i] * right
-            return Polynom(temp_arr, key)
+            val tempArr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size)
+            for (i in 0 until cofs.size) tempArr[i] = cofs[i] * right
+            Polynom(tempArr, key)
         } else throw Computer.NON_COMPLIANCE_TYPES()
     }
 
@@ -82,25 +88,31 @@ class Polynom() : Ring() {
         if (right is Polynom) {
             if (key == right.key) {
                 var left = Polynom(cofs, key)
+
                 if (left.maxpower() == 0) throw Computer.CANNOTDIV()
-                val res_div: ArrayList<Ring> = createSingleArrayList({ createNumb(0L) }, left.maxpower())
+
+                val resDiv: ArrayList<Ring> = createSingleArrayList({ createNumb(0L) }, left.maxpower())
+
                 while (left.cofs.size >= right.cofs.size) {
                     val n: Int = left.cofs.size - right.cofs.size
-                    var temp: Polynom = Polynom(right.cofs, key)
+                    var temp = Polynom(right.cofs, key)
                     val cof: Ring = left.cofs[left.cofs.size - 1] / temp.cofs[temp.cofs.size - 1]
-                    res_div[n] = cof
+                    resDiv[n] = cof
                     temp.incpower(n)
                     temp = (temp * cof) as Polynom
                     left = (left - temp) as Polynom
                 }
                 if (left.cofs.size == 1 && left.cofs[0].equals(0.0)) {
-                    return Polynom(res_div, key)
+                    return Polynom(resDiv, key)
                 } else throw Computer.CANNOTDIV()
             } else throw Computer.NON_COMPLIANCE_TYPES()
+
         } else if (right is Numb) {
-            val temp_arr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size)
-            for (i in 0 until cofs.size) temp_arr[i] = cofs[i] / right
-            return Polynom(temp_arr, key)
+            val tempArr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size)
+
+            for (i in 0 until cofs.size) tempArr[i] = cofs[i] / right
+
+            return Polynom(tempArr, key)
         } else throw Computer.NON_COMPLIANCE_TYPES()
     }
 
@@ -108,7 +120,7 @@ class Polynom() : Ring() {
         return cofs.size - 1
     }
 
-    fun incpower(power: Int) {
+    private fun incpower(power: Int) {
         val temparr: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size + power)
         for (i in 0 until cofs.size) temparr[i + power] = cofs[i]
         cofs = temparr
@@ -121,6 +133,7 @@ class Polynom() : Ring() {
                 return true
             } else return false
         } else if (other is Numb) return maxpower() == 0 && cofs[0] == other
+
         else if (other is Number) {
             val temp: Double = other.toDouble()
             return this == createNumb(temp) as Ring
@@ -128,9 +141,9 @@ class Polynom() : Ring() {
     }
 
     override fun unaryMinus(): Ring {
-        val temp_cofs: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size)
-        for (i in 0 until cofs.size) temp_cofs[i] = -cofs[i]
-        return Polynom(temp_cofs, key)
+        val tempCofs: ArrayList<Ring> = createSingleArrayList({ createNumb(0.0) }, cofs.size)
+        for (i in 0 until cofs.size) tempCofs[i] = -cofs[i]
+        return Polynom(tempCofs, key)
     }
 
     override fun toString(): String {
@@ -163,7 +176,7 @@ class Polynom() : Ring() {
         } else return cofs[0].toString()
     }
 
-    fun onlyintcofs(): Boolean {
+    private fun onlyintcofs(): Boolean {
         for (cof in cofs) {
             if (!isInteger(cof as Numb)) return false
         }
@@ -174,79 +187,87 @@ class Polynom() : Ring() {
         if (maxpower() > 0) {
             log_this()
             val roots = arrayListOf<Ring>()
-            var mod: Polynom = Polynom(cofs, key)
+            var mod = Polynom(cofs, key)
             val oneArr: ArrayList<Ring> = arrayListOf(createNumb(0.0), createNumb(1.0))
-            val one: Polynom = Polynom(oneArr, key)
+            val one = Polynom(oneArr, key)
             val havezero: Boolean = mod.cofs[0].equals(0.0)
+
             if (havezero) commit("Так как свободный член равен нулю, то корнем является ноль. Разделим многочлен, чтобы избавится от нулевых корней",
                 PROCEEDING)
+
             while (mod.cofs[0].equals(0.0)) {
                 mod = (mod / one) as Polynom
                 roots.add(createNumb(0.0))
             }
+
             if (havezero) mod.log_this()
             if (onlyintcofs()) {
                 if (cofs[maxpower()] == createNumb(1L) || cofs[maxpower()] == createNumb(-1L)) {
-                    commit("Проверим ${key} = -1", PROCEEDING)
-                    var temp_pol = Polynom()
+                    commit("Проверим $key = -1", PROCEEDING)
+                    var tempPol = Polynom()
                     try {
-                        val temp_cofs: ArrayList<Ring> = createSingleArrayList({ createNumb(1) }, 2)
-                        temp_pol = Polynom(temp_cofs, key)
+                        val tempCofs: ArrayList<Ring> = createSingleArrayList({ createNumb(1) }, 2)
+                        tempPol = Polynom(tempCofs, key)
                         while (true) {
-                            mod = (mod / temp_pol) as Polynom
-                            commit("Деление на ${temp_pol} успешно. -1 является корнем", SOLUTION)
+                            mod = (mod / tempPol) as Polynom
+                            commit("Деление на $tempPol успешно. -1 является корнем", SOLUTION)
                             mod.log_this()
                             roots.add(createNumb(-1))
                         }
                     } catch (error: Computer.CANNOTDIV) {
-                        commit("Деление на ${temp_pol} неуспешно. -1 не является корнем", SKIPPED)
+                        commit("Деление на $tempPol неуспешно. -1 не является корнем", SKIPPED)
                     }
-                    commit("Проверим ${key} = 1", PROCEEDING)
+                    commit("Проверим $key = 1", PROCEEDING)
+
                     try {
-                        val temp_cofs: ArrayList<Ring> = createSingleArrayList({ createNumb(1) }, 2)
-                        temp_cofs[0] = createNumb(-1)
-                        val temp_pol = Polynom(temp_cofs, key)
+                        val tempCofs: ArrayList<Ring> = createSingleArrayList({ createNumb(1) }, 2)
+                        tempCofs[0] = createNumb(-1)
+
+                        val tempPol1 = Polynom(tempCofs, key)
                         while (true) {
-                            mod = (mod / temp_pol) as Polynom
-                            commit("Деление на ${temp_pol} успешно. 1 является корнем", SOLUTION)
+                            mod = (mod / tempPol1) as Polynom
+                            commit("Деление на $tempPol1 успешно. 1 является корнем", SOLUTION)
                             mod.log_this()
                             roots.add(createNumb(1))
                         }
                     } catch (error: Computer.CANNOTDIV) {
-                        commit("Деление на ${temp_pol} неуспешно. 1 не является корнем", SKIPPED)
+                        commit("Деление на $tempPol неуспешно. 1 не является корнем", SKIPPED)
                     }
                     if (roots.size < maxpower()) {
                         commit("Проверим делителей свободного члена.", PROCEEDING)
                         val dividers = findDividers(mod.cofs[0] as Numb)
-                        val possible_roots = allComb(dividers)
-                        var temp: String = ""
-                        for (root in possible_roots) temp += "±$root "
+
+                        val possibleRoots = allComb(dividers)
+                        var temp = ""
+                        for (root in possibleRoots) temp += "±$root "
+
                         commit("Возможные кандидаты: $temp", PROCEEDING)
-                        var i: Int = 1
-                        val n = possible_roots.size
+
+                        var i = 1
+                        val n = possibleRoots.size
                         while (i < n && roots.size < maxpower()) {
                             val temp_cofs: ArrayList<Ring> = createSingleArrayList({ createNumb(1L) }, 2)
-                            var cur_root: Ring = possible_roots[i]
+                            var cur_root: Ring = possibleRoots[i]
                             temp_cofs[0] = -cur_root
-                            temp_pol = Polynom(temp_cofs, key)
+                            tempPol = Polynom(temp_cofs, key)
                             try {
-                                mod = (mod / temp_pol) as Polynom
-                                commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
+                                mod = (mod / tempPol) as Polynom
+                                commit("Деление на $tempPol успешно. $cur_root является корнем", SOLUTION)
                                 mod.log_this()
                                 roots.add(cur_root)
                             } catch (error: Computer.CANNOTDIV) {
-                                commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
+                                commit("Деление на $tempPol неуспешно. $cur_root не является корнем", SOLUTION)
                             }
                             cur_root = -cur_root
                             temp_cofs[0] = cur_root
-                            temp_pol = Polynom(temp_cofs, key)
+                            tempPol = Polynom(temp_cofs, key)
                             try {
-                                mod = (mod / temp_pol) as Polynom
-                                commit("Деление на ${temp_pol} успешно. $cur_root является корнем", SOLUTION)
+                                mod = (mod / tempPol) as Polynom
+                                commit("Деление на $tempPol успешно. $cur_root является корнем", SOLUTION)
                                 mod.log_this()
                                 roots.add(cur_root)
                             } catch (error: Computer.CANNOTDIV) {
-                                commit("Деление на ${temp_pol} неуспешно. $cur_root не является корнем", SOLUTION)
+                                commit("Деление на ${tempPol} неуспешно. $cur_root не является корнем", SOLUTION)
                             }
                             i++
                         }

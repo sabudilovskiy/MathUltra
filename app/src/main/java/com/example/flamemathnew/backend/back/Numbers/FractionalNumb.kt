@@ -7,7 +7,6 @@ import com.example.flamemathnew.backend.back.Polynom.Polynom
 import com.example.flamemathnew.backend.mid.Settings
 import java.lang.Math.abs
 
-
 class FractionalNumb : Numb {
     var numerator: Long = 1;
     var denominator: Long = 1;
@@ -15,7 +14,6 @@ class FractionalNumb : Numb {
     constructor(value: Long) {
         numerator = value;
     }
-
     constructor(value: Int) {
         numerator = value.toLong();
     }
@@ -29,7 +27,6 @@ class FractionalNumb : Numb {
             denominator = -denominator
         }
     }
-
     constructor(number: Double) {
         if (number != 0.0) {
             var temp: Double = number
@@ -39,28 +36,36 @@ class FractionalNumb : Numb {
             }
             numerator = temp.toLong()
         } else numerator = 0L
-
     }
 
     override operator fun compareTo(right: Numb): Int {
-        if (right is DecNumb) return -right.compareTo(this)
-        else if (right is FractionalNumb) {
-            val difference: FractionalNumb = (this - right) as FractionalNumb
-            if (difference.numerator > 0) return 1
-            else if (difference.numerator == 0L) return 0
-            else return -1
-        } else throw Computer.NON_COMPLIANCE_TYPES()
+        return when (right) {
+            is DecNumb -> -right.compareTo(this)
+            is FractionalNumb -> {
+                val difference: FractionalNumb = (this - right) as FractionalNumb
+                when {
+                    difference.numerator > 0 -> 1
+                    difference.numerator == 0L -> 0
+                    else -> -1
+                }
+            }
+            else -> throw Computer.NON_COMPLIANCE_TYPES()
+        }
     }
 
     override operator fun plus(right: Ring): Ring {
-        if (right is FractionalNumb) {
-            val left: FractionalNumb = this
-            val GCD: Long = find_GCD(left.denominator, right.denominator)
-            val LCM: Long = left.denominator * right.denominator / GCD
-            val new_numerator: Long = left.numerator * LCM / denominator + right.numerator * LCM / right.denominator
-            return FractionalNumb(new_numerator, LCM)
-        } else if (right is Polynom) return right + this
-        else throw Computer.NON_COMPLIANCE_TYPES()
+
+        return when (right) {
+            is FractionalNumb -> {
+                val left: FractionalNumb = this
+                val GCD: Long = find_GCD(left.denominator, right.denominator)
+                val LCM: Long = left.denominator * right.denominator / GCD
+                val new_numerator: Long = left.numerator * LCM / denominator + right.numerator * LCM / right.denominator
+                FractionalNumb(new_numerator, LCM)
+            }
+            is Polynom -> right + this
+            else -> throw Computer.NON_COMPLIANCE_TYPES()
+        }
     }
 
     override operator fun minus(right: Ring): Ring {
@@ -78,23 +83,26 @@ class FractionalNumb : Numb {
     override operator fun times(right: Ring): Ring {
         if (right is FractionalNumb) {
             val left: FractionalNumb = this
-            var left_numerator = left.numerator
-            var left_denominator = left.denominator
-            var right_numerator = right.numerator
-            var right_denominator = right.denominator
-            var GCD = find_GCD(left_numerator, right_denominator)
+            var leftNumerator = left.numerator
+            var leftDenominator = left.denominator
+            var rightNumerator = right.numerator
+            var rightDenominator = right.denominator
+
+            var GCD = find_GCD(leftNumerator, rightDenominator)
+
             if (GCD != 1L) {
-                left_numerator /= GCD
-                right_denominator /= GCD
+                leftNumerator /= GCD
+                rightDenominator /= GCD
             }
-            GCD = find_GCD(right_numerator, left_denominator)
+            GCD = find_GCD(rightNumerator, leftDenominator)
             if (GCD != 1L) {
-                left_denominator /= GCD
-                right_numerator /= GCD
+                leftDenominator /= GCD
+                rightNumerator /= GCD
             }
-            val new_numerator = left_numerator * right_numerator
-            val new_denominator = left_denominator * right_denominator
-            return FractionalNumb(new_numerator, new_denominator)
+
+            val newNumerator = leftNumerator * rightNumerator
+            val newDenominator = leftDenominator * rightDenominator
+            return FractionalNumb(newNumerator, newDenominator)
         } else if (right is Polynom) {
             return right * this
         } else throw Computer.NON_COMPLIANCE_TYPES()
@@ -119,34 +127,35 @@ class FractionalNumb : Numb {
     operator fun div(b: FractionalNumb): FractionalNumb {
         val left: FractionalNumb = this
         val right: FractionalNumb = b
-        var left_numerator = left.numerator
-        var left_denominator = left.denominator
-        var right_numerator = right.numerator
-        var right_denominator = right.denominator
-        var GCD = find_GCD(left_numerator, right_denominator)
+        var leftNumerator = left.numerator
+        var leftDenominator = left.denominator
+        var rightNumerator = right.numerator
+        var rightDenominator = right.denominator
+        var GCD = find_GCD(leftNumerator, rightDenominator)
+
         if (GCD != 1L) {
-            left_numerator /= GCD
-            right_denominator /= GCD
+            leftNumerator /= GCD
+            rightDenominator /= GCD
         }
-        GCD = find_GCD(left_denominator, right_numerator)
+        GCD = find_GCD(leftDenominator, rightNumerator)
         if (GCD != 1L) {
-            left_denominator /= GCD
-            right_numerator /= GCD
+            leftDenominator /= GCD
+            rightNumerator /= GCD
         }
-        val new_numerator = left_numerator * right_denominator
+        val new_numerator = leftNumerator * rightDenominator
         val new_denominator = left.denominator * right.numerator
         return FractionalNumb(new_numerator, new_denominator)
     }
 
     override fun toString(): String {
         if (!Settings.numbers.use_improrer_fraction) {
-            val int_value = numerator / denominator
-            val true_numerator = numerator % denominator
-            if (denominator != 1L) return "$int_value $true_numerator/$denominator"
+            val intValue = numerator / denominator
+            val trueNumerator = numerator % denominator
+            if (denominator != 1L) return "$intValue $trueNumerator/$denominator"
             else return numerator.toString()
         } else {
-            if (denominator != 1L) return "  $numerator/$denominator"
-            else return numerator.toString()
+            return if (denominator != 1L) "  $numerator/$denominator"
+            else numerator.toString()
         }
     }
 
