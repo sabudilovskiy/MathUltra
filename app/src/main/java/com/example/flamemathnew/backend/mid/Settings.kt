@@ -1,24 +1,25 @@
 package com.example.flamemathnew.backend.mid
 
 import Parameters.*
+import Parameters.Rank.ELEMENTAL_ROW
+import com.example.flamemathnew.backend.back.Parameters.*
+import com.example.flamemathnew.backend.back.Parameters.Det.*
+import com.example.flamemathnew.backend.back.Parameters.Inverse.GAUSS
 import com.example.flamemathnew.backend.back.Parameters.Number
-import com.example.flamemathnew.backend.back.Parameters.createDetMethod
-import com.example.flamemathnew.backend.back.Parameters.createInverseMethod
-import com.example.flamemathnew.backend.back.Parameters.createNumberType
 
 object Settings {
 
     object matrix {
         object Det {
-            private var second: com.example.flamemathnew.backend.back.Parameters.Det = com.example.flamemathnew.backend.back.Parameters.Det.BASIC
-            private var thirst: com.example.flamemathnew.backend.back.Parameters.Det = com.example.flamemathnew.backend.back.Parameters.Det.LAPLASS
-            private var fourth: com.example.flamemathnew.backend.back.Parameters.Det = com.example.flamemathnew.backend.back.Parameters.Det.LAPLASS
+            private var second = BASIC
+            private var thirst = LAPLASS
+            private var fourth = LAPLASS
             private var border = 5
 
             fun setdefaultSettings() {
-                second = com.example.flamemathnew.backend.back.Parameters.Det.BASIC
-                thirst = com.example.flamemathnew.backend.back.Parameters.Det.SARUSS
-                fourth = com.example.flamemathnew.backend.back.Parameters.Det.LAPLASS
+                second = BASIC
+                thirst = SARUSS
+                fourth = LAPLASS
             }
 
             fun setSettings(_second: String, _thirst: String, _fourth: String, _border: Int) {
@@ -34,14 +35,14 @@ object Settings {
 
             fun getCurMethod(n: Int): com.example.flamemathnew.backend.back.Parameters.Det {
                 if (n > 0) {
-                    if (n >= border) return com.example.flamemathnew.backend.back.Parameters.Det.TRIANGLE
+                    if (n >= border) return TRIANGLE
                     else {
-                        if (n > 3) return com.example.flamemathnew.backend.back.Parameters.Det.LAPLASS
+                        if (n > 3) return LAPLASS
                         else {
                             when (n) {
                                 2 -> return second
                                 3 -> return thirst
-                                else -> return com.example.flamemathnew.backend.back.Parameters.Det.BASIC
+                                else -> return BASIC
                             }
                         }
                     }
@@ -51,13 +52,13 @@ object Settings {
             }
         }
         object Rank {
-            internal var method = Parameters.Rank.ELEMENTAL_ROW
+            internal var method = ELEMENTAL_ROW
             fun setmethod(key: String) {
                 method = createRankMethod(key)
             }
         }
         object Inverse {
-            internal var method = com.example.flamemathnew.backend.back.Parameters.Inverse.GAUSS
+            internal var method = GAUSS
             fun setmethod(key: String) {
                 method = createInverseMethod(key)
             }
