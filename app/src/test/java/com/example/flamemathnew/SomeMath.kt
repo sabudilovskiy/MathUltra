@@ -1,9 +1,8 @@
 package com.example.flamemathnew
 
-import Lexemes.Archieve
-import Lexemes.Lexeme
-import Lexemes.Sentence
-import Support.createSingleArrayList
+import com.example.flamemathnew.backend.back.Lexemes.Archieve
+import com.example.flamemathnew.backend.back.Lexemes.Sentence
+import com.example.flamemathnew.backend.back.Support.createSingleArrayList
 
 fun main(){
     println("Введите количество примеров:")

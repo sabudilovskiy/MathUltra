@@ -32,5 +32,9 @@
     <string name="algebra_description"> Практика по линейной алгебре. В этом разделе вы можете работать с базовыми операциями над матрицами: умножение, определитель, обратная, ранг. Так же можете искать жорданову форму и жорданов базис. При решении вы можете выбрать способ, решение которым хотите увидеть. Так же вы можете задать способ по умолчанию в настройках</string>
     <string name="mult">Умножить</string>
     <string name="slau">СЛАУ</string>
+    <string name="mult_matrix">Умножить матрицы</string>
+    <string name="ok">OK</string>
+    <string name="x">x</string>
+    <string name="enter_matrix_size">Введите размер матрицы</string>
 
 </resources>

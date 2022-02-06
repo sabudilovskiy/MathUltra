@@ -7,27 +7,27 @@
 
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/mathultra"
+            android:icon="@drawable/ic_home"
             android:title="@string/menu_home" />
 
         <item
             android:id="@+id/nav_lexeme"
-            android:icon="@drawable/mathultra"
+            android:icon="@drawable/ic_square_root_x"
             android:title="@string/lexeme_english" />
 
         <item
             android:id="@+id/nav_algebra"
-            android:icon="@drawable/mathultra"
+            android:icon="@drawable/ic_maths_add_minus"
             android:title="@string/algebra" />
 
         <item
             android:id="@+id/settingsFragment"
-            android:icon="@drawable/mathultra"
+            android:icon="@drawable/ic_settings"
             android:title="@string/settings" />
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/mathultra"
+            android:icon="@drawable/ic_question"
             android:title="@string/about" />
     </group>
 </menu>

@@ -1,17 +1,17 @@
 package com.example.flamemathnew
 
-import Logger.Log
-import MathObject.Ring
-import Matrix.Matrix
-import Number.createNumb
-import Support.createRectangleArrayList
+import com.example.flamemathnew.backend.back.Logger.Log
+import com.example.flamemathnew.backend.back.MathObject.Ring
+import com.example.flamemathnew.backend.back.Matrix.Matrix
+import com.example.flamemathnew.backend.back.Numbers.createNumb
+import com.example.flamemathnew.backend.back.Support.createRectangleArrayList
 
 fun main(){
     println("Введите m")
     val m : Int = readLine()!!.toInt()
     println("Введите n")
     val n : Int = readLine()!!.toInt()
-    val arr : ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0)}, m,n)
+    val arr : ArrayList<ArrayList<Ring>> = createRectangleArrayList({ createNumb(0.0) }, m,n)
     for (i in 0 until m){
         println("Введите ${i+1} строку")
         val temp = readLine()

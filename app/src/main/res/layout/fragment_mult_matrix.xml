@@ -24,7 +24,7 @@
                 android:id="@+id/text_gallery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Введите размер матрицы"
+                android:text="@string/enter_matrix_size"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="25sp"
@@ -53,7 +53,7 @@
                     android:layout_height="50sp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="x"
+                    android:text="@string/x"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="35sp" />
@@ -115,7 +115,7 @@
                     android:layout_height="50sp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="x"
+                    android:text="@string/x"
                     android:textAlignment="center"
                     android:textColor="@android:color/black"
                     android:textSize="35sp" />
@@ -163,13 +163,15 @@
                 android:textAlignment="center"
                 android:textSize="15sp" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/times_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Умножить матрицы"
-                android:textAlignment="center" />
+                android:background="@drawable/green_ripple"
+                android:text="@string/mult_matrix"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/answer_mult"
@@ -180,12 +182,14 @@
                 android:textStyle="bold"
                 tools:text="Ответ" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/ok_mult"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="OK" />
+                android:background="@drawable/green_ripple"
+                android:text="@string/ok"
+                android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/log_mult"
