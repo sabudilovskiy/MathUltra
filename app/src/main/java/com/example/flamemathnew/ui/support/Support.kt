@@ -167,7 +167,7 @@ class Support {
 
         fun computeDeterminant(
             listMatr: MutableList<String>,
-            TYPE_COMPUTE: String,
+            computeType: String,
             numbersType: String,
             N: Int,
             M: Int
@@ -179,7 +179,7 @@ class Support {
                 answer =
                     "Ответ: " + Computer.countDeterminant(
                         list,
-                        TYPE_COMPUTE,
+                        computeType,
                         numbersType
                     ) + "\n"
                 log = Computer.getLogAsStr()

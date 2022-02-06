@@ -1,6 +1,7 @@
 package com.example.flamemathnew.ui.algebra
 
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,6 +57,7 @@ class MultMatrixFragment : Fragment() {
                     textSize = 20f
                     params2.weight = 1f
                     layoutParams = params2
+                    inputType = InputType.TYPE_CLASS_NUMBER
                 }
                 linearLayoutCompat.addView(editText)
                 listMatr.add(editText)

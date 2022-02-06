@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,6 @@ import com.example.flamemathnew.ui.support.Support.Companion.computeInversion
 import com.example.flamemathnew.ui.support.Support.Companion.computeRank
 import com.example.flamemathnew.ui.support.Support.Companion.computeSLE
 import com.example.flamemathnew.ui.support.UISupport.Companion.changeMatrix
-
 
 fun getOnItemSelectListener(action: (item: String) -> Unit): AdapterView.OnItemSelectedListener {
     val listener = object : AdapterView.OnItemSelectedListener {
@@ -56,11 +56,14 @@ class PracticeAlgebraFragment : Fragment() {
         for (i in 0 until N) {
             val editText = EditText(context)
             //    editText.setHintTextColor(Color.BLACK)
-            editText.hint = "$i"
-            editText.textAlignment = View.TEXT_ALIGNMENT_CENTER
-            editText.width = 250 - M * 10
-            editText.height = 250 - M * 10
-            editText.textSize = 20f
+            editText.apply {
+                hint = "$i"
+                textAlignment = View.TEXT_ALIGNMENT_CENTER
+                width = 250 - M * 10
+                height = 250 - M * 10
+                textSize = 20f
+                inputType = InputType.TYPE_CLASS_NUMBER
+            }
             listSle.add(editText)
 
             binding.sleStolbec.addView(editText)
@@ -83,165 +86,145 @@ class PracticeAlgebraFragment : Fragment() {
 
         TYPE_NUMBER = pref.getString("TYPE_NUMBERS", "PROPER")!!
 
-        val adapter =
-            ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
+        val adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
 
-        val adapterMain = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            operations
-        )
-        binding.spinnerChoice.adapter = adapterMain
+        val adapterMain = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, operations)
 
-        binding.spinnerTypeDet.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, detTypes)
+        with(binding) {
 
-        binding.spinnerTypeInv.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, inverseTypes)
+            spinnerChoice.adapter = adapterMain
 
-        binding.spinnerTypeRank.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, rankTypes)
+            spinnerTypeDet.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, detTypes)
 
-        binding.mSize.adapter = adapter
-        binding.nSize.adapter = adapter
+            spinnerTypeInv.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, inverseTypes)
 
-        fun changeN(item: String) {
-            N = item.toInt()
-            changeMatrix(listMatr, binding.linearLayoutCompatMatrix, requireContext(), N, M)
-            updateSle(N)
-        }
+            spinnerTypeRank.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, rankTypes)
 
-        fun changeM(item: String) {
-            M = item.toInt()
-            changeMatrix(listMatr, binding.linearLayoutCompatMatrix, requireContext(), N, M)
-        }
+            mSize.adapter = adapter
+            nSize.adapter = adapter
 
-        fun changeTypeDet(item: String) {
-            if (binding.spinnerTypeDet.visibility == View.VISIBLE)
-                TYPE_COMPUTE = item
-        }
-
-        fun changeTypeInv(item: String) {
-            if (binding.spinnerTypeInv.visibility == View.VISIBLE)
-                TYPE_COMPUTE = item
-        }
-
-        fun changeTypeRank(item: String) {
-            if (binding.spinnerTypeRank.visibility == View.VISIBLE)
-                TYPE_COMPUTE = item
-        }
-
-        fun operationTypeListener(item: String) {
-            when (item) {
-                "Определитель" -> {
-                    TYPE = "Определитель"
-                    binding.spinnerTypeRank.visibility = View.GONE
-                    binding.spinnerTypeInv.visibility = View.GONE
-                    binding.spinnerTypeDet.visibility = View.VISIBLE
-                }
-                "Обратная" -> {
-                    TYPE = "Обратная"
-                    binding.spinnerTypeRank.visibility = View.GONE
-                    binding.spinnerTypeInv.visibility = View.VISIBLE
-                    binding.spinnerTypeDet.visibility = View.GONE
-                }
-                "Ранг" -> {
-                    TYPE = "Ранг"
-                    binding.spinnerTypeRank.visibility = View.VISIBLE
-                    binding.spinnerTypeInv.visibility = View.GONE
-                    binding.spinnerTypeDet.visibility = View.GONE
-                }
+            fun changeN(item: String) {
+                N = item.toInt()
+                changeMatrix(listMatr, linearLayoutCompatMatrix, requireContext(), N, M)
+                updateSle(N)
             }
-        }
 
-        val itemSelectedListenerN: AdapterView.OnItemSelectedListener =
-            getOnItemSelectListener(::changeN)
-        val itemSelectedListenerM: AdapterView.OnItemSelectedListener =
-            getOnItemSelectListener(::changeM)
-        val intemOperationSelectedListener: AdapterView.OnItemSelectedListener =
-            getOnItemSelectListener(::operationTypeListener)
-        val typeDetChangeListener: AdapterView.OnItemSelectedListener =
-            getOnItemSelectListener(::changeTypeDet)
-        val typeInvChangeListener: AdapterView.OnItemSelectedListener =
-            getOnItemSelectListener(::changeTypeInv)
-        val typeRankChangeListener: AdapterView.OnItemSelectedListener =
-            getOnItemSelectListener(::changeTypeRank)
-
-        binding.mSize.onItemSelectedListener = itemSelectedListenerN
-        binding.nSize.onItemSelectedListener = itemSelectedListenerM
-
-        binding.spinnerChoice.onItemSelectedListener = intemOperationSelectedListener
-
-        binding.spinnerTypeDet.onItemSelectedListener = typeDetChangeListener
-        binding.spinnerTypeInv.onItemSelectedListener = typeInvChangeListener
-        binding.spinnerTypeRank.onItemSelectedListener = typeRankChangeListener
-
-        changeMatrix(listMatr, binding.linearLayoutCompatMatrix, requireContext(), N, M)
-
-        fun readMatrixFromEditText(): ArrayList<String> {
-            val list = ArrayList<String>()
-            for (i in listMatr.indices)
-                list.add(listMatr[i].text.toString())
-
-            return list
-        }
-
-        fun readMatrixFromEditTextExpanded(): ArrayList<String> {
-            val list = ArrayList<String>()
-            for (i in listMatr.indices) {
-                list.add(listMatr[i].text.toString())
+            fun changeM(item: String) {
+                M = item.toInt()
+                changeMatrix(listMatr, linearLayoutCompatMatrix, requireContext(), N, M)
             }
-            for (i in 0 until N)
-                list.add(listSle[i].text.toString())
 
-            return list
-        }
+            fun changeTypeDet(item: String) {
+                if (spinnerTypeDet.visibility == View.VISIBLE) TYPE_COMPUTE = item
+            }
 
-        binding.compute.setOnClickListener {
-            if (binding.sleStolbec.visibility == View.VISIBLE) {
-                binding.log.text =
-                    computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
-            } else {
-                when (TYPE) {
+            fun changeTypeInv(item: String) {
+                if (spinnerTypeInv.visibility == View.VISIBLE) TYPE_COMPUTE = item
+            }
+
+            fun changeTypeRank(item: String) {
+                if (spinnerTypeRank.visibility == View.VISIBLE) TYPE_COMPUTE = item
+            }
+
+            fun operationTypeListener(item: String) {
+                when (item) {
                     "Определитель" -> {
-                        binding.log.text = computeDeterminant(
-                            readMatrixFromEditText(),
-                            TYPE_COMPUTE,
-                            "DEC",
-                            N,
-                            M
-                        )
+                        TYPE = "Определитель"
+                        spinnerTypeRank.visibility = View.GONE
+                        spinnerTypeInv.visibility = View.GONE
+                        spinnerTypeDet.visibility = View.VISIBLE
                     }
                     "Обратная" -> {
-                        binding.log.text =
-                            computeInversion(readMatrixFromEditText(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
+                        TYPE = "Обратная"
+                        spinnerTypeRank.visibility = View.GONE
+                        spinnerTypeInv.visibility = View.VISIBLE
+                        spinnerTypeDet.visibility = View.GONE
                     }
                     "Ранг" -> {
-                        binding.log.text =
-                            computeRank(readMatrixFromEditText(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
+                        TYPE = "Ранг"
+                        spinnerTypeRank.visibility = View.VISIBLE
+                        spinnerTypeInv.visibility = View.GONE
+                        spinnerTypeDet.visibility = View.GONE
                     }
                 }
             }
-        }
 
-        binding.plusSle.setOnClickListener {
-            if (binding.sleStolbec.visibility == View.VISIBLE) {
-                binding.sleStolbec.visibility = View.GONE
+            val itemSelectedListenerN: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeN)
+            val itemSelectedListenerM: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeM)
+            val itemOperationSelectedListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::operationTypeListener)
+            val typeDetChangeListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeTypeDet)
+            val typeInvChangeListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeTypeInv)
+            val typeRankChangeListener: AdapterView.OnItemSelectedListener = getOnItemSelectListener(::changeTypeRank)
 
-                binding.spinnerTypeRank.visibility = View.GONE
-                binding.spinnerTypeInv.visibility = View.GONE
-                binding.spinnerTypeDet.visibility = View.VISIBLE
-                binding.spinnerChoice.visibility = View.VISIBLE
+            mSize.onItemSelectedListener = itemSelectedListenerN
+            nSize.onItemSelectedListener = itemSelectedListenerM
 
-            } else {
-                binding.sleStolbec.visibility = View.VISIBLE
-                binding.spinnerTypeRank.visibility = View.GONE
-                binding.spinnerTypeInv.visibility = View.GONE
-                binding.spinnerTypeDet.visibility = View.GONE
-                binding.spinnerChoice.visibility = View.GONE
+            spinnerChoice.onItemSelectedListener = itemOperationSelectedListener
+
+            spinnerTypeDet.onItemSelectedListener = typeDetChangeListener
+            spinnerTypeInv.onItemSelectedListener = typeInvChangeListener
+            spinnerTypeRank.onItemSelectedListener = typeRankChangeListener
+
+            changeMatrix(listMatr, linearLayoutCompatMatrix, requireContext(), N, M)
+
+            fun readMatrixFromEditText(): ArrayList<String> {
+                val list = ArrayList<String>()
+                for (i in listMatr.indices)
+                    list.add(listMatr[i].text.toString())
+                return list
             }
-            updateSle(N)
-        }
-        binding.multMatr.setOnClickListener {
-            val intent = Intent(activity, MultMatrixActivity::class.java)
-            startActivity(intent)
+
+            fun readMatrixFromEditTextExpanded(): ArrayList<String> {
+                val list = ArrayList<String>()
+
+                for (i in listMatr.indices) list.add(listMatr[i].text.toString())
+                for (i in 0 until N) list.add(listSle[i].text.toString())
+
+                return list
+            }
+
+            binding.compute.setOnClickListener {
+                if (binding.sleStolbec.visibility == View.VISIBLE) {
+                    binding.log.text =
+                        computeSLE(readMatrixFromEditTextExpanded(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
+                } else {
+                    when (TYPE) {
+                        "Определитель" -> {
+                            binding.log.text = computeDeterminant(
+                                listMatr = readMatrixFromEditText(),
+                                computeType = TYPE_COMPUTE,
+                                numbersType = "DEC",
+                                N = N,
+                                M = M,
+                            )
+                        }
+                        "Обратная" -> binding.log.text = computeInversion(readMatrixFromEditText(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
+                        "Ранг" -> binding.log.text = computeRank(readMatrixFromEditText(), TYPE_COMPUTE, TYPE_NUMBER, N, M)
+                    }
+                }
+            }
+            plusSle.setOnClickListener {
+                if (sleStolbec.visibility == View.VISIBLE) {
+                    sleStolbec.visibility = View.GONE
+
+                    spinnerTypeRank.visibility = View.GONE
+                    spinnerTypeInv.visibility = View.GONE
+                    spinnerTypeDet.visibility = View.VISIBLE
+                    spinnerChoice.visibility = View.VISIBLE
+
+                } else {
+                    sleStolbec.visibility = View.VISIBLE
+                    spinnerTypeRank.visibility = View.GONE
+                    spinnerTypeInv.visibility = View.GONE
+                    spinnerTypeDet.visibility = View.GONE
+                    spinnerChoice.visibility = View.GONE
+                }
+                updateSle(N)
+            }
+            multMatr.setOnClickListener {
+                val intent = Intent(activity, MultMatrixActivity::class.java)
+                startActivity(intent)
+            }
         }
         return binding.root
     }
