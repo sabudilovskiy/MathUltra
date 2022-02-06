@@ -14,17 +14,34 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.example.flamemathnew.R
 import com.example.flamemathnew.databinding.FragmentPracticeAlgebraBinding
-import com.example.flamemathnew.ui.algebra.AlgebraHelper.Companion.getOnItemSelectListener
 import com.example.flamemathnew.ui.support.Support.Companion.computeDeterminant
 import com.example.flamemathnew.ui.support.Support.Companion.computeInversion
 import com.example.flamemathnew.ui.support.Support.Companion.computeRank
 import com.example.flamemathnew.ui.support.Support.Companion.computeSLE
 import com.example.flamemathnew.ui.support.UISupport.Companion.changeMatrix
 
+
+fun getOnItemSelectListener(action: (item: String) -> Unit): AdapterView.OnItemSelectedListener {
+    val listener = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>,
+            view: View,
+            position: Int,
+            id: Long,
+        ) {
+            val item = parent.getItemAtPosition(position) as String
+            action(item)
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+    }
+    return listener
+}
+
 class PracticeAlgebraFragment : Fragment() {
 
-    private var listMatr: MutableList<EditText> = mutableListOf()
-    private var listSle: MutableList<EditText> = mutableListOf()
+    private var listMatr: ArrayList<EditText> = arrayListOf()
+    private var listSle: ArrayList<EditText> = arrayListOf()
 
     private var dimens = arrayOf("1", "2", "3", "4", "5")
     private var detTypes = arrayOf("LAPLASS", "TRIANGLE", "SARUSS", "BASIC")
@@ -36,9 +53,9 @@ class PracticeAlgebraFragment : Fragment() {
         listSle.clear()
         binding.sleStolbec.removeAllViews()
 
-        val i = 0
         for (i in 0 until N) {
             val editText = EditText(context)
+            //    editText.setHintTextColor(Color.BLACK)
             editText.hint = "$i"
             editText.textAlignment = View.TEXT_ALIGNMENT_CENTER
             editText.width = 250 - M * 10
@@ -50,22 +67,21 @@ class PracticeAlgebraFragment : Fragment() {
         }
     }
 
-
     private var _binding: FragmentPracticeAlgebraBinding? = null
     private val binding get() = _binding!!
     private lateinit var pref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?, savedInstanceState: Bundle?
+        container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
 
         _binding = FragmentPracticeAlgebraBinding.inflate(inflater, container, false)
 
         pref = requireContext().getSharedPreferences("TYPE_NUMBERS", Context.MODE_PRIVATE)
-        Log.d("PREF_NUMBER_TAG", "Pref: ${pref.getString("TYPE_NUMBERS","PROPER")}")
+        Log.d("PREF_NUMBER_TAG", "Pref: ${pref.getString("TYPE_NUMBERS", "PROPER")}")
 
-        TYPE_NUMBER = pref.getString("TYPE_NUMBERS","PROPER")!!
+        TYPE_NUMBER = pref.getString("TYPE_NUMBERS", "PROPER")!!
 
         val adapter =
             ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, dimens)
@@ -77,29 +93,14 @@ class PracticeAlgebraFragment : Fragment() {
         )
         binding.spinnerChoice.adapter = adapterMain
 
-        binding.spinnerTypeDet.adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            detTypes
-        )
+        binding.spinnerTypeDet.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, detTypes)
 
-        binding.spinnerTypeInv.adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            inverseTypes
-        )
+        binding.spinnerTypeInv.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, inverseTypes)
 
-        binding.spinnerTypeRank.adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            rankTypes
-        )
-
-        //  adapter.setDropDownViewResource(R.layout.my_spinner_item)
+        binding.spinnerTypeRank.adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, rankTypes)
 
         binding.mSize.adapter = adapter
         binding.nSize.adapter = adapter
-
 
         fun changeN(item: String) {
             N = item.toInt()
@@ -111,7 +112,6 @@ class PracticeAlgebraFragment : Fragment() {
             M = item.toInt()
             changeMatrix(listMatr, binding.linearLayoutCompatMatrix, requireContext(), N, M)
         }
-
 
         fun changeTypeDet(item: String) {
             if (binding.spinnerTypeDet.visibility == View.VISIBLE)
@@ -175,23 +175,21 @@ class PracticeAlgebraFragment : Fragment() {
 
         changeMatrix(listMatr, binding.linearLayoutCompatMatrix, requireContext(), N, M)
 
-
-        fun readMatrixFromEditText(): MutableList<String> {
-            var list = mutableListOf<String>()
-            for (i in listMatr.indices) {
+        fun readMatrixFromEditText(): ArrayList<String> {
+            val list = ArrayList<String>()
+            for (i in listMatr.indices)
                 list.add(listMatr[i].text.toString())
-            }
+
             return list
         }
 
-        fun readMatrixFromEditTextExpanded(): MutableList<String> {
-            var list = mutableListOf<String>()
+        fun readMatrixFromEditTextExpanded(): ArrayList<String> {
+            val list = ArrayList<String>()
             for (i in listMatr.indices) {
                 list.add(listMatr[i].text.toString())
             }
-            for (i in 0 until N) {
+            for (i in 0 until N)
                 list.add(listSle[i].text.toString())
-            }
 
             return list
         }
@@ -223,14 +221,6 @@ class PracticeAlgebraFragment : Fragment() {
             }
         }
 
-//        val navController = NavHostFragment.findNavController(this)
-//
-//        binding.multMatr.setOnClickListener {
-//            val action =
-//                PracticeAlgebraFragmentDirections.actionPracticeAlgebraFragmentToMultMatrixFragment()
-//            navController.navigate(action)
-//        }
-
         binding.plusSle.setOnClickListener {
             if (binding.sleStolbec.visibility == View.VISIBLE) {
                 binding.sleStolbec.visibility = View.GONE
@@ -249,18 +239,12 @@ class PracticeAlgebraFragment : Fragment() {
             }
             updateSle(N)
         }
-
-
         binding.multMatr.setOnClickListener {
             val intent = Intent(activity, MultMatrixActivity::class.java)
             startActivity(intent)
-
         }
-
-
         return binding.root
     }
-
 
     companion object {
         private var N = 3

@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,7 +29,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="25sp"
                 android:textStyle="bold" />
-
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -195,10 +193,6 @@
                 android:layout_height="wrap_content"
                 tools:text="Ответ" />
 
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
     </androidx.core.widget.NestedScrollView>
-
 </FrameLayout>

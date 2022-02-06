@@ -16,23 +16,23 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:contentDescription="@string/nav_header_desc"
-        app:srcCompat="@drawable/mathultra" />
+        app:srcCompat="@drawable/white_math_ultra_e" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
         android:layout_gravity="center"
         android:text="@string/mathultra"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:layout_gravity="center"
-        android:text="@string/for_students_by_students" />
+        android:text="@string/for_students_by_students"
+        android:textColor="@color/black" />
 </LinearLayout>

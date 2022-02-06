@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.EditText
 import com.example.flamemathnew.mid.Computer
 import com.example.flamemathnew.mid.exceptions.*
-import com.example.flamemathnew.ui.algebra.PracticeAlgebraFragment
+
 //import java.util.ArrayList
 
 class Support {
@@ -36,7 +36,7 @@ class Support {
                     }
                 }
 
-                answer = "Ответ: \n" + Computer.SLE(list, "method", numbersType)
+                answer = "Ответ: \n" + Computer.SLE(list, numbersType)
                 log = Computer.getLogAsStr()
             } catch (matrix_fail: MatrixFailException) {
                 answer = "Матрица пуста"

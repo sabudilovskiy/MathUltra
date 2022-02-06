@@ -19,10 +19,6 @@
             android:id="@+id/nav_algebra"
             android:icon="@drawable/mathultra"
             android:title="@string/algebra" />
-        <item
-            android:id="@+id/nav_discrete"
-            android:icon="@drawable/mathultra"
-            android:title="@string/discrete_mathematics" />
 
         <item
             android:id="@+id/settingsFragment"
