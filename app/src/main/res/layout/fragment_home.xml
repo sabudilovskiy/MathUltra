@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.appcompat.widget.LinearLayoutCompat
-
         android:id="@+id/linearLayoutCompat"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -17,12 +15,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/mathultra" />
+            android:src="@drawable/white_math_ultra_e" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="34sp"
+            android:textColor="@color/black"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            />
 
         <View
             android:id="@+id/separator1"
@@ -30,7 +37,7 @@
             android:layout_height="3dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/separator"
-            android:backgroundTint="#E1E1E1" />
+            android:backgroundTint="#6A6A6A" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
@@ -48,16 +55,15 @@
             android:layout_height="3dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/separator"
-            android:backgroundTint="#E1E1E1" />
+            android:backgroundTint="#6A6A6A" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/lexeme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            app:cardCornerRadius="20dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -72,28 +78,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lexeme"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lexeme_description"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="13sp" />
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/algebr_math"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -108,50 +112,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/linal"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/linal_description"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/disrc_math"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transperent_main"
-                android:orientation="vertical"
-                android:padding="15dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/discr_math"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/disrc_math_description"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -161,10 +129,9 @@
             android:id="@+id/history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            app:cardCornerRadius="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -179,14 +146,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/history"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/history_description"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="13sp" />
             </LinearLayout>
 

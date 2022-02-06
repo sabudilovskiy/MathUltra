@@ -2,16 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/maths_algebra_contraint"
-    >
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager_algebra"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
@@ -36,7 +29,5 @@
             android:layout_height="wrap_content"
             android:text="Практика" />
 
-
     </com.google.android.material.tabs.TabLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

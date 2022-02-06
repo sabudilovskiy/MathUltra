@@ -9,41 +9,15 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-105dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <View
-                android:id="@+id/separator1"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/separator"
-                android:backgroundTint="#E1E1E1" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/algebra_description"
-                android:textAlignment="center"
-                android:textColor="@color/black" />
-
-            <View
-                android:id="@+id/separator2"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/separator"
-                android:backgroundTint="#E1E1E1" />
 
             <TextView
                 android:id="@+id/text_gallery"
@@ -55,7 +29,6 @@
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
-
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +39,6 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/mSize"
-                    style="@android:style/Widget.ProgressBar.Small"
                     android:layout_width="70sp"
                     android:layout_height="70sp"
                     android:layout_gravity="center"
@@ -87,7 +59,6 @@
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/nSize"
-                    style="@android:style/Widget.ProgressBar.Small"
                     android:layout_width="70sp"
                     android:layout_height="70sp"
                     android:layout_gravity="center"
@@ -97,28 +68,31 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/mult_matr"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Умножить"
+                    android:background="@drawable/green_ripple"
+                    android:text="@string/mult"
+                    android:textColor="@color/white"
                     android:textAlignment="center"
                     android:textSize="15sp" />
 
-                <com.google.android.material.button.MaterialButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/plusSle"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="СЛАУ"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/green_ripple"
+                    android:text="@string/slau"
+                    android:textColor="@color/white"
                     android:textAlignment="center"
                     android:textSize="15sp" />
 
@@ -136,23 +110,24 @@
                     android:layout_gravity="center"
                     android:orientation="horizontal">
 
-
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="12dp"
-                        app:cardBackgroundColor="#DDF3FA"
-                        app:cardCornerRadius="10dp"
-                        app:cardElevation="0dp">
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="15dp"
+                        app:cardElevation="15dp">
 
                         <androidx.appcompat.widget.LinearLayoutCompat
                             android:id="@+id/linearLayoutCompatMatrix"
-                            android:layout_width="10dp"
-                            android:layout_height="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_margin="5dp"
-                            android:orientation="vertical">
+                            android:background="#00000000"
+                            android:orientation="vertical"
+                            android:paddingTop="16dp">
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -163,7 +138,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="12dp"
-                        app:cardBackgroundColor="#FFFDFB"
                         app:cardCornerRadius="15dp"
                         app:cardElevation="10dp">
 
@@ -175,8 +149,7 @@
                             android:layout_margin="5dp"
                             android:orientation="vertical"
                             android:paddingTop="16dp"
-                            android:visibility="gone"
-                            app:cardBackgroundColor="#FFFDFB">
+                            android:visibility="gone">
 
                         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -191,7 +164,8 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                tools:layout_editor_absoluteY="251dp">
+                app:layout_constraintEnd_toEndOf="@+id/spinner_type_operation"
+                app:layout_constraintStart_toEndOf="@+id/spinner_type_operation">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner_choice"
@@ -242,20 +216,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
--->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/compute"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_weight="2"
+                android:background="@drawable/green_ripple"
                 android:text="@string/compute"
+                android:textColor="@color/white"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/log"
@@ -263,9 +236,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="5dp" />
 
-
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     </androidx.core.widget.NestedScrollView>
 

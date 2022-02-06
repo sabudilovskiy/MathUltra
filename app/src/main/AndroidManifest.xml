@@ -4,25 +4,20 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/mathultra"
+        android:icon="@drawable/white_math_ultra_e"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/mathultra"
+        android:roundIcon="@drawable/white_math_ultra_e"
         android:supportsRtl="true"
         android:theme="@style/Theme.FlameMathNew">
-        <activity android:name=".ui.algebra.MultMatrixActivity"></activity>
+        <activity android:name=".ui.algebra.MultMatrixActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".backend.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.FlameMathNew.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.algebra.AlgebraActivity"
-            android:theme="@style/Theme.FlameMathNew.NoActionBar"></activity>
     </application>
-
 </manifest>

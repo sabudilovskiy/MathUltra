@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.settings.MatrixSettingsFragment">
+    tools:context=".backend.ui.settings.MatrixSettingsFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"

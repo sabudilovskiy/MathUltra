@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.flamemathnew.ui.home.HomeFragment"
+        android:name="com.example.flamemathnew.backend.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_about" >
         <action
@@ -38,22 +38,19 @@
             app:exitAnim="@anim/slide_exit_anim"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_home_to_practiceAlgebraFragment"
+            app:destination="@id/nav_algebra"
+            app:enterAnim="@anim/slide_enter_anim"
+            app:exitAnim="@anim/slide_exit_anim"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
-    <activity
-        android:id="@+id/nav_algebra"
-        android:name="com.example.flamemathnew.ui.algebra.AlgebraActivity"
-        android:label="@string/algebra"
-        tools:layout="@layout/fragment_algebra" >
-        <argument
-            android:name="key"
-            app:argType="string"
-            android:defaultValue='"linal"' />
-    </activity>
 
     <fragment
         android:id="@+id/nav_discrete"
-        android:name="com.example.flamemathnew.ui.discrete.DiscreteFragment"
+        android:name="com.example.flamemathnew.backend.ui.discrete.DiscreteFragment"
         android:label="@string/discrete_mathematics"
         tools:layout="@layout/fragment_discrete" />
 
@@ -64,29 +61,33 @@
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/nav_lexeme"
-        android:name="com.example.flamemathnew.ui.lexeme.LexemeFragment"
+        android:name="com.example.flamemathnew.backend.ui.lexeme.LexemeFragment"
         android:label="fragment_lexeme"
         tools:layout="@layout/fragment_lexeme" />
+
     <fragment
         android:id="@+id/historyFragment"
         android:name="com.example.flamemathnew.ui.history.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
+
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.flamemathnew.ui.settings.SettingsFragment"
+        android:name="com.example.flamemathnew.backend.ui.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+
     <fragment
-        android:id="@+id/practiceAlgebraFragment"
-        android:name="com.example.flamemathnew.ui.algebra.PracticeAlgebraFragment"
+        android:id="@+id/nav_algebra"
+        android:name="com.example.flamemathnew.backend.ui.algebra.PracticeAlgebraFragment"
         android:label="PracticeAlgebraFragment" >
         <action
             android:id="@+id/action_practiceAlgebraFragment_to_multMatrixFragment"
             app:destination="@id/multMatrixFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/multMatrixFragment"
-        android:name="com.example.flamemathnew.ui.algebra.MultMatrixFragment"
+        android:name="com.example.flamemathnew.backend.ui.algebra.MultMatrixFragment"
         android:label="MultMatrixFragment" />
 </navigation>
